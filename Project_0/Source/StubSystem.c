@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	StubSystem.c
-// Author(s):	Doug Schilling (dschilling)
+// Author(s):	Rob Perez (rob.perez)
 // Project:		Project 0
 // Course:		CS230S23
 //

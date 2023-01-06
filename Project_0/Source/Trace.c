@@ -33,6 +33,8 @@ static const char* traceFileName = "Trace.log";
 //------------------------------------------------------------------------------
 
 // TODO: Declare a private variable for storing a file handle.
+static FILE* traceFile;
+
 
 //------------------------------------------------------------------------------
 // Private Function Declarations:
@@ -48,12 +50,13 @@ static const char* traceFileName = "Trace.log";
 void TraceInit()
 {
 	// TODO: Open "trace.log" for writing (text mode).
-	// fopen_s:
+	fopen_s (&traceFile, "trace.log", "wt");
 	// https://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k(stdio%2Ffopen_s);k(fopen_s);k(DevLang-C%2B%2B);k(TargetOS-Windows)&rd=true
 
 	// Error handling (implementation details to be determined by the student):
 	// https://msdn.microsoft.com/en-us/library/9t0e6085.aspx
 	// https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(STRING%2Fstrerror_s);k(strerror_s);k(DevLang-C%2B%2B);k(TargetOS-Windows)%26rd%3Dtrue&view=vs-2019
+
 
 }
 
@@ -68,7 +71,21 @@ void TraceMessage(const char * formatString, ...)
 	// TODO: Write the message to the Tracing/Logging file using the variadic
 	//   functions discussed during the Week 1 lectures.
 
-
+	//void Trace(TraceLevels traceLevel, const char* formatString, ...)
+	//{
+	//	// Filter out trace messages with a severity less than the minimum level.
+	//	if (isValidTraceLevel(traceLevel) && (traceLevel <= traceLevelSetting))
+	//	{
+	//		// Verify that the traceStream is valid.
+	//		if (traceStream != NULL)
+	//		{
+	//			va_start(arg_ptr, formatString);
+	//			fprintf_s(traceStream, "%s: ", traceLevelStrings[traceLevel]);
+	//			fprintf_s(traceStream, "\n");
+	//			va_end(arg_ptr);
+	//		}
+	//	}
+	//}
 }
 
 // Shutdown the Tracing/Logging module.
@@ -76,11 +93,13 @@ void TraceMessage(const char * formatString, ...)
 void TraceShutdown()
 {
 	// TODO: Close "trace.log" if it has been opened successfully.
-
+	if (traceFile != NULL) 
+	{
+		fclose(traceFile);
+	}
 
 }
 
 //------------------------------------------------------------------------------
 // Private Functions:
 //------------------------------------------------------------------------------
-
