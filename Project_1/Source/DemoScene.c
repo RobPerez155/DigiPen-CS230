@@ -250,7 +250,7 @@ static void DemoSceneUpdate(float dt)
 		rotation += dt;
 
 		// TODO: Add code to restart the level when the ‘0’ key is triggered (when the key changes state from not pressed to pressed).
-		if (DGL_Input_KeyDown('0'))
+		if (DGL_Input_KeyTriggered('0'))
 		{
 			DemoSceneInit();
 		}
