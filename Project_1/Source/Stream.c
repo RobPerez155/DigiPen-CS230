@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 #include "stdafx.h"
-#include <Stream.h>
+#include "Stream.h"
 
 #include "Trace.h"
 
@@ -33,7 +33,6 @@
 // TODO: Declare a private variable for storing a file handle.
 static FILE* streamFile;
 
-
 //------------------------------------------------------------------------------
 // Private Function Declarations:
 //------------------------------------------------------------------------------
@@ -55,13 +54,16 @@ static FILE* streamFile;
 //	 Pointer to a FILE object if the file was opened successfully.
 Stream StreamOpen(const char* filePath)
 {
-	fp = fopen_s(&streamFile, filePath, "rt");
+	fopen_s(&streamFile, filePath, "rt");
+	char errorMsg[100];
+
+	strerror_s(errorMsg, 100, errno);
 
 	if (streamFile == NULL) {
 		TraceMessage("Error: StreamOpen could not open file %s; %s", filePath, errorMsg);
 		return NULL;
 	}	else {
-		return *filePath;
+		return streamFile;
 	}
 }
 

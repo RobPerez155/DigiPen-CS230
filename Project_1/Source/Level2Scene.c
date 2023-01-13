@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "SceneSystem.h"
 #include "Level2Scene.h"
+#include "Stream.h"
 
 //------------------------------------------------------------------------------
 // Private Structures:
@@ -25,14 +26,9 @@ typedef struct Level2Scene
 	Scene	base;
 
 	// Add any scene-specific variables second.
-
-} Level2Scene;
-
-typedef struct Level2Scene
-{
 	int numLives;
 	int numHealth;
-};
+} Level2Scene;
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -71,9 +67,7 @@ static Level2Scene instance =
 	{ "Level2", Level2SceneLoad, Level2SceneInit, Level2SceneUpdate, Level2SceneRender, Level2SceneExit, Level2SceneUnload },
 
 	// Initialize any scene-specific variables:
-	Level2Scene.numLives = 0;
-	Level2Scene.numHealth = 0;
-};
+}
 
 //------------------------------------------------------------------------------
 // Public Functions:
@@ -101,6 +95,9 @@ static void Level2SceneLoad(void)
 // Initialize the variables used by the scene.
 static void Level2SceneInit()
 {
+	Level2Scene->numLives = 0;
+	Level2Scene->numHealth = 0;
+
 	if (StreamOpen(healthFileName) != NULL)//..\Data\Level2_Lives.txt
 	{
 		StreamReadInt(healthFileName);
@@ -113,11 +110,11 @@ static void Level2SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level2SceneUpdate(float dt)
 {
-	numHealth -= 1;
+	int numHealth = numHealth - 1;
 
 	if (numHealth <= 0)
 	{
-		numLives -= 1;
+		int numLives = numLives - 1;
 
 		if (numLives > 0) 
 		{

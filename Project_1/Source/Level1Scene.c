@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "SceneSystem.h"
 #include "Level1Scene.h"
+#include "Stream.h"
 
 //------------------------------------------------------------------------------
 // Private Structures:
@@ -25,13 +26,8 @@ typedef struct Level1Scene
 	Scene	base;
 
 	// Add any scene-specific variables second.
-
-} Level1Scene;
-
-typedef struct Level1Scene
-{
 	int numLives;
-};
+} Level1Scene;
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -68,14 +64,13 @@ static Level1Scene instance =
 	{ "Level1", Level1SceneLoad, Level1SceneInit, Level1SceneUpdate, Level1SceneRender, Level1SceneExit, Level1SceneUnload },
 
 	// Initialize any scene-specific variables:
-	Level1Scene.numLives = 0;
-};
+}
 
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
 
-const Scene* Level1SceneGetInstance(void)
+const Scene * Level1SceneGetInstance(void)
 {
 	return &(instance.base);
 }
@@ -97,6 +92,7 @@ static void Level1SceneLoad(void)
 // Initialize the variables used by the scene.
 static void Level1SceneInit()
 {
+	Level1Scene->numLives = 0;
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -104,7 +100,7 @@ static void Level1SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level1SceneUpdate(float dt)
 {
-	numLives -= 1;
+	int numLives = numLives - 1;
 
 	if (numLives <= 0)
 	{

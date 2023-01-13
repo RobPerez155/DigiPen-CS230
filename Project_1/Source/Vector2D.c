@@ -20,7 +20,10 @@
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
 #include <math.h>
+
+#define _USE_MATH_DEFINES
 
 //------------------------------------------------------------------------------
 
@@ -53,17 +56,19 @@ typedef struct DGL_Vec2 DGL_Vec2;
 
 // This function sets the coordinates of the 2D vector (pResult) to 0
 void Vector2DZero(DGL_Vec2* pResult) {
-	pResult = 0; // Should this be (0, 0)
+	pResult = 0;
 }
 
 // This function sets the coordinates of the 2D vector (pResult) to x & y
-void Vector2DSet(DGL_Vec2* pResult, float x, float y)(
-	pResult = (float x, float y);
-	)
+void Vector2DSet(DGL_Vec2* pResult, float x, float y) {
+	//pResult = (x, y); //error C2440: '=': cannot convert from 'float' to 'DGL_Vec2 *'
+	pResult->x = x;
+	pResult->y = y;
+}
 
 // In this function, pResult will be set to the opposite of pVec0 (e.g. x = -x & y = -y)
 void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
-		pResult = (-pVec0.x, -pVec0.y);
+		pResult = (pVec0->x, pVec0->y);
 	}
 
 // In this function, pResult will be the sum of pVec0 and pVec1 (x result = x0 + x1)
@@ -106,12 +111,12 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 // This function returns the square of pVec0's length.
 // NOTE: The square root function must NOT be called by this function.
 	float Vector2DSquareLength(const DGL_Vec2* pVec0) {
-		return Vector2DLength(pVec0.x * pVec0.x + pVec0.y * pVec0.y);
+		return (pVec0->x * pVec0->x + pVec0->y * pVec0->y);
 }
 
 // This function returns the distance between two points.
 	float Vector2DDistance(const DGL_Vec2* pVec0, const DGL_Vec2* pVec1) {
-
+		sqrt(Vector2DSquareDistance(pVec0, pVec1));
 }
 
 // This function returns the distance squared between two points.
@@ -122,7 +127,7 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 
 // This function returns the dot product between pVec0 and pVec1
 	float Vector2DDotProduct(const DGL_Vec2* pVec0, const DGL_Vec2* pVec1) {
-
+		return ((pVec0->x * pVec1->x) + (pVec0->y * pVec1->y));
 }
 
 // This function computes the coordinates of the unit vector represented by the angle "angle", which is in Degrees.
@@ -132,20 +137,25 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 //   #define _USE_MATH_DEFINES
 //   #include <math.h>
 	void Vector2DFromAngleDeg(DGL_Vec2* pResult, float angle) {
-
+		pResult = (angle * M_PI) / 180.0f;
 }
 
 // This function computes the coordinates of the unit vector represented by the angle "angle", which is in Radians.
 // HINT: x = cos(angle), y = sin(angle).
 	void Vector2DFromAngleRad(DGL_Vec2* pResult, float angle) {
-
+		pResult = angle;
 }
 
 // This function computes the angle, in radians, of the specified vector.
 // HINT: Angle (radians) = atan2f(direction Y, direction X).
 // NOTE: If the pointer is NULL, then return 0.0f.
 	float Vector2DToAngleRad(const DGL_Vec2* pVec) {
-
+		if (pVec == NULL) {
+			return 0.0;
+		}
+		else {
+			return (atan2f(pVec->y, pVec->x))
+		}
 }
 
 //------------------------------------------------------------------------------
