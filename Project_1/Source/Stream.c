@@ -13,6 +13,7 @@
 #include "Stream.h"
 
 #include "Trace.h"
+#include <DGL.h>
 
 //------------------------------------------------------------------------------
 // Private Constants:
@@ -77,13 +78,13 @@ Stream StreamOpen(const char* filePath)
 //	 otherwise, an integer value read from the file.
 int StreamReadInt(Stream stream)
 {
-	int streamScan = fscanf_s(stream);
-
-	if (streamScan == NULL)
+	if (stream == NULL)
 	{
 		return 0;
 	}
 	else {
+		int streamScan;
+		fscanf_s(stream, "%i", &streamScan);
 		return streamScan;
 	}
 }
@@ -98,13 +99,13 @@ int StreamReadInt(Stream stream)
 //	   then return a float value read from the file,
 //	   else return 0.
 float StreamReadFloat(Stream stream) {
-	float streamScan = fscanf_s(stream);
-
-	if (streamScan == NULL)
+	if (stream == NULL)
 	{
 		return 0;
 	}
 	else {
+		float streamScan;
+		fscanf_s(stream, "%f", &streamScan);
 		return streamScan;
 	}
 }
@@ -119,12 +120,12 @@ float StreamReadFloat(Stream stream) {
 //	   then fill the vector with two float values (x & y),
 //	   else do nothing (optionally, write an error message to the trace log).
 void StreamReadVector2D(Stream stream, DGL_Vec2* vector) {
-	if (StreamReadFloat(stream) != 0 && vector != NULL) {
-		vector.x = StreamReadFloat(stream);
-		vector.y = StreamReadFloat(stream);
+	if (stream != NULL && vector != NULL) {
+		vector->x = StreamReadFloat(stream);
+		vector->y = StreamReadFloat(stream);
 	}
 	else if ( StreamReadFloat == NULL) {
-		TraceMessage("Error: StreamOpen could not open file %s; %s", filePath, errorMsg);
+		TraceMessage("Error: StreamOpen could not open file");
 	}
 	else {
 		TraceMessage("Error: DGL_Vec returned NULL");
@@ -137,13 +138,10 @@ void StreamReadVector2D(Stream stream, DGL_Vec2* vector) {
 // Params:
 //	 stream = The file stream to be closed.
 void StreamClose(Stream* stream) {
-	fp = fopen_s(&streamFile, filePath, "rt");
-
-	if (StreamOpen == NULL) {
-		TraceMessage("Error: StreamClose could not close file %s; %s", filePath, errorMsg);
-		stream = NULL;
+	if (stream == NULL) {
+		TraceMessage("Error: StreamClose could not close file");
 	}
 	else {
-		fclose(stream);
+		fclose(*stream);
 	}
 }

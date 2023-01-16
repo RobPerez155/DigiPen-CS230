@@ -1,0 +1,27 @@
+﻿  SandboxScene.c
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\SandboxScene.c(1,1): fatal  error C1010: unexpected end of file while looking for precompiled header. Did you forget to add '#include "stdafx.h"' to your source?
+  Level2Scene.c
+  Vector2D.c
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(97,27): error C2220: the following warning is treated as an error
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(97,27): warning C4013: 'Vector2DLength' undefined; assuming extern returning int
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(109,32): warning C4090: 'function': different 'const' qualifiers
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(109,39): error C2440: 'function': cannot convert from 'float' to 'const DGL_Vec2 *'
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(109,34): warning C4024: 'Vector2DScale': different types for formal and actual parameter 2
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(109,13): error C2198: 'Vector2DScale': too few arguments for call
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(109,48): error C2111: '+': pointer addition requires integral operand
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(114,32): warning C4090: 'function': different 'const' qualifiers
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(114,39): error C2440: 'function': cannot convert from 'float' to 'const DGL_Vec2 *'
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(114,34): warning C4024: 'Vector2DScale': different types for formal and actual parameter 2
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(114,13): error C2198: 'Vector2DScale': too few arguments for call
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(114,48): error C2113: '-': pointer can only be subtracted from another pointer
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(118,46): warning C4142: 'Vector2DLength': benign redefinition of type
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(119,15): warning C4013: 'Vector2DSquareLength' undefined; assuming extern returning int
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(119,10): warning C4244: 'return': conversion from 'double' to 'float', possible loss of data
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(124,52): warning C4142: 'Vector2DSquareLength': benign redefinition of type
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(130,8): warning C4013: 'Vector2DSquareDistance' undefined; assuming extern returning int
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(135,77): warning C4142: 'Vector2DSquareDistance': benign redefinition of type
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(151,26): error C2065: 'M_PI': undeclared identifier
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(151,36): error C2440: '=': cannot convert from 'float' to 'DGL_Vec2 *'
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(157,18): error C2440: '=': cannot convert from 'float' to 'DGL_Vec2 *'
+C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\Vector2D.c(169,3): error C2143: syntax error: missing ';' before '}'
+  Generating Code...

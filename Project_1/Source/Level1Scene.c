@@ -64,7 +64,7 @@ static Level1Scene instance =
 	{ "Level1", Level1SceneLoad, Level1SceneInit, Level1SceneUpdate, Level1SceneRender, Level1SceneExit, Level1SceneUnload },
 
 	// Initialize any scene-specific variables:
-}
+};
 
 //------------------------------------------------------------------------------
 // Public Functions:
@@ -82,17 +82,19 @@ const Scene * Level1SceneGetInstance(void)
 // Load any resources used by the scene.
 static void Level1SceneLoad(void)
 {
-	if (StreamOpen(livesFileName) != NULL)//..\Data\Level1_Lives.txt
+	Stream lifeFile = StreamOpen(livesFileName);
+
+	if (lifeFile != NULL)
 	{
-		StreamReadInt(livesFileName);
-		StreamClose(livesFileName);
+		instance.numLives = StreamReadInt(lifeFile);
+		StreamClose(&lifeFile);
 	}
 }
 
 // Initialize the variables used by the scene.
 static void Level1SceneInit()
 {
-	Level1Scene->numLives = 0;
+
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -100,9 +102,9 @@ static void Level1SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level1SceneUpdate(float dt)
 {
-	int numLives = numLives - 1;
+	instance.numLives--;
 
-	if (numLives <= 0)
+	if (instance.numLives <= 0)
 	{
 		// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 		//   it when you are ready to test out a new scene.

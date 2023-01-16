@@ -67,7 +67,7 @@ static Level2Scene instance =
 	{ "Level2", Level2SceneLoad, Level2SceneInit, Level2SceneUpdate, Level2SceneRender, Level2SceneExit, Level2SceneUnload },
 
 	// Initialize any scene-specific variables:
-}
+};
 
 //------------------------------------------------------------------------------
 // Public Functions:
@@ -85,24 +85,27 @@ const Scene* Level2SceneGetInstance(void)
 // Load any resources used by the scene.
 static void Level2SceneLoad(void)
 {
-	if (StreamOpen(livesFileName) != NULL)//..\Data\Level2_Lives.txt
+	Stream hlthFile = StreamOpen(healthFileName);
+	Stream lifeFile = StreamOpen(livesFileName);
+
+	if (hlthFile != NULL)
 	{
-		StreamReadInt(livesFileName);
-		StreamClose(livesFileName);
+		instance.numHealth = StreamReadInt(hlthFile);
+		StreamClose(&hlthFile);
+	}
+
+	if (lifeFile != NULL)
+	{
+		instance.numHealth = StreamReadInt(lifeFile);
+		StreamClose(&lifeFile);
 	}
 }
 
 // Initialize the variables used by the scene.
 static void Level2SceneInit()
 {
-	Level2Scene->numLives = 0;
-	Level2Scene->numHealth = 0;
-
-	if (StreamOpen(healthFileName) != NULL)//..\Data\Level2_Lives.txt
-	{
-		StreamReadInt(healthFileName);
-		StreamClose(healthFileName);
-	}
+	//Level2Scene.numLives = 0;
+	//Level2Scene.numHealth = 0;
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -110,13 +113,13 @@ static void Level2SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level2SceneUpdate(float dt)
 {
-	int numHealth = numHealth - 1;
+	instance.numHealth--;
 
-	if (numHealth <= 0)
+	if (instance.numHealth <= 0)
 	{
-		int numLives = numLives - 1;
+		instance.numLives--;
 
-		if (numLives > 0) 
+		if (instance.numLives > 0) 
 		{
 			Level2SceneInit();
 		}

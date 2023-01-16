@@ -22,6 +22,7 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include <math.h>
+#include <DGL.h>
 
 #define _USE_MATH_DEFINES
 
@@ -53,44 +54,54 @@ typedef struct DGL_Vec2 DGL_Vec2;
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
-
+//DO A ZERO CHECK ON NORMALIZE TO SAVE A HEADACHE
 // This function sets the coordinates of the 2D vector (pResult) to 0
 void Vector2DZero(DGL_Vec2* pResult) {
-	pResult = 0;
+	pResult = (0, 0);
 }
 
 // This function sets the coordinates of the 2D vector (pResult) to x & y
 void Vector2DSet(DGL_Vec2* pResult, float x, float y) {
 	//pResult = (x, y); //error C2440: '=': cannot convert from 'float' to 'DGL_Vec2 *'
-	pResult->x = x;
-	pResult->y = y;
+	if (pResult) { //if statement if for error checking
+		pResult->x = x;
+		pResult->y = y;
+	}
 }
 
+//REVIEW CODE
 // In this function, pResult will be set to the opposite of pVec0 (e.g. x = -x & y = -y)
 void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
-		pResult = (pVec0->x, pVec0->y);
+	if (pResult) { //if statement if for error checking
+		pResult->x = -pVec0->x;
+		pResult->y = -pVec0->y;
 	}
+}
 
 // In this function, pResult will be the sum of pVec0 and pVec1 (x result = x0 + x1)
 	void Vector2DAdd(DGL_Vec2* pResult, const DGL_Vec2* pVec0, const DGL_Vec2* pVec1) {
-		pResult = pVec0 + pVec1;
+		pResult->x = pVec0->x + pVec1->x;
+		pResult->y = pVec0->y + pVec1->y;
 }
 
 // In this function, pResult will be the difference between pVec0 and pVec1 (specifically, pVec0 - pVec1)
 	void Vector2DSub(DGL_Vec2* pResult, const DGL_Vec2* pVec0, const DGL_Vec2* pVec1) {
-		pResult = pVec0 - pVec1;
+		pResult->x = pVec0->x - pVec1->x;
+		pResult->y = pVec0->y - pVec1->y;
 }
 
 // In this function, pResult will be the unit vector of pVec0
 // (NOTE: Care must be taken when pResult = pVec0!)
 	//CHECK FOR ERRORS
 	void Vector2DNormalize(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
-		pResult = pVec0 / Vector2DLength(pvec0);
+		pResult->x = pVec0->x / Vector2DLength(pVec0->x);
+		pResult->y = pVec0->y / Vector2DLength(pVec0->y);
 }
 
 // In this function, pResult will be the vector pVec0 scaled by the value 'scale'
 	void Vector2DScale(DGL_Vec2* pResult, const DGL_Vec2* pVec0, float scale) {
-		pResult = pVec0 * scale;
+		pResult->x = pVec0->x * scale;
+		pResult->y = pVec0->y * scale;
 }
 
 // In this function, pResult will be the vector pVec0 scaled by 'scale' and added to pVec1
