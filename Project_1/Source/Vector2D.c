@@ -21,10 +21,11 @@
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
-#include <math.h>
 #include <DGL.h>
+#include "Vector2D.h"
 
 #define _USE_MATH_DEFINES
+#include <math.h>
 
 //------------------------------------------------------------------------------
 
@@ -94,8 +95,8 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 // (NOTE: Care must be taken when pResult = pVec0!)
 	//CHECK FOR ERRORS
 	void Vector2DNormalize(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
-		pResult->x = pVec0->x / Vector2DLength(pVec0->x);
-		pResult->y = pVec0->y / Vector2DLength(pVec0->y);
+		pResult->x = pVec0->x / Vector2DLength(pVec0);
+		pResult->y = pVec0->y / Vector2DLength(pVec0);
 }
 
 // In this function, pResult will be the vector pVec0 scaled by the value 'scale'
@@ -106,17 +107,19 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 
 // In this function, pResult will be the vector pVec0 scaled by 'scale' and added to pVec1
 	void Vector2DScaleAdd(DGL_Vec2* pResult, const DGL_Vec2* pVec0, const DGL_Vec2* pVec1, float scale) {
-		pResult = Vector2DScale(pVec0, scale) + pVec1;
+		pResult->x = pVec0->x * scale + pVec1->x;
+		pResult->y = pVec0->y * scale + pVec1->y;
 }
 
 // In this function, pResult will be the vector pVec0 scaled by 'scale' and pVec1 will be subtracted from it
 	void Vector2DScaleSub(DGL_Vec2* pResult, const DGL_Vec2* pVec0, const DGL_Vec2* pVec1, float scale) {
-		pResult = Vector2DScale(pVec0, scale) - pVec1;
+		pResult->x = pVec0->x * scale - pVec1->x;
+		pResult->y = pVec0->y * scale - pVec1->y;
 }
 
 // This function returns the length of the vector pVec0
 	float Vector2DLength(const DGL_Vec2* pVec0) {
-		return sqrt(Vector2DSquareLength(pVec0));
+		return sqrtf(Vector2DSquareLength(pVec0));
 }
 
 // This function returns the square of pVec0's length.
@@ -127,12 +130,13 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 
 // This function returns the distance between two points.
 	float Vector2DDistance(const DGL_Vec2* pVec0, const DGL_Vec2* pVec1) {
-		sqrt(Vector2DSquareDistance(pVec0, pVec1));
+	return	sqrtf(Vector2DSquareDistance(pVec0, pVec1));
 }
 
 // This function returns the distance squared between two points.
 // NOTE: The square root function must NOT be called by this function.
 	float Vector2DSquareDistance(const DGL_Vec2* pVec0, const DGL_Vec2* pVec1) {
+		return (pVec0->x * pVec0->x + pVec1->x * pVec1->x);
 
 }
 
@@ -148,13 +152,16 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 //   #define _USE_MATH_DEFINES
 //   #include <math.h>
 	void Vector2DFromAngleDeg(DGL_Vec2* pResult, float angle) {
-		pResult = (angle * M_PI) / 180.0f;
+		float intoRadian = (angle * (float)(M_PI)) / 180.0f;
+		pResult->x = cosf(intoRadian);
+		pResult->y = sinf(intoRadian);
 }
 
 // This function computes the coordinates of the unit vector represented by the angle "angle", which is in Radians.
 // HINT: x = cos(angle), y = sin(angle).
 	void Vector2DFromAngleRad(DGL_Vec2* pResult, float angle) {
-		pResult = angle;
+		pResult->x = cosf(angle);
+		pResult->y = sinf(angle);
 }
 
 // This function computes the angle, in radians, of the specified vector.
@@ -165,7 +172,7 @@ void Vector2DNeg(DGL_Vec2* pResult, const DGL_Vec2* pVec0) {
 			return 0.0;
 		}
 		else {
-			return (atan2f(pVec->y, pVec->x))
+			return (atan2f(pVec->y, pVec->x));
 		}
 }
 
