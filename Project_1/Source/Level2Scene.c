@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "SceneSystem.h"
 #include "Level2Scene.h"
+#include "SandboxScene.h"
 #include "Stream.h"
 
 //------------------------------------------------------------------------------
@@ -38,8 +39,8 @@ typedef struct Level2Scene
 // Private Constants:
 //------------------------------------------------------------------------------
 
-static const char* livesFileName = "Level2_Lives.txt";
-static const char* healthFileName = "Level2_Health.txt";
+static const char* livesFileName = "./Data/Level2_Lives.txt";
+static const char* healthFileName = "./Data/Level2_Health.txt";
 
 //------------------------------------------------------------------------------
 // Private Variables:
@@ -125,11 +126,13 @@ static void Level2SceneUpdate(float dt)
 		}
 		else {
 			// TO-DO Switch the scene System to "Sandbox"
-			SceneSystemSetNext(NULL);
+			SceneSystemRestart();
+			instance.numLives = 3;
 		}
 		// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 		//   it when you are ready to test out a new scene.
-		SceneSystemSetNext(NULL);
+		//SceneSystemSetNext(NULL);
+		SceneSystemSetNext(SandboxSceneGetInstance());
 	}
 
 	// Tell the compiler that the 'dt' variable is unused.

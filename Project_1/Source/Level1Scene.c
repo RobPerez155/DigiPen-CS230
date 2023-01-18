@@ -14,6 +14,7 @@
 #include "Scene.h"
 #include "SceneSystem.h"
 #include "Level1Scene.h"
+#include "Level2Scene.h"
 #include "Stream.h"
 
 //------------------------------------------------------------------------------
@@ -37,7 +38,7 @@ typedef struct Level1Scene
 // Private Constants:
 //------------------------------------------------------------------------------
 
-static const char* livesFileName = "Level1_Lives.txt";
+static const char* livesFileName = "./Data/Level1_Lives.txt";
 
 //------------------------------------------------------------------------------
 // Private Variables:
@@ -108,7 +109,7 @@ static void Level1SceneUpdate(float dt)
 	{
 		// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 		//   it when you are ready to test out a new scene.
-		SceneSystemSetNext(NULL);
+		SceneSystemSetNext(Level2SceneGetInstance());
 	}
 
 	// Tell the compiler that the 'dt' variable is unused.
