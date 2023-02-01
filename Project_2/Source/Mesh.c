@@ -75,26 +75,33 @@
 		//(Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 		Mesh* ptrMesh = calloc(1, sizeof(Mesh));
 		
-		if (ptrMesh 
+		DGL_Graphics_StartMesh(); // Like taking out pen
 
-		UNREFERENCED_PARAMETER(xHalfSize);
-		UNREFERENCED_PARAMETER(yHalfSize);
-		UNREFERENCED_PARAMETER(uSize);
-		UNREFERENCED_PARAMETER(vSize);
-		//UNREFERENCED_PARAMETER(name);
+		if (ptrMesh != NULL) 
+		{
+
+			strcpy_s(ptrMesh->name, _countof(ptrMesh->name), name);
+
+			DGL_Graphics_StartMesh();
+			DGL_Graphics_AddTriangle(
+				//Draw out triangles to make a square
+				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+				&(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
+			);
+
+			DGL_Graphics_AddTriangle(
+				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+				&(DGL_Vec2){  -xHalfSize, yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
+			);
+
+			DGL_Graphics_EndMesh(); // Putting pen away
+
+			return ptrMesh;
+		}
 
 		return NULL;
-
-		//Mesh* ptrMesh = calloc(1, sizeof(Mesh));
-
-		//strcpy_s(name, _countof(name), name)
-	// (Hint: The Mesh name can be stored using strcpy_s(). For example:
-	//    strcpy_s(mesh->name, _countof(mesh->name), name); )
-
-	// (Hint: The DGL_Mesh object must be created using 
-	//	DGL_Graphics_StartMesh,
-	//  DGL_Graphics_AddTriangle
-	//	DGL_Graphics_EndMesh()
 	}
 
 	// Create a "spaceship" mesh.
@@ -127,9 +134,9 @@
 	// (NOTE: The Mesh pointer must be set to NULL.)
 	// Params:
 	//   mesh = Pointer to the Mesh pointer.
-	void MeshFree(Mesh** mesh)
+	void MeshFree(Mesh** mesh) //this is a Mesh pointer pointer
 	{
-		UNREFERENCED_PARAMETER(mesh);
-		//DGL_Graphics_FreeMesh(*mesh);
+		DGL_Graphics_FreeMesh(&(*mesh)->meshResource); //dereference mesh pointer, get meshResource, get address of meshResource
+		free(mesh);
 	}
 
