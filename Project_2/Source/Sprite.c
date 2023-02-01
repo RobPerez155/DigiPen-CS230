@@ -9,28 +9,18 @@
 //
 //------------------------------------------------------------------------------
 
-#pragma once
 
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
+#include "Sprite.h"
 
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
 
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
-
-	typedef struct Mesh Mesh;
-	typedef struct SpriteSource SpriteSource;
-	typedef struct Sprite Sprite;
-	typedef struct Transform Transform;
-	typedef FILE* Stream;
 
 	//------------------------------------------------------------------------------
 	// Public Constants:
@@ -41,9 +31,7 @@ extern "C" {
 	//------------------------------------------------------------------------------
 
 	// An example of the structure to be defined in Sprite.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
+
 	typedef struct Sprite
 	{
 		// The frame currently being displayed (for sprite sheets).
@@ -59,7 +47,7 @@ extern "C" {
 		const Mesh* mesh;
 
 	} Sprite;
-#endif
+
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -76,7 +64,9 @@ extern "C" {
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
-	Sprite* SpriteCreate(void);
+	Sprite* SpriteCreate(void) {
+		return NULL;
+	}
 
 	// Free the memory associated with a Sprite component.
 	// (NOTE: The Sprite pointer must be set to NULL.)
@@ -144,8 +134,4 @@ extern "C" {
 	void SpriteSetSpriteSource(Sprite* sprite, const SpriteSource* spriteSource);
 
 	/*----------------------------------------------------------------------------*/
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
 

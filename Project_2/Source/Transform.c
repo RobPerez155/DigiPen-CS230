@@ -9,26 +9,20 @@
 //
 //------------------------------------------------------------------------------
 
-#pragma once
-
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
 
+#include "Transform.h"
+#include "Vector2D.h"
+#include "DGL.h"
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
 
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
 
-	typedef struct Transform Transform;
-	typedef struct DGL_Vec2 Vector2D;
-	typedef FILE* Stream;
 
 	//------------------------------------------------------------------------------
 	// Public Constants:
@@ -39,7 +33,7 @@ extern "C" {
 	//------------------------------------------------------------------------------
 
 	// An example of the structure to be defined in Transform.c.
-#if 0
+
 // You are free to change the contents of this structure as long as you do not
 //   change the public interface declared in the header.
 	typedef struct Transform
@@ -55,7 +49,7 @@ extern "C" {
 		Vector2D	scale;
 
 	} Transform;
-#endif
+
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -135,8 +129,4 @@ extern "C" {
 	void TransformSetScale(Transform* transform, const Vector2D* scale);
 
 	//------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
 

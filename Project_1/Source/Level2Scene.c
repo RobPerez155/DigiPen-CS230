@@ -86,14 +86,8 @@ const Scene* Level2SceneGetInstance(void)
 // Load any resources used by the scene.
 static void Level2SceneLoad(void)
 {
-	Stream hlthFile = StreamOpen(healthFileName);
+	/*Stream hlthFile = StreamOpen(healthFileName);*/
 	Stream lifeFile = StreamOpen(livesFileName);
-
-	if (hlthFile != NULL)
-	{
-		instance.numHealth = StreamReadInt(hlthFile);
-		StreamClose(&hlthFile);
-	}
 
 	if (lifeFile != NULL)
 	{
@@ -105,8 +99,13 @@ static void Level2SceneLoad(void)
 // Initialize the variables used by the scene.
 static void Level2SceneInit()
 {
-	//Level2Scene.numLives = 0;
-	//Level2Scene.numHealth = 0;
+	Stream hlthFile = StreamOpen(healthFileName);
+
+	if (hlthFile != NULL)
+	{
+		instance.numHealth = StreamReadInt(hlthFile);
+		StreamClose(&hlthFile);
+	}
 }
 
 // Update the the variables used by the scene and render objects (temporary).

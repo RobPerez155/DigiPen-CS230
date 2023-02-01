@@ -14,13 +14,10 @@
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
 
+#include "SpriteSource.h"
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
 
 //------------------------------------------------------------------------------
 // Forward References:
@@ -114,8 +111,4 @@ extern "C" {
 	void SpriteSourceSetTextureOffset(const SpriteSource* spriteSource, unsigned frameIndex);
 
 	/*----------------------------------------------------------------------------*/
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
 

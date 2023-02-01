@@ -110,7 +110,7 @@ const Scene* DemoSceneGetInstance(void)
 static void DemoSceneLoad(void)
 {
 	// TODO: Create Meshes:
-	// Create a simple, colored mesh.
+	// Create a simple, colored mesh. QUAD MESH
 	DGL_Graphics_StartMesh();
 	DGL_Graphics_AddTriangle(
 		&(DGL_Vec2){ -0.5f, -0.5f }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },

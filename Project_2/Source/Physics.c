@@ -9,27 +9,19 @@
 //
 //------------------------------------------------------------------------------
 
-#pragma once
-
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
+
+#include "Physics.h"
+#include "DGL.h"
 
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
 
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
-
-	typedef struct Physics Physics;
-	typedef struct Transform Transform;
-	typedef struct DGL_Vec2 Vector2D;
-	typedef FILE* Stream;
 
 	//------------------------------------------------------------------------------
 	// Public Constants:
@@ -40,24 +32,23 @@ extern "C" {
 	//------------------------------------------------------------------------------
 
 	// An example of the structure to be defined in Physics.c.
-#if 0
-	typedef struct Physics
-	{
-		// Previous position.  May be used for resolving collisions.
-		Vector2D	oldTranslation;
 
-		// Acceleration = inverseMass * (sum of forces)
-		Vector2D	acceleration;
+typedef struct Physics
+{
+	// Previous position.  May be used for resolving collisions.
+	Vector2D	oldTranslation;
 
-		// Velocity may be stored as a direction vector and speed scalar, instead.
-		Vector2D	velocity;
+	// Acceleration = inverseMass * (sum of forces)
+	Vector2D	acceleration;
+
+	// Velocity may be stored as a direction vector and speed scalar, instead.
+	Vector2D	velocity;
+} Physics;
 
 		// Used when calculating acceleration due to forces.
 		// Used when resolving collision between two dynamic objects.
 		//float		inverseMass;
 
-	} Physics;
-#endif
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -73,20 +64,30 @@ extern "C" {
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
-	Physics* PhysicsCreate(void);
+		Physics* PhysicsCreate(void)
+		{
+			return NULL;
+		}
 
 	// Free the memory associated with a Physics component.
 	// (NOTE: The Physics pointer must be set to NULL.)
 	// Params:
 	//	 physics = Pointer to the Physics component pointer.
-	void PhysicsFree(Physics** physics);
+		void PhysicsFree(Physics** physics) 
+		{
+			UNREFERENCED_PARAMETER(physics);
+		}
 
 	// Read the properties of a Physics component from a file.
 	// [NOTE: Read the acceleration and velocity values using StreamReadVector2D.]
 	// Params:
 	//	 physics = Pointer to the Physics component.
 	//	 stream = Pointer to the data stream used for reading.
-	void PhysicsRead(Physics* physics, Stream stream);
+	void PhysicsRead(Physics* physics, Stream stream)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		UNREFERENCED_PARAMETER(stream);
+	}
 
 	// Get the acceleration of a Physics component.
 	// Params:
@@ -95,8 +96,11 @@ extern "C" {
 	//	 If the physics pointer is valid,
 	//		then return a pointer to the component's acceleration structure,
 	//		else return a NULL pointer.
-	const Vector2D* PhysicsGetAcceleration(const Physics* physics);
-
+	const Vector2D* PhysicsGetAcceleration(const Physics* physics)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		return NULL;
+	}
 	// Get the velocity of a Physics component.
 	// Params:
 	//	 physics = Pointer to the Physics component.
@@ -104,7 +108,11 @@ extern "C" {
 	//	 If the physics pointer is valid,
 	//		then return a pointer to the component's velocity structure,
 	//		else return a NULL pointer.
-	const Vector2D* PhysicsGetVelocity(const Physics* physics);
+	const Vector2D* PhysicsGetVelocity(const Physics* physics)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		return NULL;
+	}
 
 	// Get the old translation (position) of a Physics component.
 	// Params:
@@ -113,19 +121,31 @@ extern "C" {
 	//	 If the physics pointer is valid,
 	//		then return a pointer to the component's oldTranslation structure,
 	//		else return a NULL pointer.
-	const Vector2D* PhysicsGetOldTranslation(Physics* physics);
+	const Vector2D* PhysicsGetOldTranslation(Physics* physics)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		return NULL;
+	}
 
 	// Set the acceleration of a Physics component.
 	// Params:
 	//	 physics = Pointer to the Physics component.
 	//	 acceleration = Pointer to an acceleration vector.
-	void PhysicsSetAcceleration(Physics* physics, const Vector2D* acceleration);
+	void PhysicsSetAcceleration(Physics* physics, const Vector2D* acceleration)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		UNREFERENCED_PARAMETER(acceleration);
+	}
 
 	// Set the velocity of a Physics component.
 	// Params:
 	//	 physics = Pointer to the Physics component.
 	//	 velocity = Pointer to a velocity vector.
-	void PhysicsSetVelocity(Physics* physics, const Vector2D* velocity);
+	void PhysicsSetVelocity(Physics* physics, const Vector2D* velocity)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		UNREFERENCED_PARAMETER(velocity);
+	}
 
 	// Update the state of a Physics component using the Semi-Implicit Euler method,
 	//	 as outlined in the "Dynamics" lecture slides and the project instructions.
@@ -134,11 +154,12 @@ extern "C" {
 	//	 physics = Pointer to the physics component.
 	//	 transform = Pointer to the associated transform component.
 	//	 dt = Change in time (in seconds) since the last game loop.
-	void PhysicsUpdate(Physics* physics, Transform* transform, float dt);
+	void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
+	{
+		UNREFERENCED_PARAMETER(physics);
+		UNREFERENCED_PARAMETER(transform);
+		UNREFERENCED_PARAMETER(dt);
+	}
 
 	//------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
 

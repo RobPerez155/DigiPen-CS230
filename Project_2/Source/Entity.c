@@ -9,28 +9,18 @@
 //
 //------------------------------------------------------------------------------
 
-#pragma once
 
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
 
+#include "Entity.h"
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
 
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
-
-	typedef struct Entity Entity;
-	typedef struct Physics Physics;
-	typedef struct Sprite Sprite;
-	typedef struct Transform Transform;
-	typedef FILE* Stream;
 
 	//------------------------------------------------------------------------------
 	// Public Constants:
@@ -41,7 +31,6 @@ extern "C" {
 	//------------------------------------------------------------------------------
 
 	// An example of the structure to be defined in Entity.c.
-#if 0
 // You are free to change the contents of this structure as long as you do not
 //   change the public interface declared in the header.
 	typedef struct Entity
@@ -69,7 +58,6 @@ extern "C" {
 		Transform* transform;
 
 	} Entity;
-#endif
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -182,8 +170,4 @@ extern "C" {
 	void EntityRender(Entity* entity);
 
 	//------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
 
