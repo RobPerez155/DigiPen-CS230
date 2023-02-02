@@ -73,7 +73,18 @@
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
-	Entity* EntityCreate(void);
+	Entity* EntityCreate(void)
+	{
+		Entity* ptrEntity = calloc(1, sizeof(Entity*));
+
+		if (ptrEntity != NULL)
+		{
+			return ptrEntity;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Free the memory associated with an Entity.
 	// (NOTE: All attached components must be freed using the corresponding Free() functions.)

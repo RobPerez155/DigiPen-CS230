@@ -17,6 +17,7 @@
 #include "Transform.h"
 #include "Vector2D.h"
 #include "DGL.h"
+#include "Stream.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -66,13 +67,26 @@
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
-	Transform* TransformCreate(void);
+	Transform* TransformCreate(void)
+	{
+		Transform* ptrTransform = calloc(1, sizeof(Transform));
+
+		if (ptrTransform != NULL)
+		{
+			return ptrTransform;
+		}
+
+		return NULL;
+	}
 
 	// Free the memory associated with a Transform component.
 	// (NOTE: The Transform pointer must be set to NULL.)
 	// Params:
 	//	 transform = Pointer to the Transform pointer.
-	void TransformFree(Transform** transform);
+	void TransformFree(Transform** transform)
+	{
+		free(&(*transform));
+	}
 
 	// Read the properties of a Transform component from a file.
 	// [NOTE: Read the translation value using StreamReadVector2D.]
@@ -81,7 +95,15 @@
 	// Params:
 	//	 transform = Pointer to the Transform component.
 	//	 stream = The data stream used for reading.
-	void TransformRead(Transform* transform, Stream stream);
+	void TransformRead(Transform* transform, Stream stream)
+	{
+		if (stream != NULL)
+		{
+			StreamReadVector2D(stream, &transform->translation);
+			StreamReadFloat(stream);
+			StreamReadVector2D(stream, &transform->scale);
+		}
+	}
 
 	// Get the translation of a Transform component.
 	// Params:
@@ -90,7 +112,18 @@
 	//	 If the Transform pointer is valid,
 	//		then return a pointer to the component's translation,
 	//		else return a NULL pointer.
-	const Vector2D* TransformGetTranslation(const Transform* transform);
+	const Vector2D* TransformGetTranslation(const Transform* transform)
+	{
+		Vector2D* zilch = NULL;
+
+		if (transform != NULL) {
+			return &transform->translation;
+		}
+		else {
+			// Could be a problem
+			return zilch;
+		}
+	}
 
 	// Get the rotation value of a Transform component.
 	// Params:
@@ -99,7 +132,15 @@
 	//	 If the Transform pointer is valid,
 	//		then return the component's rotation value (in radians),
 	//		else return 0.0f.
-	float TransformGetRotation(const Transform* transform);
+	float TransformGetRotation(const Transform* transform)
+	{
+		if (transform != NULL) {
+			return transform->rotation;
+		}
+		else {
+			return 0.0f;
+		}
+	}
 
 	// Get the scale of a Transform component.
 	// Params:
@@ -108,25 +149,46 @@
 	//	 If the Transform pointer is valid,
 	//		then return a pointer to the component's scale,
 	//		else return a NULL pointer.
-	const Vector2D* TransformGetScale(const Transform* transform);
+	const Vector2D* TransformGetScale(const Transform* transform)
+	{
+		Vector2D* zilch = NULL;
+
+		if (transform != NULL) {
+			return &transform->scale;
+		}
+		else {
+			// Could be a problem
+			return zilch;
+		}
+	}
 
 	// Set the translation of a Transform component.
 	// Params:
 	//	 transform = Pointer to the Transform component.
 	//	 translation = Pointer to the new translation.
-	void TransformSetTranslation(Transform* transform, const Vector2D* translation);
+	void TransformSetTranslation(Transform* transform, const Vector2D* translation)
+	{
+		// Could be a problem
+		transform->translation = *translation;
+	}
 
 	// Set the rotation of a Transform component.
 	// Params:
 	//	 transform = Pointer to the Transform component.
 	//	 rotation = The rotation value (in radians).
-	void TransformSetRotation(Transform* transform, float rotation);
+	void TransformSetRotation(Transform* transform, float rotation)
+	{
+		transform->rotation = rotation;
+	}
 
 	// Set the scale of a Transform component.
 	// Params:
 	//	 transform = Pointer to the Transform component.
 	//	 translation = Pointer to the new scale.
-	void TransformSetScale(Transform* transform, const Vector2D* scale);
+	void TransformSetScale(Transform* transform, const Vector2D* scale)
+	{
+		transform->scale = *scale;
+	}
 
 	//------------------------------------------------------------------------------
 

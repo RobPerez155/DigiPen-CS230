@@ -57,18 +57,6 @@
 	// Public Functions:
 	//------------------------------------------------------------------------------
 
-	// Dynamically allocate a new Mesh object and create a quadrilateral mesh.
-	// Params:
-	//	 xHalfSize = The X half-size of the mesh.
-	//	 yHalfSize = The Y half-size of the mesh.
-	//   uSize = The U size of the mesh, relative to texture coordinates (0.0 .. 1.0).
-	//   vSize = The V size of the mesh, relative to texture coordinates (0.0 .. 1.0).
-	//	 name = A name for the mesh.
-	// Returns:
-	//	 If the mesh was created successfully,
-	//	   then return a pointer to the created Mesh,
-	//	   else return NULL.
-
 	// Dynamically allocate a new Mesh object AND create a quadrilateral mesh.
 	Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
 	{
@@ -126,6 +114,7 @@
 	void MeshRender(const Mesh* mesh)
 	{
 		UNREFERENCED_PARAMETER(mesh);
+
 	}
 
 	// Free the memory associated with a mesh.

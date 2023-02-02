@@ -16,6 +16,7 @@
 
 #include "Physics.h"
 #include "DGL.h"
+#include "Stream.h"
 
 //------------------------------------------------------------------------------
 
@@ -66,7 +67,14 @@ typedef struct Physics
 	//	   else return NULL.
 		Physics* PhysicsCreate(void)
 		{
-			return NULL;
+			Physics* ptrPhysics = calloc(1, sizeof(Physics));
+
+			if (ptrPhysics != NULL)
+			{
+				return ptrPhysics;
+			} else {
+				return NULL;
+			}
 		}
 
 	// Free the memory associated with a Physics component.
@@ -75,7 +83,9 @@ typedef struct Physics
 	//	 physics = Pointer to the Physics component pointer.
 		void PhysicsFree(Physics** physics) 
 		{
-			UNREFERENCED_PARAMETER(physics);
+			free(&(*physics));
+			//Might be a problem
+			physics = NULL;
 		}
 
 	// Read the properties of a Physics component from a file.
@@ -85,8 +95,8 @@ typedef struct Physics
 	//	 stream = Pointer to the data stream used for reading.
 	void PhysicsRead(Physics* physics, Stream stream)
 	{
-		UNREFERENCED_PARAMETER(physics);
-		UNREFERENCED_PARAMETER(stream);
+		StreamReadVector2D(stream, &physics->acceleration);
+		StreamReadVector2D(stream, &physics->velocity);
 	}
 
 	// Get the acceleration of a Physics component.
@@ -98,8 +108,13 @@ typedef struct Physics
 	//		else return a NULL pointer.
 	const Vector2D* PhysicsGetAcceleration(const Physics* physics)
 	{
-		UNREFERENCED_PARAMETER(physics);
-		return NULL;
+		if (physics != NULL)
+		{
+			return &physics->acceleration;
+		}
+		else {
+			return NULL;
+		}
 	}
 	// Get the velocity of a Physics component.
 	// Params:
@@ -110,8 +125,13 @@ typedef struct Physics
 	//		else return a NULL pointer.
 	const Vector2D* PhysicsGetVelocity(const Physics* physics)
 	{
-		UNREFERENCED_PARAMETER(physics);
-		return NULL;
+		if (physics != NULL)
+		{
+			return &physics->velocity;
+		}
+		else {
+			return NULL;
+		}
 	}
 
 	// Get the old translation (position) of a Physics component.
@@ -123,8 +143,13 @@ typedef struct Physics
 	//		else return a NULL pointer.
 	const Vector2D* PhysicsGetOldTranslation(Physics* physics)
 	{
-		UNREFERENCED_PARAMETER(physics);
-		return NULL;
+		if (physics != NULL)
+		{
+			return &physics->oldTranslation;
+		}
+		else {
+			return NULL;
+		}
 	}
 
 	// Set the acceleration of a Physics component.
@@ -133,8 +158,7 @@ typedef struct Physics
 	//	 acceleration = Pointer to an acceleration vector.
 	void PhysicsSetAcceleration(Physics* physics, const Vector2D* acceleration)
 	{
-		UNREFERENCED_PARAMETER(physics);
-		UNREFERENCED_PARAMETER(acceleration);
+		physics->acceleration = *acceleration;
 	}
 
 	// Set the velocity of a Physics component.
@@ -143,8 +167,7 @@ typedef struct Physics
 	//	 velocity = Pointer to a velocity vector.
 	void PhysicsSetVelocity(Physics* physics, const Vector2D* velocity)
 	{
-		UNREFERENCED_PARAMETER(physics);
-		UNREFERENCED_PARAMETER(velocity);
+		physics->velocity = *velocity;
 	}
 
 	// Update the state of a Physics component using the Semi-Implicit Euler method,
@@ -155,7 +178,10 @@ typedef struct Physics
 	//	 transform = Pointer to the associated transform component.
 	//	 dt = Change in time (in seconds) since the last game loop.
 	void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
-	{
+	{	
+
+		//if (physics != NULL && transform != NULL)
+		//Euler from zee notes
 		UNREFERENCED_PARAMETER(physics);
 		UNREFERENCED_PARAMETER(transform);
 		UNREFERENCED_PARAMETER(dt);

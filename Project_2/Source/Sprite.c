@@ -15,6 +15,9 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "Sprite.h"
+#include "Stream.h"
+#include "Mesh.h"
+#include "Trace.h"
 
 //------------------------------------------------------------------------------
 
@@ -52,7 +55,7 @@
 	//------------------------------------------------------------------------------
 	// Public Variables:
 	//------------------------------------------------------------------------------
-
+	Sprite* ptrSprite;
 	//------------------------------------------------------------------------------
 	// Public Functions:
 	//------------------------------------------------------------------------------
@@ -66,13 +69,26 @@
 	//	   else return NULL.
 	Sprite* SpriteCreate(void) {
 		return NULL;
+		//ptrSprite = calloc(1, sizeof(Sprite));
+
+		//if (ptrSprite != NULL)
+		//{
+		//	return ptrSprite;
+		//}
+		//else {
+		//	return NULL;
+		//}
 	}
 
 	// Free the memory associated with a Sprite component.
 	// (NOTE: The Sprite pointer must be set to NULL.)
 	// Params:
 	//	 sprite = Pointer to the Sprite pointer.
-	void SpriteFree(Sprite** sprite);
+	void SpriteFree(Sprite** sprite) 
+	{
+		UNREFERENCED_PARAMETER(sprite);
+		//free(&(*sprite));
+	};
 
 	// Read the properties of a Sprite component from a file.
 	// [NOTE: Read the frameIndex value using StreamReadInt.]
@@ -80,13 +96,23 @@
 	// Params:
 	//	 sprite = Pointer to the Sprite component.
 	//	 stream = The data stream used for reading.
-	void SpriteRead(Sprite* sprite, Stream stream);
+	void SpriteRead(Sprite* sprite, Stream stream)
+	{
+		UNREFERENCED_PARAMETER(sprite);
+		UNREFERENCED_PARAMETER(stream);
+		//sprite->frameIndex = StreamReadInt(stream);
+		//sprite->alpha = StreamReadFloat(stream);
+	}
 
 	// Render a Sprite (Sprite can be textured or untextured).
 	// Params:
 	//	 sprite = Pointer to the Sprite component.
 	//   transform = Pointer to the Transform component.
-	void SpriteRender(const Sprite* sprite, Transform* transform);
+	void SpriteRender(const Sprite* sprite, Transform* transform) {
+		//MeshRender
+		UNREFERENCED_PARAMETER(sprite);
+		UNREFERENCED_PARAMETER(transform);
+	}
 
 	// Get a Sprite's alpha value.
 	// Params:
@@ -95,7 +121,16 @@
 	//	 If the pointer is valid,
 	//		then return the Sprite's alpha value (a value between 0.0f and 1.0f),
 	//		else return 0.0f.
-	float SpriteGetAlpha(const Sprite* sprite);
+	float SpriteGetAlpha(const Sprite* sprite)
+	{
+		float pizza = 1.0;
+		UNREFERENCED_PARAMETER(sprite);
+		//if (sprite != NULL) 
+		//{
+		//	return sprite->alpha;
+		//}
+		return pizza;
+	}
 
 	// Set a Sprite's alpha value.
 	// (NOTE: Make sure to clamp the resulting alpha value between 0.0f and 1.0f, as the
@@ -104,7 +139,15 @@
 	// Params:
 	//	 sprite = Pointer to the Sprite component.
 	//   alpha = The Sprite's new alpha value.
-	void SpriteSetAlpha(Sprite* sprite, float alpha);
+	void SpriteSetAlpha(Sprite* sprite, float alpha)
+	{
+		UNREFERENCED_PARAMETER(sprite);
+		UNREFERENCED_PARAMETER(alpha);
+		//max(alpha, 1.0f);
+		//min(alpha, 0.0f);
+
+		//sprite->alpha = alpha;
+	}
 
 	// Set a Sprite's current frame.
 	// (NOTE: You must verify that the frameIndex parameter is within the
@@ -115,7 +158,16 @@
 	// ADDITIONAL REQUIREMENTS:
 	// - This function must make the following function call:
 	//     TraceMessage("SpriteSetFrame: frame index = %d", frameIndex);
-	void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex);
+	void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex)
+	{
+		UNREFERENCED_PARAMETER(sprite);
+		UNREFERENCED_PARAMETER(frameIndex);
+		//if (frameIndex >= 0 && frameIndex <= sprite->frameIndex)
+		//{
+		//	sprite->frameIndex = frameIndex;
+		//	TraceMessage("SpriteSetFrame: frame index = %d", frameIndex);
+		//}
+	}
 
 	// Set the Sprite's mesh.
 	// (NOTE: This mesh may be textured or untextured.)
@@ -123,7 +175,11 @@
 	// Params:
 	//	 sprite = Pointer to the Sprite component.
 	//   mesh = Pointer to a Mesh object.
-	void SpriteSetMesh(Sprite* sprite, const Mesh* mesh);
+	void SpriteSetMesh(Sprite* sprite, const Mesh* mesh)
+	{
+		UNREFERENCED_PARAMETER(sprite);
+		UNREFERENCED_PARAMETER(mesh);
+	}
 
 	// Set a new SpriteSource for the specified Sprite.
 	// (NOTE: The spriteSource parameter may be NULL.  This will remove an existing
@@ -131,7 +187,12 @@
 	// Params:
 	//	 sprite = Pointer to the Sprite component.
 	//	 spriteSource = Pointer to a SpriteSource (this pointer may be NULL).
-	void SpriteSetSpriteSource(Sprite* sprite, const SpriteSource* spriteSource);
+	void SpriteSetSpriteSource(Sprite* sprite, const SpriteSource* spriteSource)
+	{
+		UNREFERENCED_PARAMETER(sprite);
+		UNREFERENCED_PARAMETER(spriteSource);
+		//sprite->spriteSource = spriteSource;
+	}
 
 	/*----------------------------------------------------------------------------*/
 
