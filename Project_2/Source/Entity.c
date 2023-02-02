@@ -16,6 +16,8 @@
 #include "stdafx.h"
 
 #include "Entity.h"
+#include "Physics.h"
+#include "Sprite.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -91,32 +93,49 @@
 	// (NOTE: The Entity pointer must be set to NULL.)
 	// Params:
 	//	 entity = Pointer to the Entity pointer.
-	void EntityFree(Entity** entity);
+	void EntityFree(Entity** entity) //post-it note to where ID is to house
+	{
+		free(&(*entity)); //Find the ID where the Post-it note says, 
+		entity = NULL;
+	}
 
 	// Read (and construct) the components associated with a entity.
 	// [NOTE: See project instructions for implementation instructions.]
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//	 stream = The data stream used for reading.
-	void EntityRead(Entity* entity, Stream stream);
+	void EntityRead(Entity* entity, Stream stream)
+	{
+		UNREFERENCED_PARAMETER(entity);
+		UNREFERENCED_PARAMETER(stream);
+	}
 
 	// Attach a Physics component to an Entity.
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//   physics = Pointer to the Physics component to be attached.
-	void EntityAddPhysics(Entity* entity, Physics* physics);
+	void EntityAddPhysics(Entity* entity, Physics* physics)
+	{
+		entity->physics = physics;
+	}
 
 	// Attach a sprite component to an Entity.
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//   sprite = Pointer to the Sprite component to be attached.
-	void EntityAddSprite(Entity* entity, Sprite* sprite);
+	void EntityAddSprite(Entity* entity, Sprite* sprite)
+	{
+		entity->sprite = sprite;
+	}
 
 	// Attach a transform component to an Entity.
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//   transform = Pointer to the Transform component to be attached.
-	void EntityAddTransform(Entity* entity, Transform* transform);
+	void EntityAddTransform(Entity* entity, Transform* transform)
+	{
+		entity->transform = transform;
+	}
 
 	// Set the Entity's name.
 	// [NOTE: Verify that both pointers are valid before setting the name.]
@@ -127,7 +146,13 @@
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//	 name = Pointer to the Entity's new name.
-	void EntitySetName(Entity* entity, const char* name);
+	void EntitySetName(Entity* entity, const char* name)
+	{
+		if (entity != NULL && name != NULL)
+		{
+			strcpy_s(entity->name, _countof(entity->name), name);
+		}
+	}
 
 	// Get the Entity's name.
 	// Params:
@@ -136,7 +161,16 @@
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the Entity's name,
 	//		else return NULL.
-	const char* EntityGetName(const Entity* entity);
+	const char* EntityGetName(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->name;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Get the Physics component attached to an Entity.
 	// Params:
@@ -145,7 +179,16 @@
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached physics component,
 	//		else return NULL.
-	Physics* EntityGetPhysics(const Entity* entity);
+	Physics* EntityGetPhysics(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->physics;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Get the Sprite component attached to a Entity.
 	// Params:
@@ -154,7 +197,16 @@
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached Sprite component,
 	//		else return NULL.
-	Sprite* EntityGetSprite(const Entity* entity);
+	Sprite* EntityGetSprite(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->sprite;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Get the Transform component attached to a Entity.
 	// Params:
@@ -163,7 +215,16 @@
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached Transform component,
 	//		else return NULL.
-	Transform* EntityGetTransform(const Entity* entity);
+	Transform* EntityGetTransform(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->transform;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Update any components attached to the Entity.
 	// (Hint: You will need to call PhysicsUpdate().)
@@ -171,14 +232,26 @@
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//	 dt = Change in time (in seconds) since the last game loop.
-	void EntityUpdate(Entity* entity, float dt);
+	void EntityUpdate(Entity* entity, float dt)
+	{
+		if (entity != NULL)
+		{
+			PhysicsUpdate(entity->physics, entity->transform, dt);
+		}
+	}
 
 	// Render any visible components attached to the Entity.
 	// (Hint: You will need to call SpriteRender(), passing the Sprite and Transform components.)
 	// (NOTE: You must first check for valid pointers before calling this function.)
 	// Params:
 	//	 entity = Pointer to the Entity.
-	void EntityRender(Entity* entity);
+	void EntityRender(Entity* entity) 
+	{
+		if (entity != NULL)
+		{
+			SpriteRender(entity->sprite, entity->transform);
+		}
+	}
 
 	//------------------------------------------------------------------------------
 
