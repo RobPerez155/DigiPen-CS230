@@ -40,27 +40,6 @@ typedef FILE* Stream;
 // Public Structures:
 //------------------------------------------------------------------------------
 
-// An example of the structure to be defined in Sprite.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct Sprite
-{
-	// The frame currently being displayed (for sprite sheets).
-	unsigned int frameIndex;
-
-	// The alpha transparency to use when drawing the sprite.
-	float alpha;
-
-	// The sprite source used when drawing (NULL = simple colored mesh).
-	const SpriteSource* spriteSource;
-
-	// The mesh used to draw the sprite.
-	const Mesh* mesh;
-
-} Sprite;
-#endif
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------

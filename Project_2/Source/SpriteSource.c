@@ -17,6 +17,8 @@
 #include "stdafx.h"
 
 #include "SpriteSource.h"
+#include "DGL.h"
+#include "Trace.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -97,10 +99,15 @@
 	//	 textureName = The name of the texture to be loaded.
 	void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRows, const char* textureName)
 	{
-		UNREFERENCED_PARAMETER(spriteSource);
-		UNREFERENCED_PARAMETER(numCols);
-		UNREFERENCED_PARAMETER(numRows);
-		UNREFERENCED_PARAMETER(textureName);
+		if (spriteSource != NULL)
+		{
+			spriteSource->texture = DGL_Graphics_LoadTexture(textureName);
+			spriteSource->numCols = numCols;
+			spriteSource->numRows = numRows;
+		}
+		else {
+			TraceMessage(" Error Function %s\n File: %s\n Line: %d.", __FUNCTION__, __FILE__, __LINE__);
+		}
 	}
 
 	// Returns the maximum number of frames possible, given the dimensions of the sprite sheet.

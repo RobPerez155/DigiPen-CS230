@@ -132,6 +132,28 @@ void StreamReadVector2D(Stream stream, DGL_Vec2* vector) {
 	}
 }
 
+// Read a token (a single word) from a file.
+// Suggested steps:
+//	 - Set the first value in tokenBuffer Array to 0
+//	 - If the stream was opened successfully,
+//	   - Read a string ("%s") into tokenBuffer using fscanf_s()
+//	 - Return tokenBuffer
+// Params:
+//	 stream = The file stream from which to read.
+// Returns:
+//	 Pointer to tokenBuffer
+const char* StreamReadToken(Stream stream)
+{
+	tokenBuffer[0] = 0;
+
+	if (stream)
+	{
+		fscanf_s(stream, tokenBuffer, _countof(tokenBuffer));
+	}
+
+	return tokenBuffer;
+}
+
 // Close an opened stream.
 // (NOTE: Do not attempt to close the stream if the pointer is null.)
 // (PRO TIP: Avoid dangling pointers by setting the FILE pointer to NULL.)

@@ -15,6 +15,9 @@
 #include "DemoScene.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "Level1Scene.h"
+#include "Level2Scene.h"
+#include "SandboxScene.h"
 
 //------------------------------------------------------------------------------
 // Private Structures:
@@ -249,9 +252,29 @@ static void DemoSceneUpdate(float dt)
 		// TODO: Update the Ball mesh's rotation.
 		rotation += dt;
 
-		// TODO: Add code to restart the level when the ‘0’ key is triggered (when the key changes state from not pressed to pressed).
+		// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
+		if (DGL_Input_KeyTriggered('1'))
+		{
+			// Switch to Level 1
+			SceneSystemSetNext(Level1SceneGetInstance());
+		}
+
+		if (DGL_Input_KeyTriggered('2'))
+		{
+			// Switch to Level 2
+			SceneSystemSetNext(Level2SceneGetInstance());
+		}
+
+		if (DGL_Input_KeyTriggered('9'))
+		{
+			// Switch to Sandbox Scene
+			SceneSystemSetNext(SandboxSceneGetInstance());
+		}
+
+		// Restarts Scene (when the key changes state from not pressed to pressed).
 		if (DGL_Input_KeyTriggered('0'))
 		{
+			// Restarts Scene
 			DemoSceneInit();
 		}
 
@@ -266,6 +289,7 @@ void DemoSceneRender(void)
 
 	// TODO: Display a simple, colored mesh.
 	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
+	DGL_Graphics_SetTexture(NULL);
 	DGL_Graphics_SetCB_Alpha(1.0f);
 	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 	DGL_Graphics_SetCB_TransformData(&posColored, &scaleColored, 0.f);

@@ -36,22 +36,6 @@ typedef struct Mesh Mesh;
 // Public Structures:
 //------------------------------------------------------------------------------
 
-// An example of the structure to be defined in Mesh.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct Mesh
-{
-	// The name of the Mesh.  This will be used later in the semester.
-	char name[32];
-
-	// Pointer to the DGL_Mesh resource.
-	const DGL_Mesh* meshResource;
-
-	// The draw mode to use when rendering the mesh (Usually "DGL_DM_TRIANGLELIST").
-	DGL_DrawMode drawMode;
-} Mesh;
-#endif
 
 //------------------------------------------------------------------------------
 // Public Variables:

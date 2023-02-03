@@ -16,6 +16,14 @@
 #include "Level1Scene.h"
 #include "Level2Scene.h"
 #include "Stream.h"
+#include "Sprite.h"
+#include "Mesh.h"
+#include "SpriteSource.h"
+#include "Entity.h"
+#include "EntityFactory.h"
+#include "Vector2D.h"
+#include "DGL.h"
+
 
 //------------------------------------------------------------------------------
 // Private Structures:
@@ -28,6 +36,10 @@ typedef struct Level1Scene
 
 	// Add any scene-specific variables second.
 	int numLives;
+	Mesh* ptrMesh;
+	SpriteSource* ptrSpriteMesh;
+	Entity* ptrEntity;
+
 } Level1Scene;
 
 //------------------------------------------------------------------------------
@@ -39,6 +51,16 @@ typedef struct Level1Scene
 //------------------------------------------------------------------------------
 
 static const char* livesFileName = "./Data/Level1_Lives.txt";
+static const float groundHeight = -150.0f;
+static const float moveVelocity = 500.0f;
+static const float jumpVelocity = 1000.0f;
+static const Vector2D gravityNormal = { 0.0f, -1500.0f };
+static const Vector2D gravityNone = { 0.0f, 0.0f };
+
+
+//------------------------------------------------------------------------------
+// Private Structures:
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 // Private Variables:
@@ -65,6 +87,7 @@ static Level1Scene instance =
 	{ "Level1", Level1SceneLoad, Level1SceneInit, Level1SceneUpdate, Level1SceneRender, Level1SceneExit, Level1SceneUnload },
 
 	// Initialize any scene-specific variables:
+	
 };
 
 //------------------------------------------------------------------------------
@@ -90,12 +113,32 @@ static void Level1SceneLoad(void)
 		instance.numLives = StreamReadInt(lifeFile);
 		StreamClose(&lifeFile);
 	}
+
+	MeshCreateQuad(0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
+
+	SpriteSource* sprPlanet = SpriteSourceCreate();
+
+	SpriteSourceLoadTexture(sprPlanet, 1, 1, "PlanetTexture.png");
 }
 
 // Initialize the variables used by the scene.
+	//Create a “Planet” Entity by calling EntityFactoryBuild() with the parameter, "./Data/PlanetJump.txt"
+	//If the entity was created successfully,
+	//	Get the Entity’s sprite.
+	//	Set the Sprite’s meshand sprite source.
+	//	Set the Sprite’s frame index to 0.  While this call is not strictly necessary, it does allow you to test whether the trace message is written properly.
+	//Set the background color to white(1, 1, 1).
+	//Set the blend mode to blend.
+
 static void Level1SceneInit()
 {
+	Entity* Planet = EntityFactoryBuild("./Data/PlanetJump.txt");
 
+	if (Planet != NULL)
+	{
+		EntityGetSprite(Planet);
+		//SpriteSetMesh(Planet, )
+	}
 }
 
 // Update the the variables used by the scene and render objects (temporary).

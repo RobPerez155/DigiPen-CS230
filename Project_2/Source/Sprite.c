@@ -18,6 +18,7 @@
 #include "Stream.h"
 #include "Mesh.h"
 #include "Trace.h"
+#include "DGL.h"
 
 //------------------------------------------------------------------------------
 
@@ -177,6 +178,8 @@
 	//   mesh = Pointer to a Mesh object.
 	void SpriteSetMesh(Sprite* sprite, const Mesh* mesh)
 	{
+		
+		//DGL_Graphics_SetShaderMode();
 		UNREFERENCED_PARAMETER(sprite);
 		UNREFERENCED_PARAMETER(mesh);
 	}

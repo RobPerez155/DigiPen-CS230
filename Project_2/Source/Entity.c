@@ -18,6 +18,8 @@
 #include "Entity.h"
 #include "Physics.h"
 #include "Sprite.h"
+#include "Stream.h"
+#include "Transform.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
@@ -99,15 +101,42 @@
 		entity = NULL;
 	}
 
-	// Read (and construct) the components associated with a entity.
-	// [NOTE: See project instructions for implementation instructions.]
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//	 stream = The data stream used for reading.
 	void EntityRead(Entity* entity, Stream stream)
 	{
-		UNREFERENCED_PARAMETER(entity);
-		UNREFERENCED_PARAMETER(stream);
+		if (entity != NULL && stream != NULL)
+		{
+			//Annotate me
+			const char* token = StreamReadToken(stream);
+			// This might be a problem, strncpy_s(entity->name, sizeof(entity->name), "Entity", _countof("Entity"));
+			strncpy_s(entity->name, _countof(entity->name), token, _countof("Entity"));
+
+			while (true) {
+				if ((strncmp(token, "Transform", _countof("Transform")) == 0))
+				{
+					entity->transform = TransformCreate();
+					TransformRead(entity->transform, stream);
+				}
+				if ((strncmp(token, "Physics", _countof("Physics")) == 0))
+				{
+					entity->physics = PhysicsCreate();
+					PhysicsRead(entity->physics, stream);
+				}
+				if ((strncmp(token, "Sprite", _countof("Sprite")) == 0))
+				{
+					entity->sprite = SpriteCreate();
+					SpriteRead(entity->sprite, stream);
+				}
+				else if (token[0] == 0) {
+					break;
+				}
+					//“token” is empty(zero - length string),
+					//		o	Break out of the while - loop
+			}
+
+		}
 	}
 
 	// Attach a Physics component to an Entity.

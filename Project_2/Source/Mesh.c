@@ -73,14 +73,14 @@
 			DGL_Graphics_StartMesh();
 			DGL_Graphics_AddTriangle(
 				//Draw out triangles to make a square
-				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f},
 				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
 				&(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
 			);
 
 			DGL_Graphics_AddTriangle(
-				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
-				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
+				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
 				&(DGL_Vec2){  -xHalfSize, yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
 			);
 
