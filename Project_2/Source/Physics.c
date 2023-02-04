@@ -84,7 +84,6 @@ typedef struct Physics
 		void PhysicsFree(Physics** physics) 
 		{
 			free(&(*physics));
-			//Might be a problem
 			physics = NULL;
 		}
 

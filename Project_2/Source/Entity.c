@@ -110,10 +110,12 @@
 		{
 			//Annotate me
 			const char* token = StreamReadToken(stream);
-			// This might be a problem, strncpy_s(entity->name, sizeof(entity->name), "Entity", _countof("Entity"));
 			strncpy_s(entity->name, _countof(entity->name), token, _countof("Entity"));
 
+			token = StreamReadToken(stream);
+
 			while (true) {
+
 				if ((strncmp(token, "Transform", _countof("Transform")) == 0))
 				{
 					entity->transform = TransformCreate();
@@ -132,10 +134,10 @@
 				else if (token[0] == 0) {
 					break;
 				}
-					//“token” is empty(zero - length string),
-					//		o	Break out of the while - loop
-			}
 
+				//Steps through the stream each 
+				token = StreamReadToken(stream);
+			}
 		}
 	}
 

@@ -133,11 +133,6 @@ void StreamReadVector2D(Stream stream, DGL_Vec2* vector) {
 }
 
 // Read a token (a single word) from a file.
-// Suggested steps:
-//	 - Set the first value in tokenBuffer Array to 0
-//	 - If the stream was opened successfully,
-//	   - Read a string ("%s") into tokenBuffer using fscanf_s()
-//	 - Return tokenBuffer
 // Params:
 //	 stream = The file stream from which to read.
 // Returns:
@@ -145,10 +140,11 @@ void StreamReadVector2D(Stream stream, DGL_Vec2* vector) {
 const char* StreamReadToken(Stream stream)
 {
 	tokenBuffer[0] = 0;
+	int tokenBuffCount = _countof(tokenBuffer);
 
 	if (stream)
 	{
-		fscanf_s(stream, tokenBuffer, _countof(tokenBuffer));
+		fscanf_s(stream, "%s", tokenBuffer, tokenBuffCount);
 	}
 
 	return tokenBuffer;

@@ -17,7 +17,9 @@
 #include "Level2Scene.h"
 #include "Stream.h"
 #include "Sprite.h"
+#include "Transform.h"
 #include "Mesh.h"
+#include "Physics.h"
 #include "SpriteSource.h"
 #include "Entity.h"
 #include "EntityFactory.h"
@@ -66,12 +68,13 @@ static const Vector2D gravityNone = { 0.0f, 0.0f };
 // Private Variables:
 //------------------------------------------------------------------------------
 static FILE* livesFile;
+
 //------------------------------------------------------------------------------
 // Private Function Declarations:
 //------------------------------------------------------------------------------
-
 static void Level1SceneLoad(void);
 static void Level1SceneInit(void);
+static void Level1SceneMovementController(Entity* entity);
 static void Level1SceneUpdate(float dt);
 static void Level1SceneExit(void);
 static void Level1SceneUnload(void);
@@ -87,7 +90,7 @@ static Level1Scene instance =
 	{ "Level1", Level1SceneLoad, Level1SceneInit, Level1SceneUpdate, Level1SceneRender, Level1SceneExit, Level1SceneUnload },
 
 	// Initialize any scene-specific variables:
-	
+
 };
 
 //------------------------------------------------------------------------------
@@ -114,31 +117,83 @@ static void Level1SceneLoad(void)
 		StreamClose(&lifeFile);
 	}
 
-	MeshCreateQuad(0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
+	instance.ptrMesh = MeshCreateQuad(0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
 
 	SpriteSource* sprPlanet = SpriteSourceCreate();
-
-	SpriteSourceLoadTexture(sprPlanet, 1, 1, "PlanetTexture.png");
+	SpriteSourceLoadTexture(sprPlanet, 1, 1, "./Assets/PlanetTexture.png");
+	instance.ptrSpriteMesh = sprPlanet;
 }
 
 // Initialize the variables used by the scene.
-	//Create a “Planet” Entity by calling EntityFactoryBuild() with the parameter, "./Data/PlanetJump.txt"
-	//If the entity was created successfully,
-	//	Get the Entity’s sprite.
-	//	Set the Sprite’s meshand sprite source.
-	//	Set the Sprite’s frame index to 0.  While this call is not strictly necessary, it does allow you to test whether the trace message is written properly.
-	//Set the background color to white(1, 1, 1).
-	//Set the blend mode to blend.
-
 static void Level1SceneInit()
 {
 	Entity* Planet = EntityFactoryBuild("./Data/PlanetJump.txt");
 
 	if (Planet != NULL)
 	{
-		EntityGetSprite(Planet);
-		//SpriteSetMesh(Planet, )
+		DGL_Color white = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+		Sprite* sprPlanet = EntityGetSprite(Planet);
+		SpriteSetMesh(sprPlanet, instance.ptrMesh);
+		SpriteSetSpriteSource(sprPlanet, instance.ptrSpriteMesh);
+		DGL_Graphics_SetBackgroundColor(&white);
+		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
+
+		instance.ptrEntity = Planet;
 	}
+}
+
+static void Level1SceneMovementController(Entity* entity)
+{
+	Physics* ptrPhysics = EntityGetPhysics(entity);
+	Transform* ptrTransform = EntityGetTransform(entity);
+
+	if (ptrPhysics != NULL && ptrTransform != NULL)
+	{
+		return;
+	}
+
+	Vector2D currVelocity = *PhysicsGetVelocity(ptrPhysics);
+
+	// Movement Mechanic
+	if (DGL_Input_KeyDown(VK_LEFT))
+	{
+		currVelocity.x -= moveVelocity;
+	}
+	else if (DGL_Input_KeyDown(VK_RIGHT))
+	{
+		currVelocity.x += moveVelocity;
+	}
+	else 
+	{
+		currVelocity.x = 0;
+	}
+	
+	// Jump mechanic
+	if (DGL_Input_KeyTriggered(VK_UP))
+	{
+		currVelocity.y = jumpVelocity;
+		PhysicsSetAcceleration(ptrPhysics, &gravityNormal);
+	}
+
+	// Check for Landing - Annotate
+	Vector2D translation = *TransformGetTranslation(ptrTransform);
+	Vector2D* currTranslation = &translation;
+
+	if (currTranslation->y < groundHeight)
+	{
+		currTranslation->y = groundHeight;
+		TransformSetTranslation(ptrTransform, &(*currTranslation));
+		currVelocity.y = 0;
+		PhysicsSetAcceleration(ptrPhysics, &gravityNone);
+		instance.numLives--;
+		if (instance.numLives <= 0)
+		{
+			SceneSystemSetNext(Level2SceneGetInstance());
+		}
+	}
+
+	PhysicsSetVelocity(ptrPhysics, &currVelocity);
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -146,22 +201,40 @@ static void Level1SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level1SceneUpdate(float dt)
 {
-	instance.numLives--;
+	Level1SceneMovementController(instance.ptrEntity);
+	EntityUpdate(instance.ptrEntity, dt);
 
-	if (instance.numLives <= 0)
+	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
+	if (DGL_Input_KeyTriggered('1'))
 	{
-		// NOTE: This call causes the engine to exit immediately.  Make sure to remove
-		//   it when you are ready to test out a new scene.
+		// Restart Level 1
+		Level1SceneInit();
+	}
+
+	if (DGL_Input_KeyTriggered('2'))
+	{
+		// Switch to Level 2
 		SceneSystemSetNext(Level2SceneGetInstance());
 	}
 
-	// Tell the compiler that the 'dt' variable is unused.
-	UNREFERENCED_PARAMETER(dt);
+	//if (DGL_Input_KeyTriggered('9'))
+	//{
+	//	// Switch to Sandbox Scene
+	//	SceneSystemSetNext(SandboxSceneGetInstance());
+	//}
+
+	//// Restarts Scene (when the key changes state from not pressed to pressed).
+	//if (DGL_Input_KeyTriggered('0'))
+	//{
+	//	// Restarts Scene
+	//	SceneSystemSetNext(DemoSceneGetInstance());
+	//}
 }
 
 // Render the scene.
 void Level1SceneRender(void)
 {
+	EntityRender(instance.ptrEntity);
 }
 
 // Exit the scene.

@@ -139,10 +139,8 @@
 	//   v = Pointer to a float to contain the V coordinate. 
 	void SpriteSourceGetUV(const SpriteSource* spriteSource, unsigned int frameIndex, float* u, float* v)
 	{
-		UNREFERENCED_PARAMETER(spriteSource);
-		UNREFERENCED_PARAMETER(frameIndex);
-		UNREFERENCED_PARAMETER(u);
-		UNREFERENCED_PARAMETER(v);
+		*u = (1.f / spriteSource->numCols) * (frameIndex % spriteSource->numCols);
+		*v = (1.f / spriteSource->numRows) * (frameIndex / spriteSource->numRows);
 	}
 
 	// Sets a SpriteSource texture for rendering.
@@ -150,7 +148,8 @@
 	//	 spriteSource = Pointer to the SpriteSource object.
 	void SpriteSourceSetTexture(const SpriteSource* spriteSource)
 	{
-		UNREFERENCED_PARAMETER(spriteSource);
+		DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
+		DGL_Graphics_SetTexture(spriteSource->texture);
 	}
 
 	// Sets the texture UV offsets for rendering.
@@ -158,8 +157,9 @@
 	//	 spriteSource = Pointer to the SpriteSource object.
 	void SpriteSourceSetTextureOffset(const SpriteSource* spriteSource, unsigned frameIndex)
 	{
-		UNREFERENCED_PARAMETER(spriteSource);
-		UNREFERENCED_PARAMETER(frameIndex);
+		DGL_Vec2 texOffset = { 0,0 };
+		SpriteSourceGetUV(spriteSource, frameIndex, &texOffset.x, &texOffset.y);
+		DGL_Graphics_SetCB_TextureOffset(&texOffset);
 	}
 
 	/*----------------------------------------------------------------------------*/

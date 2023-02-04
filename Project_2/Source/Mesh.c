@@ -71,20 +71,30 @@
 			strcpy_s(ptrMesh->name, _countof(ptrMesh->name), name);
 
 			DGL_Graphics_StartMesh();
-			DGL_Graphics_AddTriangle(
-				//Draw out triangles to make a square
-				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f},
-				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
-				&(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
-			);
+
+				//Draw out triangles to make a square 
+			// Original DELETE
+			//DGL_Graphics_AddTriangle(
+			//	&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f},
+			//	&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize },
+			//	&(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
+			//);
+			//DGL_Graphics_AddTriangle(
+			//	&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
+			//	&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
+			//	&(DGL_Vec2){  -xHalfSize, yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
+			//);
 
 			DGL_Graphics_AddTriangle(
-				&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
-				&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
-				&(DGL_Vec2){  -xHalfSize, yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 1.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize }
-			);
+        &(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
+        &(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, 0.0f },
+        &(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize });
+      DGL_Graphics_AddTriangle(
+        &(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
+        &(DGL_Vec2){ -xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
+        &(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, 0.0f });
 
-			DGL_Graphics_EndMesh(); // Putting pen away
+			ptrMesh->meshResource = DGL_Graphics_EndMesh(); // Putting pen away
 
 			return ptrMesh;
 		}
@@ -113,8 +123,7 @@
 	//   mesh = Pointer to a Mesh to be rendered.
 	void MeshRender(const Mesh* mesh)
 	{
-		UNREFERENCED_PARAMETER(mesh);
-
+		DGL_Graphics_DrawMesh(mesh->meshResource, mesh->drawMode);
 	}
 
 	// Free the memory associated with a mesh.
