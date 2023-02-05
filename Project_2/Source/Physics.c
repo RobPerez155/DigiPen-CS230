@@ -17,6 +17,8 @@
 #include "Physics.h"
 #include "DGL.h"
 #include "Stream.h"
+#include "Transform.h"
+#include "Vector2D.h"
 
 //------------------------------------------------------------------------------
 
@@ -170,20 +172,37 @@ typedef struct Physics
 	}
 
 	// Update the state of a Physics component using the Semi-Implicit Euler method,
-	//	 as outlined in the "Dynamics" lecture slides and the project instructions.
-	// (NOTE: This function must verify that the Physics and Transform pointers are valid.)
 	// Params:
 	//	 physics = Pointer to the physics component.
 	//	 transform = Pointer to the associated transform component.
 	//	 dt = Change in time (in seconds) since the last game loop.
 	void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 	{	
+		if (physics != NULL && transform != NULL)
+		{
+			// Find translation after velocity and acceleration are applied with dt
+			Vector2D result;
+			Vector2D dtAccel;
+			Vector2D dtVelocity;
 
-		//if (physics != NULL && transform != NULL)
-		//Euler from zee notes
-		UNREFERENCED_PARAMETER(physics);
-		UNREFERENCED_PARAMETER(transform);
-		UNREFERENCED_PARAMETER(dt);
+			REVIEW
+			// Update previous translation
+			physics->oldTranslation = *TransformGetTranslation(transform);
+
+			// Update acceleration after dt is applied
+			Vector2DScale(&dtAccel, &physics->acceleration, dt);
+			//Subtract acceleration from current velocity
+			Vector2DAdd(&physics->velocity, &physics->velocity, &dtAccel);
+
+			// Update velocity after dt is applied
+			Vector2DScale(&dtVelocity, &physics->velocity, dt);
+			//Add velocity to current translation
+			Vector2DAdd(&result, &dtVelocity, &physics->oldTranslation);
+
+			//Set new translation
+			TransformSetTranslation(transform, &result);
+		}
+	
 	}
 
 	//------------------------------------------------------------------------------

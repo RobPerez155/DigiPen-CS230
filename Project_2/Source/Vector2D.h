@@ -61,17 +61,17 @@ void Vector2DSet(DGL_Vec2 *pResult, float x, float y);
 void Vector2DNeg(DGL_Vec2 *pResult, const DGL_Vec2 *pVec0);
 
 // In this function, pResult will be the sum of pVec0 and pVec1 (x result = x0 + x1)
-void Vector2DAdd(DGL_Vec2 *pResult, const DGL_Vec2 *pVec0, const DGL_Vec2 *pVec1);
+void Vector2DAdd(Vector2D* pResult, const Vector2D* pVec0, const Vector2D* pVec1);
 
 // In this function, pResult will be the difference between pVec0 and pVec1 (specifically, pVec0 - pVec1)
-void Vector2DSub(DGL_Vec2 *pResult, const DGL_Vec2 *pVec0, const DGL_Vec2 *pVec1);
+void Vector2DSub(DGL_Vec2* pResult, const DGL_Vec2* pVec0, const DGL_Vec2* pVec1);
 
 // In this function, pResult will be the unit vector of pVec0
 // (NOTE: Care must be taken when pResult = pVec0!)
-void Vector2DNormalize(DGL_Vec2 *pResult, const DGL_Vec2 *pVec0);
+void Vector2DNormalize(DGL_Vec2* pResult, const DGL_Vec2* pVec0);
 
 // In this function, pResult will be the vector pVec0 scaled by the value 'scale'
-void Vector2DScale(DGL_Vec2 *pResult, const DGL_Vec2 *pVec0, float scale);
+void Vector2DScale(Vector2D* pResult, const Vector2D*pVec0, float scale);
 
 // In this function, pResult will be the vector pVec0 scaled by 'scale' and added to pVec1
 void Vector2DScaleAdd(DGL_Vec2 *pResult, const DGL_Vec2 *pVec0, const DGL_Vec2 *pVec1, float scale);

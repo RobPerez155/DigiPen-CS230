@@ -72,11 +72,6 @@
 	//------------------------------------------------------------------------------
 
 	// Dynamically allocate a new Entity.
-	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-	// Returns:
-	//	 If the memory allocation was successful,
-	//	   then return a pointer to the allocated memory,
-	//	   else return NULL.
 	Entity* EntityCreate(void)
 	{
 		Entity* ptrEntity = calloc(1, sizeof(Entity*));
@@ -91,8 +86,6 @@
 	}
 
 	// Free the memory associated with an Entity.
-	// (NOTE: All attached components must be freed using the corresponding Free() functions.)
-	// (NOTE: The Entity pointer must be set to NULL.)
 	// Params:
 	//	 entity = Pointer to the Entity pointer.
 	void EntityFree(Entity** entity) //post-it note to where ID is to house
@@ -169,11 +162,6 @@
 	}
 
 	// Set the Entity's name.
-	// [NOTE: Verify that both pointers are valid before setting the name.]
-	// [NOTE: When setting the name, use strcpy_s() to reduce the risk of
-	//	 buffer overruns. Additionally, do NOT hardcode the number "32" when
-	//	 calling this function!  Instead, use the _countof() macro to get the
-	//	 size of the "name" array.]
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//	 name = Pointer to the Entity's new name.
@@ -188,10 +176,6 @@
 	// Get the Entity's name.
 	// Params:
 	//	 entity = Pointer to the Entity.
-	// Returns:
-	//	 If the Entity pointer is valid,
-	//		then return a pointer to the Entity's name,
-	//		else return NULL.
 	const char* EntityGetName(const Entity* entity)
 	{
 		if (entity != NULL)
@@ -206,10 +190,6 @@
 	// Get the Physics component attached to an Entity.
 	// Params:
 	//	 entity = Pointer to the Entity.
-	// Returns:
-	//	 If the Entity pointer is valid,
-	//		then return a pointer to the attached physics component,
-	//		else return NULL.
 	Physics* EntityGetPhysics(const Entity* entity)
 	{
 		if (entity != NULL)
@@ -222,8 +202,6 @@
 	}
 
 	// Get the Sprite component attached to a Entity.
-	// Params:
-	//	 entity = Pointer to the Entity.
 	// Returns:
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached Sprite component,
@@ -240,8 +218,6 @@
 	}
 
 	// Get the Transform component attached to a Entity.
-	// Params:
-	//	 entity = Pointer to the Entity.
 	// Returns:
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached Transform component,
@@ -258,8 +234,6 @@
 	}
 
 	// Update any components attached to the Entity.
-	// (Hint: You will need to call PhysicsUpdate().)
-	// (NOTE: You must first check for a valid pointer before calling this function.)
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//	 dt = Change in time (in seconds) since the last game loop.
@@ -272,8 +246,6 @@
 	}
 
 	// Render any visible components attached to the Entity.
-	// (Hint: You will need to call SpriteRender(), passing the Sprite and Transform components.)
-	// (NOTE: You must first check for valid pointers before calling this function.)
 	// Params:
 	//	 entity = Pointer to the Entity.
 	void EntityRender(Entity* entity) 

@@ -15,6 +15,8 @@
 #include "SceneSystem.h"
 #include "Level1Scene.h"
 #include "Level2Scene.h"
+#include "SandboxScene.h"
+#include "DemoScene.h"
 #include "Stream.h"
 #include "Sprite.h"
 #include "Transform.h"
@@ -148,7 +150,7 @@ static void Level1SceneMovementController(Entity* entity)
 	Physics* ptrPhysics = EntityGetPhysics(entity);
 	Transform* ptrTransform = EntityGetTransform(entity);
 
-	if (ptrPhysics != NULL && ptrTransform != NULL)
+	if (ptrPhysics == NULL || ptrTransform == NULL)
 	{
 		return;
 	}
@@ -159,12 +161,14 @@ static void Level1SceneMovementController(Entity* entity)
 	if (DGL_Input_KeyDown(VK_LEFT))
 	{
 		currVelocity.x -= moveVelocity;
+		printf("Move left - %f \n", currVelocity.x);
 	}
-	else if (DGL_Input_KeyDown(VK_RIGHT))
+	if (DGL_Input_KeyDown(VK_RIGHT))
 	{
 		currVelocity.x += moveVelocity;
+		printf("Move right - %f \n", currVelocity.x);
 	}
-	else 
+	if (!DGL_Input_KeyDown(VK_RIGHT) && !DGL_Input_KeyDown(VK_LEFT))
 	{
 		currVelocity.x = 0;
 	}
@@ -174,7 +178,9 @@ static void Level1SceneMovementController(Entity* entity)
 	{
 		currVelocity.y = jumpVelocity;
 		PhysicsSetAcceleration(ptrPhysics, &gravityNormal);
+		printf("Move jump\n");	
 	}
+
 
 	// Check for Landing - Annotate
 	Vector2D translation = *TransformGetTranslation(ptrTransform);
@@ -200,9 +206,9 @@ static void Level1SceneMovementController(Entity* entity)
 // Params:
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level1SceneUpdate(float dt)
-{
+{	EntityUpdate(instance.ptrEntity, dt);
 	Level1SceneMovementController(instance.ptrEntity);
-	EntityUpdate(instance.ptrEntity, dt);
+
 
 	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
 	if (DGL_Input_KeyTriggered('1'))
@@ -217,18 +223,18 @@ static void Level1SceneUpdate(float dt)
 		SceneSystemSetNext(Level2SceneGetInstance());
 	}
 
-	//if (DGL_Input_KeyTriggered('9'))
-	//{
-	//	// Switch to Sandbox Scene
-	//	SceneSystemSetNext(SandboxSceneGetInstance());
-	//}
+	if (DGL_Input_KeyTriggered('9'))
+	{
+		// Switch to Sandbox Scene
+		SceneSystemSetNext(SandboxSceneGetInstance());
+	}
 
-	//// Restarts Scene (when the key changes state from not pressed to pressed).
-	//if (DGL_Input_KeyTriggered('0'))
-	//{
-	//	// Restarts Scene
-	//	SceneSystemSetNext(DemoSceneGetInstance());
-	//}
+	// Restarts Scene (when the key changes state from not pressed to pressed).
+	if (DGL_Input_KeyTriggered('0'))
+	{
+		// Restarts Scene
+		SceneSystemSetNext(DemoSceneGetInstance());
+	}
 }
 
 // Render the scene.
@@ -240,10 +246,13 @@ void Level1SceneRender(void)
 // Exit the scene.
 static void Level1SceneExit()
 {
+	//EntityFree(instance.ptrEntity);
 }
 
 // Unload any resources used by the scene.
 static void Level1SceneUnload(void)
 {
+	//SpriteSourceFree(EntityGetSprite(instance.ptrEntity));
+	//MeshFree();
 }
 
