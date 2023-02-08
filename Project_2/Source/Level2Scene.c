@@ -13,7 +13,9 @@
 
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "Level1Scene.h"
 #include "Level2Scene.h"
+#include "DemoScene.h"
 #include "SandboxScene.h"
 #include "Stream.h"
 #include "SpriteSource.h"
@@ -23,6 +25,7 @@
 #include "Sprite.h"
 #include "Transform.h"
 #include "Vector2D.h"
+#include "Physics.h"
 #include "EntityFactory.h"
 
 //------------------------------------------------------------------------------
@@ -134,21 +137,22 @@ static void Level2SceneMovementController(Entity* entity)
 	}
 
 	DGL_Vec2 mousePosition = DGL_Input_GetMousePosition();
-	DGL_Vec2 cameraCoord = DGL_Camera_ScreenCoordToWorld(&mousePosition);
+	DGL_Vec2 mouseWorldCoord = DGL_Camera_ScreenCoordToWorld(&mousePosition);
 
 	Vector2D translation = *TransformGetTranslation(ptrTransform);
 
-	//DGL_Vec2* shipPos = ptrTransform.translation;
-	//ptrPhysics.oldTranslation
+	// Ship to mouse cursor math
 	Vector2D shipToMouseDirectionVec;
-	Vector2DSub(&shipToMouseDirectionVec, &cameraCoord, &translation);
+	Vector2DSub(&shipToMouseDirectionVec, &mouseWorldCoord, &translation);
+	Vector2DNormalize(&shipToMouseDirectionVec, &shipToMouseDirectionVec);
+	
+	// Set spaceship angle
+	float shipAngleToMouse = Vector2DToAngleRad(&shipToMouseDirectionVec);
+	TransformSetRotation(ptrTransform, shipAngleToMouse);
 
-	shipToMouseDirectionVec;
-	//UNREFERENCED_PARAMETER(shipToMouseDirectionVec);
-	UNREFERENCED_PARAMETER(translation);
-	UNREFERENCED_PARAMETER(ptrPhysics);
-	UNREFERENCED_PARAMETER(cameraCoord);
-	UNREFERENCED_PARAMETER(ptrTransform);
+	//Sets the spaceship velocity
+	Vector2DScale(&shipToMouseDirectionVec, &shipToMouseDirectionVec, spaceshipSpeed);
+	PhysicsSetVelocity(ptrPhysics, &shipToMouseDirectionVec);
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -157,9 +161,53 @@ static void Level2SceneMovementController(Entity* entity)
 static void Level2SceneUpdate(float dt)
 {
 	Level2SceneMovementController(instance.ptrEntity);
+	EntityUpdate(instance.ptrEntity, dt);
 
-	// Tell the compiler that the 'dt' variable is unused.
-	UNREFERENCED_PARAMETER(dt);
+	if (DGL_Input_KeyTriggered('Z'))
+	{
+		// Sets Spaceship's Alpha value
+		Sprite* sprSpaceship = EntityGetSprite(instance.ptrEntity);
+		SpriteSetAlpha(sprSpaceship, 0.5f);
+	}
+
+	if (DGL_Input_KeyTriggered('X'))
+	{
+		// Sets Spaceship's Alpha value
+		Sprite* sprSpaceship = EntityGetSprite(instance.ptrEntity);
+		SpriteSetAlpha(sprSpaceship, 1.0f);
+	}
+
+	if (DGL_Input_KeyTriggered('1'))
+	{
+		// Restart Level 1
+		SceneSystemSetNext(Level1SceneGetInstance());
+	}
+
+	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
+	if (DGL_Input_KeyTriggered('1'))
+	{
+		// Restart Level 1
+		SceneSystemSetNext(Level1SceneGetInstance());
+	}
+
+	if (DGL_Input_KeyTriggered('2'))
+	{
+		// Switch to Level 2
+		Level2SceneInit();
+	}
+
+	if (DGL_Input_KeyTriggered('9'))
+	{
+		// Switch to Sandbox Scene
+		SceneSystemSetNext(SandboxSceneGetInstance());
+	}
+
+	// Restarts Scene (when the key changes state from not pressed to pressed).
+	if (DGL_Input_KeyTriggered('0'))
+	{
+		// Restarts Scene
+		SceneSystemSetNext(DemoSceneGetInstance());
+	}
 }
 
 // Render the scene.
@@ -171,10 +219,12 @@ void Level2SceneRender(void)
 // Exit the scene.
 static void Level2SceneExit()
 {
+	EntityFree(&instance.ptrEntity);
 }
 
 // Unload any resources used by the scene.
 static void Level2SceneUnload(void)
 {
+	MeshFree(&instance.ptrMesh);
 }
 

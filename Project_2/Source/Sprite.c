@@ -180,7 +180,7 @@
 		min(alpha, 0.0f);
 
 		DGL_Graphics_SetCB_Alpha(sprite->alpha);
-		//sprite->alpha = alpha;
+		sprite->alpha = alpha;
 	}
 
 	// Set a Sprite's current frame.
