@@ -72,9 +72,14 @@
 	//------------------------------------------------------------------------------
 
 	// Dynamically allocate a new Entity.
+	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+// Returns:
+//	 If the memory allocation was successful,
+//	   then return a pointer to the allocated memory,
+//	   else return NULL.
 	Entity* EntityCreate(void)
 	{
-		Entity* ptrEntity = calloc(1, sizeof(Entity*));
+		Entity* ptrEntity = calloc(1, sizeof(Entity));
 
 		if (ptrEntity != NULL)
 		{
@@ -86,12 +91,28 @@
 	}
 
 	// Free the memory associated with an Entity.
+// (NOTE: All attached components must be freed using the corresponding Free() functions.)
+// (NOTE: The Entity pointer must be set to NULL.)
+// Params:
+//	 entity = Pointer to the Entity pointer.
+// 
+	// Free the memory associated with an Entity.
 	// Params:
 	//	 entity = Pointer to the Entity pointer.
 	void EntityFree(Entity** entity) //post-it note to where ID is to house
 	{
-		free(&(*entity)); //Find the ID where the Post-it note says, 
-		entity = NULL;
+		//Look at header - free components first, then entity, then set to NULL
+		Physics* physics = EntityGetPhysics(*entity);
+		PhysicsFree(&physics);
+
+		Sprite* sprite = EntityGetSprite(*entity);
+		SpriteFree(&sprite);
+
+		Transform* transform = EntityGetTransform(*entity);
+		TransformFree(&transform);
+
+		free(*entity); //Find the ID where the Post-it note says, 
+		*entity = NULL; 
 	}
 
 	// Params:
@@ -103,7 +124,7 @@
 		{
 			//Annotate me
 			const char* token = StreamReadToken(stream);
-			strncpy_s(entity->name, _countof(entity->name), token, _countof("Entity"));
+			strcpy_s(entity->name, _countof(entity->name), token);
 
 			token = StreamReadToken(stream);
 
@@ -114,12 +135,12 @@
 					entity->transform = TransformCreate();
 					TransformRead(entity->transform, stream);
 				}
-				if ((strncmp(token, "Physics", _countof("Physics")) == 0))
+				else if ((strncmp(token, "Physics", _countof("Physics")) == 0))
 				{
 					entity->physics = PhysicsCreate();
 					PhysicsRead(entity->physics, stream);
 				}
-				if ((strncmp(token, "Sprite", _countof("Sprite")) == 0))
+				else if ((strncmp(token, "Sprite", _countof("Sprite")) == 0))
 				{
 					entity->sprite = SpriteCreate();
 					SpriteRead(entity->sprite, stream);

@@ -114,7 +114,27 @@
 	//	   else return NULL.
 	Mesh* MeshCreateSpaceship(void)
 	{
-		return NULL;
+		Mesh* spaceship = calloc(1, sizeof(Mesh));
+		
+		if (spaceship != NULL) 
+		{
+			strcpy_s(spaceship->name, _countof(spaceship->name), "spaceship");
+
+			DGL_Graphics_StartMesh();
+
+			DGL_Graphics_AddTriangle(
+			&(DGL_Vec2){  0.5f,  0.0f }, &(DGL_Color){ 1.0f, 1.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
+			&(DGL_Vec2){ -0.5f, -0.5f }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
+			&(DGL_Vec2){ -0.5f,  0.5f }, &(DGL_Color){ 1.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f });
+	
+			spaceship->meshResource = DGL_Graphics_EndMesh();
+
+			return spaceship;
+		}
+		else {
+			return NULL;
+		}
+
 	}
 
 	// Render a mesh.
@@ -132,9 +152,10 @@
 	// (NOTE: The Mesh pointer must be set to NULL.)
 	// Params:
 	//   mesh = Pointer to the Mesh pointer.
-	void MeshFree(Mesh** mesh) //this is a Mesh pointer pointer
+	void MeshFree(Mesh** mesh) //this is a pointer to a pointer Mesh
 	{
-		DGL_Graphics_FreeMesh(&(*mesh)->meshResource); //dereference mesh pointer, get meshResource, get address of meshResource
-		free(mesh);
+		Mesh* ptrMesh = *mesh; //dereference mesh pointer so we can get meshResource in the next statement
+		DGL_Graphics_FreeMesh(&ptrMesh->meshResource); //get address of meshResource
+		free(*mesh);
+		*mesh = NULL;
 	}
-

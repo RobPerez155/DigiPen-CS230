@@ -64,19 +64,22 @@
 	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 	// (Hint: You must initialize the scale values to non-zero values.)
 	// Returns:
+	// Pizza
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
+	//Allocate Memory, Initialize, Return what's allocated'
 	Transform* TransformCreate(void)
 	{
 		Transform* ptrTransform = calloc(1, sizeof(Transform));
 
 		if (ptrTransform != NULL)
 		{
-			return ptrTransform;
+			//Initialize value
+			ptrTransform->scale = (DGL_Vec2){ 10.0f, 10.0f };
 		}
 
-		return NULL;
+		return ptrTransform;
 	}
 
 	// Free the memory associated with a Transform component.
@@ -85,7 +88,10 @@
 	//	 transform = Pointer to the Transform pointer.
 	void TransformFree(Transform** transform)
 	{
-		free(&(*transform));
+		if (*transform)
+			free(*transform);
+
+		*transform = NULL;
 	}
 
 	// Read the properties of a Transform component from a file.

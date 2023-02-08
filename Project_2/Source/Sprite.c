@@ -74,6 +74,7 @@
 
 		if (ptrSprite != NULL)
 		{
+			ptrSprite->alpha = 1.0f;
 			return ptrSprite;
 		}
 		else {
@@ -87,7 +88,10 @@
 	//	 sprite = Pointer to the Sprite pointer.
 	void SpriteFree(Sprite** sprite) 
 	{
-		free(&(*sprite));
+		if (*sprite)
+		free(*sprite);
+
+		*sprite = NULL;
 	};
 
 	// Read the properties of a Sprite component from a file.
@@ -124,7 +128,7 @@
 
 	void SpriteRender(const Sprite* sprite, Transform* transform) 
 	{		
-		//UNREFERENCED_PARAMETER(transform);
+
 		if (sprite->spriteSource != NULL)
 		{
 			DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
@@ -138,7 +142,10 @@
 			DGL_Graphics_SetTexture(NULL);
 		}
 
-		DGL_Graphics_SetCB_TransformData(TransformGetTranslation(transform), TransformGetScale(transform), TransformGetRotation(transform));
+		DGL_Graphics_SetCB_TransformData(
+			TransformGetTranslation(transform),
+			TransformGetScale(transform), 
+			TransformGetRotation(transform));
 		//DGL_Graphics_SetCB_TransformData(transform->position, transform->scale, transform->rotation);
 		DGL_Graphics_SetCB_Alpha(sprite->alpha);
 		DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });

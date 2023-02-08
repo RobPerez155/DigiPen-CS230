@@ -85,8 +85,10 @@ typedef struct Physics
 	//	 physics = Pointer to the Physics component pointer.
 		void PhysicsFree(Physics** physics) 
 		{
-			free(&(*physics));
-			physics = NULL;
+			if (*physics)
+				free(*physics);
+
+			*physics = NULL;
 		}
 
 	// Read the properties of a Physics component from a file.
@@ -185,7 +187,7 @@ typedef struct Physics
 			Vector2D dtAccel;
 			Vector2D dtVelocity;
 
-			REVIEW
+			//REVIEW
 			// Update previous translation
 			physics->oldTranslation = *TransformGetTranslation(transform);
 

@@ -161,5 +161,6 @@ void StreamClose(Stream* stream) {
 	}
 	else {
 		fclose(*stream);
+		*stream = NULL;
 	}
 }

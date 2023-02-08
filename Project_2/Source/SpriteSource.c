@@ -89,7 +89,10 @@
 	//	 spriteSource = Pointer to the SpriteSource pointer.
 	void SpriteSourceFree(SpriteSource** spriteSource)
 	{
-		free(&(*spriteSource));
+		if (*spriteSource)
+			free(*spriteSource);
+
+		*spriteSource = NULL;
 	}
 
 	// Load a texture from a file (may be an Col x Row sprite sheet).

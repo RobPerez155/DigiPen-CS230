@@ -246,13 +246,13 @@ void Level1SceneRender(void)
 // Exit the scene.
 static void Level1SceneExit()
 {
-	//EntityFree(instance.ptrEntity);
+	EntityFree(&instance.ptrEntity);
 }
 
 // Unload any resources used by the scene.
 static void Level1SceneUnload(void)
 {
-	//SpriteSourceFree(EntityGetSprite(instance.ptrEntity));
-	//MeshFree();
+	SpriteSourceFree(&instance.ptrSpriteMesh);
+	MeshFree(&instance.ptrMesh);
 }
 
