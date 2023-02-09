@@ -13,9 +13,20 @@
 
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "Level1Scene.h"
 #include "Level2Scene.h"
+#include "DemoScene.h"
 #include "SandboxScene.h"
 #include "Stream.h"
+#include "SpriteSource.h"
+#include "Mesh.h"
+#include "DGL.h"
+#include "Entity.h"
+#include "Sprite.h"
+#include "Transform.h"
+#include "Vector2D.h"
+#include "Physics.h"
+#include "EntityFactory.h"
 
 //------------------------------------------------------------------------------
 // Private Structures:
@@ -27,9 +38,12 @@ typedef struct Level2Scene
 	Scene	base;
 
 	// Add any scene-specific variables second.
-	int numLives;
-	int numHealth;
+	//int numLives;
+	//int numHealth;
+	Mesh* ptrMesh;
+	Entity* ptrEntity;
 } Level2Scene;
+
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -38,21 +52,23 @@ typedef struct Level2Scene
 //------------------------------------------------------------------------------
 // Private Constants:
 //------------------------------------------------------------------------------
+static const float spaceshipSpeed = 500.0f;
 
-static const char* livesFileName = "./Data/Level2_Lives.txt";
-static const char* healthFileName = "./Data/Level2_Health.txt";
+//static const char* livesFileName = "./Data/Level2_Lives.txt";
+//static const char* healthFileName = "./Data/Level2_Health.txt";
 
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
-static FILE* livesFile;
-static FILE* healthFile;
+//static FILE* livesFile;
+//static FILE* healthFile;
 //------------------------------------------------------------------------------
 // Private Function Declarations:
 //------------------------------------------------------------------------------
 
 static void Level2SceneLoad(void);
 static void Level2SceneInit(void);
+static void Level2SceneMovementController(Entity* entity);
 static void Level2SceneUpdate(float dt);
 static void Level2SceneExit(void);
 static void Level2SceneUnload(void);
@@ -86,26 +102,57 @@ const Scene* Level2SceneGetInstance(void)
 // Load any resources used by the scene.
 static void Level2SceneLoad(void)
 {
-	/*Stream hlthFile = StreamOpen(healthFileName);*/
-	Stream lifeFile = StreamOpen(livesFileName);
-
-	if (lifeFile != NULL)
-	{
-		instance.numHealth = StreamReadInt(lifeFile);
-		StreamClose(&lifeFile);
-	}
+	//Load spaceship mesh
+	instance.ptrMesh = MeshCreateSpaceship();
 }
 
 // Initialize the variables used by the scene.
 static void Level2SceneInit()
 {
-	Stream hlthFile = StreamOpen(healthFileName);
+	Entity* Spaceship = EntityFactoryBuild("./Data/SpaceshipHoming.txt");
 
-	if (hlthFile != NULL)
+	if (Spaceship != NULL)
 	{
-		instance.numHealth = StreamReadInt(hlthFile);
-		StreamClose(&hlthFile);
+		DGL_Color black = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+		Sprite* sprSpaceship = EntityGetSprite(Spaceship);
+		SpriteSetMesh(sprSpaceship, instance.ptrMesh);
+		SpriteSetSpriteSource(sprSpaceship, NULL);
+		DGL_Graphics_SetBackgroundColor(&black);
+		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
+
+		instance.ptrEntity = Spaceship;
 	}
+}
+
+static void Level2SceneMovementController(Entity* entity)
+{
+	Physics* ptrPhysics = EntityGetPhysics(entity);
+	Transform* ptrTransform = EntityGetTransform(entity);
+
+	// Check if pointers are valid
+	if (ptrPhysics == NULL || ptrTransform == NULL)
+	{
+		return;
+	}
+
+	DGL_Vec2 mousePosition = DGL_Input_GetMousePosition();
+	DGL_Vec2 mouseWorldCoord = DGL_Camera_ScreenCoordToWorld(&mousePosition);
+
+	Vector2D translation = *TransformGetTranslation(ptrTransform);
+
+	// Ship to mouse cursor math
+	Vector2D shipToMouseDirectionVec;
+	Vector2DSub(&shipToMouseDirectionVec, &mouseWorldCoord, &translation);
+	Vector2DNormalize(&shipToMouseDirectionVec, &shipToMouseDirectionVec);
+	
+	// Set spaceship angle
+	float shipAngleToMouse = Vector2DToAngleRad(&shipToMouseDirectionVec);
+	TransformSetRotation(ptrTransform, shipAngleToMouse);
+
+	//Sets the spaceship velocity
+	Vector2DScale(&shipToMouseDirectionVec, &shipToMouseDirectionVec, spaceshipSpeed);
+	PhysicsSetVelocity(ptrPhysics, &shipToMouseDirectionVec);
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -113,43 +160,71 @@ static void Level2SceneInit()
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level2SceneUpdate(float dt)
 {
-	instance.numHealth--;
+	Level2SceneMovementController(instance.ptrEntity);
+	EntityUpdate(instance.ptrEntity, dt);
 
-	if (instance.numHealth <= 0)
+	if (DGL_Input_KeyTriggered('Z'))
 	{
-		instance.numLives--;
+		// Sets Spaceship's Alpha value
+		Sprite* sprSpaceship = EntityGetSprite(instance.ptrEntity);
+		SpriteSetAlpha(sprSpaceship, 0.5f);
+	}
 
-		if (instance.numLives > 0) 
-		{
-			Level2SceneInit();
-		}
-		else {
-			// TO-DO Switch the scene System to "Sandbox"
-			SceneSystemRestart();
-			instance.numLives = 3;
-		}
-		// NOTE: This call causes the engine to exit immediately.  Make sure to remove
-		//   it when you are ready to test out a new scene.
-		//SceneSystemSetNext(NULL);
+	if (DGL_Input_KeyTriggered('X'))
+	{
+		// Sets Spaceship's Alpha value
+		Sprite* sprSpaceship = EntityGetSprite(instance.ptrEntity);
+		SpriteSetAlpha(sprSpaceship, 1.0f);
+	}
+
+	if (DGL_Input_KeyTriggered('1'))
+	{
+		// Restart Level 1
+		SceneSystemSetNext(Level1SceneGetInstance());
+	}
+
+	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
+	if (DGL_Input_KeyTriggered('1'))
+	{
+		// Restart Level 1
+		SceneSystemSetNext(Level1SceneGetInstance());
+	}
+
+	if (DGL_Input_KeyTriggered('2'))
+	{
+		// Switch to Level 2
+		Level2SceneInit();
+	}
+
+	if (DGL_Input_KeyTriggered('9'))
+	{
+		// Switch to Sandbox Scene
 		SceneSystemSetNext(SandboxSceneGetInstance());
 	}
 
-	// Tell the compiler that the 'dt' variable is unused.
-	UNREFERENCED_PARAMETER(dt);
+	// Restarts Scene (when the key changes state from not pressed to pressed).
+	if (DGL_Input_KeyTriggered('0'))
+	{
+		// Restarts Scene
+		SceneSystemSetNext(DemoSceneGetInstance());
+	}
 }
 
 // Render the scene.
 void Level2SceneRender(void)
 {
+	EntityRender(instance.ptrEntity);
 }
 
 // Exit the scene.
 static void Level2SceneExit()
 {
+	EntityFree(&instance.ptrEntity);
 }
 
 // Unload any resources used by the scene.
 static void Level2SceneUnload(void)
 {
+	MeshFree(&instance.ptrMesh);
 }
 

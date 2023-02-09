@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	Level2Scene.c
+// File Name:	StubScene.c
 // Author(s):	Rob Perez (rob.perez)
 // Project:		Project 0
 // Course:		CS230S23
@@ -13,23 +13,20 @@
 
 #include "Scene.h"
 #include "SceneSystem.h"
-#include "Level2Scene.h"
-#include "SandboxScene.h"
-#include "Stream.h"
+#include "StubScene.h"
 
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
 
-typedef struct Level2Scene
+typedef struct StubScene
 {
 	// WARNING: The base class must always be included first.
 	Scene	base;
 
 	// Add any scene-specific variables second.
-	int numLives;
-	int numHealth;
-} Level2Scene;
+
+} StubScene;
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -39,33 +36,29 @@ typedef struct Level2Scene
 // Private Constants:
 //------------------------------------------------------------------------------
 
-static const char* livesFileName = "./Data/Level2_Lives.txt";
-static const char* healthFileName = "./Data/Level2_Health.txt";
-
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
-static FILE* livesFile;
-static FILE* healthFile;
+
 //------------------------------------------------------------------------------
 // Private Function Declarations:
 //------------------------------------------------------------------------------
 
-static void Level2SceneLoad(void);
-static void Level2SceneInit(void);
-static void Level2SceneUpdate(float dt);
-static void Level2SceneExit(void);
-static void Level2SceneUnload(void);
-static void Level2SceneRender(void);
+static void StubSceneLoad(void);
+static void StubSceneInit(void);
+static void StubSceneUpdate(float dt);
+static void StubSceneExit(void);
+static void StubSceneUnload(void);
+static void StubSceneRender(void);
 
 //------------------------------------------------------------------------------
 // Instance Variable:
 //------------------------------------------------------------------------------
 
-static Level2Scene instance =
+static StubScene instance =
 {
 	// Initialize the base structure:
-	{ "Level2", Level2SceneLoad, Level2SceneInit, Level2SceneUpdate, Level2SceneRender, Level2SceneExit, Level2SceneUnload },
+	{ "Stub", StubSceneLoad, StubSceneInit, StubSceneUpdate, StubSceneRender, StubSceneExit, StubSceneUnload },
 
 	// Initialize any scene-specific variables:
 };
@@ -74,7 +67,7 @@ static Level2Scene instance =
 // Public Functions:
 //------------------------------------------------------------------------------
 
-const Scene* Level2SceneGetInstance(void)
+const Scene* StubSceneGetInstance(void)
 {
 	return &(instance.base);
 }
@@ -84,72 +77,40 @@ const Scene* Level2SceneGetInstance(void)
 //------------------------------------------------------------------------------
 
 // Load any resources used by the scene.
-static void Level2SceneLoad(void)
+static void StubSceneLoad(void)
 {
-	/*Stream hlthFile = StreamOpen(healthFileName);*/
-	Stream lifeFile = StreamOpen(livesFileName);
-
-	if (lifeFile != NULL)
-	{
-		instance.numHealth = StreamReadInt(lifeFile);
-		StreamClose(&lifeFile);
-	}
 }
 
 // Initialize the variables used by the scene.
-static void Level2SceneInit()
+static void StubSceneInit()
 {
-	Stream hlthFile = StreamOpen(healthFileName);
-
-	if (hlthFile != NULL)
-	{
-		instance.numHealth = StreamReadInt(hlthFile);
-		StreamClose(&hlthFile);
-	}
 }
 
 // Update the the variables used by the scene and render objects (temporary).
 // Params:
 //	 dt = Change in time (in seconds) since the last game loop.
-static void Level2SceneUpdate(float dt)
+static void StubSceneUpdate(float dt)
 {
-	instance.numHealth--;
-
-	if (instance.numHealth <= 0)
-	{
-		instance.numLives--;
-
-		if (instance.numLives > 0) 
-		{
-			Level2SceneInit();
-		}
-		else {
-			// TO-DO Switch the scene System to "Sandbox"
-			SceneSystemRestart();
-			instance.numLives = 3;
-		}
-		// NOTE: This call causes the engine to exit immediately.  Make sure to remove
-		//   it when you are ready to test out a new scene.
-		//SceneSystemSetNext(NULL);
-		SceneSystemSetNext(SandboxSceneGetInstance());
-	}
-
 	// Tell the compiler that the 'dt' variable is unused.
 	UNREFERENCED_PARAMETER(dt);
+
+	// NOTE: This call causes the engine to exit immediately.  Make sure to remove
+	//   it when you are ready to test out a new scene.
+	SceneSystemSetNext(NULL);
 }
 
 // Render the scene.
-void Level2SceneRender(void)
+void StubSceneRender(void)
 {
 }
 
 // Exit the scene.
-static void Level2SceneExit()
+static void StubSceneExit()
 {
 }
 
 // Unload any resources used by the scene.
-static void Level2SceneUnload(void)
+static void StubSceneUnload(void)
 {
 }
 
