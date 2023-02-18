@@ -154,8 +154,9 @@
 				}
 				else if ((strncmp(token, "Animation", _countof("Animation")) == 0))
 				{
-					entity->animation = AnimationCreate();
-					AnimationRead(entity->animation, stream);
+					Animation* tempAnim = AnimationCreate();
+					AnimationRead(tempAnim, stream);
+					EntityAddAnimation(entity, tempAnim);
 				}
 				else if (token[0] == 0) {
 					break;
@@ -175,6 +176,7 @@
 //   animation = Pointer to the Animation component to be attached.
 	void EntityAddAnimation(Entity* entity, Animation* animation)
 	{
+		entity->animation = animation;
 		AnimationSetParent(animation, entity);
 	}
 

@@ -144,11 +144,7 @@
 			DGL_Graphics_SetTexture(NULL);
 		}
 
-		DGL_Graphics_SetCB_TransformMatrix(
-			TransformGetTranslation(transform),
-			TransformGetScale(transform), 
-			TransformGetRotation(transform));
-		//TransformGetMatrix(transform);
+		DGL_Graphics_SetCB_TransformMatrix(TransformGetMatrix(transform));
 
 		DGL_Graphics_SetCB_Alpha(sprite->alpha);
 		DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
@@ -267,11 +263,11 @@
 		if (sprite != NULL)
 		{
 			//	Set the alpha transparency for the Sprite.
-			SpriteSetAlpha(sprite, sprite->alpha);
+			DGL_Graphics_SetCB_Alpha(sprite->alpha);
 		}
 		
 		//	Set the tint color for the Sprite to(0, 0, 0, 0).
-		DGL_Graphics_SetCB_TintColor(0, 0, 0, 0);
+		DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 		
 		//	If the sprite’s text pointer is NULL,
 		if (sprite != NULL && sprite->text == NULL)
@@ -285,20 +281,25 @@
 		}
 		else {
 			//Call TransformGetMatrix() to get a local copy of the Transform component’s transformation matrix(“matrix”).
-			Matrix2D* transformMatrix = TransformGetMatrix(transform)->m;
+			Matrix2D transformMatrix = *TransformGetMatrix(transform);
 
 			//Call Matrix2DTranslate() to create an translation matrix(“offset”) with an X value equal to the Transform component’s X scale.
-			Matrix2DTranslate(transformMatrix, TransformGetScale(transform)->x, TransformGetScale(transform)->y);
+			Matrix2DTranslate(&transformMatrix, TransformGetScale(transform)->x, TransformGetScale(transform)->y);
 
 			//Assign a local “const char* ” variable equal to the Sprite’s text pointer.This variable will be used to “walk” through the string without modifying the sprite’s text pointer.
 			// 
 			//While the local text pointer points at a non - zero character,
 			//	Convert the current character into a zero - based frame index.
-			//	Hint : The font sheet begins at the space character(‘ ‘).
+				//	Hint : The font sheet begins at the space character(‘ ‘).
+			
 			//	Set the SpriteSource texture offset using this calculated frame index.
+			
 			//	Call DGL_Graphics_SetCB_TransformMatrix(), passing the local copy of the Transform’s matrix.
+			
 			//	Call MeshRender(), passing the sprite’s mesh.
+			
 			//	Advance the local char pointer to the next character in the string.
+			
 			//	Call Matrix2DConcat() to concatenate the translation matrixand transformation matrix.
 			//	matrix = offset * matrix
 

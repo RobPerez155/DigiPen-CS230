@@ -55,6 +55,7 @@ void Matrix2DIdentity(Matrix2D* pResult)
 		pResult->m[0][0] = 1;
 		pResult->m[1][1] = 1;
 		pResult->m[2][2] = 1;
+		pResult->m[3][3] = 1;
 	}
 }
 
@@ -88,12 +89,12 @@ void Matrix2DConcat(Matrix2D* pResult, const Matrix2D* pMtx0, const Matrix2D* pM
 
 	int i, j, k;
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < 4; i++)
 	{
-		for (j = 0; j < 3; j++)
+		for (j = 0; j < 4; j++)
 		{
 			tempMatrix.m[i][j] = 0;
-			for (k = 0; k < 3; k++)
+			for (k = 0; k < 4; k++)
 			{
 				tempMatrix.m[i][j] += pMtx0->m[i][k] * pMtx1->m[k][j];
 			}
@@ -114,14 +115,21 @@ void Matrix2DTranslate(Matrix2D* pResult, float x, float y)
 
 	Matrix2DIdentity(pResult);
 
-	pResult->m[0][2] = x;
-	pResult->m[1][2] = y;
+	pResult->m[0][3] = x;
+	pResult->m[1][3] = y;
 }
 
 // This function creates a scaling matrix from x & y and saves it in Result.
 // (Hint: This function must initialize all matrix values.)
 void Matrix2DScale(Matrix2D* pResult, float x, float y)
 {
+
+	//Matrix2D tempMat;
+//tempMat = { x, 0, 0, 0
+//						0, y, 0, 0
+//						0, 0, 1, 0
+//						0, 0, 0, 0 };
+
 	// x 0 0
 	// 0 y 0
 	// 0 0 1
@@ -155,10 +163,10 @@ void Matrix2DRotRad(Matrix2D* pResult, float angle)
 	Matrix2DIdentity(pResult);
 
 	pResult->m[0][0] = (float)cos(angle);
-	pResult->m[0][1] = (float)cos(angle);
-
-	pResult->m[1][0] = (float)cos(angle);
+	pResult->m[0][1] = (float)-sin(angle);
+	pResult->m[1][0] = (float)sin(angle);
 	pResult->m[1][1] = (float)cos(angle);
+
 }
 
 // This function multiplies the matrix Mtx with the vector Vec and saves the result in Result.

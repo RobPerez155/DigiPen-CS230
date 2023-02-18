@@ -17,6 +17,7 @@
 #include "SandboxScene.h"
 #include "Trace.h"
 #include "Stream.h"
+#include "Matrix2D.h"
 #include "Vector2D.h"
 
 
@@ -93,6 +94,16 @@ static void SandboxSceneTraceFloat(const char* text, float f)
 static void SandboxSceneTraceVector(const char* text, const DGL_Vec2* v) {
 	TraceMessage("Vector Test: %s = [%f, %f]", text, v->x, v->y);
 }
+
+//static void SandboxSceneTraceMatrix(const char* text, const DGL_Mat4* v) {
+//	TraceMessage("Matrix Test: %s = [%f, %f]", text, v->m[0][0]);
+//	for (int i = 0; i <= 3; i++)
+//	{
+//		for (int j = 0; j <= 3; j++) {
+//			TraceMessage(v->m[i], v->m[j]);
+//		}
+//	}
+//}
 
 // Load any resources used by the scene.
 static void SandboxSceneLoad(void)

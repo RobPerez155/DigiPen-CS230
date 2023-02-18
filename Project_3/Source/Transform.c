@@ -217,7 +217,7 @@
 		{
 
 		//const Matrix2D*
-		Matrix2D* output = calloc(1, sizeof(Matrix2D));
+		Matrix2D output;
 
 		//o	Use the Matrix2DScale, Matrix2DRotRad, and Matrix2DTranslate functions to create separate matrices for the transform’s scale, rotation, and translation values.
 		//Local variables
@@ -229,14 +229,13 @@
 
 		Matrix2DTranslate(&translate, transform->translation.x, transform->translation.y);
 
-		Matrix2DConcat(output, &rotate, &scale);
+		Matrix2DConcat(&output, &rotate, &scale);
 
-		Matrix2DConcat(output, &translate, output);
+		Matrix2DConcat(&output, &translate, &output);
 
 		transform->isDirty = false;
 
-		DGL_Graphics_SetCB_TransformMatrix(output);
-		return output;
+		transform->matrix = output;
 		}
 		
 		return &transform->matrix;

@@ -161,7 +161,8 @@ void AnimationRead(Animation* animation, Stream stream)
 //	 parent = Pointer to the parent Entity.
 void AnimationSetParent(Animation* animation, Entity* parent)
 {
-	animation->parent = parent;
+	if (animation != NULL)
+		animation->parent = parent;
 }
 
 // Play a simple animation sequence [0 .. frameCount - 1].

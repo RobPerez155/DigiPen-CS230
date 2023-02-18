@@ -43,7 +43,13 @@ typedef struct Level1Scene
 	// Add any scene-specific variables second.
 	int numLives;
 	Mesh* ptrMesh;
+	Mesh* ptrMesh3x3;
+	Mesh* ptrMesh16x8;
 	SpriteSource* ptrSpriteMesh;
+	SpriteSource* ptrSpriteMonkeyIdle;
+	SpriteSource* ptrSpriteMonkeyWalk;
+	SpriteSource* ptrSpriteMonkeyJump;
+	SpriteSource* ptrSpriteLivesText;
 	Entity* ptrEntity;
 	Entity* Monkey;
 	Entity* LivesText;
@@ -63,6 +69,7 @@ static const char* animFileName = "./Data/Level1_Lives.txt";
 static const char* monkeyWalkFileName = "./Assets/MonkeyWalk.png";
 static const char* monkeyIdleFileName = "./Assets/MonkeyIdle.png";
 static const char* monkeyJumpFileName = "./Assets/MonkeyJump.png";
+static const char* fontFileName = "./Assets/Roboto_Mono_white.png";
 static const float groundHeight = -150.0f;
 static const float moveVelocity = 500.0f;
 static const float jumpVelocity = 1000.0f;
@@ -104,6 +111,7 @@ static void Level1SceneUpdate(float dt);
 static void Level1SceneExit(void);
 static void Level1SceneUnload(void);
 static void Level1SceneRender(void);
+static void Level1SceneSetMonkeyState(Entity* gameObject, enum MonkeyStates newState);
 
 //------------------------------------------------------------------------------
 // Instance Variable:
@@ -115,7 +123,6 @@ static Level1Scene instance =
 	{ "Level1", Level1SceneLoad, Level1SceneInit, Level1SceneUpdate, Level1SceneRender, Level1SceneExit, Level1SceneUnload },
 
 	// Initialize any scene-specific variables:
-
 };
 
 //------------------------------------------------------------------------------
@@ -142,26 +149,75 @@ static void Level1SceneLoad(void)
 		StreamClose(&lifeFile);
 	}
 
-	//Planet
 	instance.ptrMesh = MeshCreateQuad(0.5f, 0.5f, 1.0f, 1.0f, "Mesh1x1");
+	instance.ptrMesh3x3 = MeshCreateQuad(0.5, 0.5, 1.0f / 3, 1.0f / 3, "Mesh3x3");
+	instance.ptrMesh16x8 = MeshCreateQuad(0.5, 0.5, 1.0f / 16, 1.0f / 8, "Mesh16x8");
+
+	//Planet
 	SpriteSource* sprPlanet = SpriteSourceCreate();
 	SpriteSourceLoadTexture(sprPlanet, 1, 1, "./Assets/PlanetTexture.png");
 	instance.ptrSpriteMesh = sprPlanet;
 
-	//Monkey
-	MeshCreateQuad(0.5, 0.5, 1.0f / 3, 1.0f / 3, "Mesh3x3");
-	MeshCreateQuad(0.5, 0.5, 1.0f / 16, 1.0f / 8, "Mesh16x8");
+	//MonkeyIdle
+	SpriteSource* sprMonkeyIdle = SpriteSourceCreate();
+	SpriteSourceLoadTexture(sprMonkeyIdle, 1, 1, monkeyIdleFileName);
+	instance.ptrSpriteMonkeyIdle = sprMonkeyIdle;
 
-	// Need to copy layout for planet for these png's
-	SpriteSourceCreate(1, 1, “MonkeyIdle.png”);
-	SpriteSourceCreate(3, 3, “MonkeyWalk.png”);
-	SpriteSourceCreate(16, 8, “Roboto_Mono_black.png”);
+	//MonkeyWalk
+	SpriteSource* sprMonkeyWalk = SpriteSourceCreate();
+	SpriteSourceLoadTexture(sprMonkeyWalk, 3, 3, monkeyWalkFileName);
+	instance.ptrSpriteMonkeyWalk = sprMonkeyWalk;
+
+	//MonkeyJump
+	SpriteSource* sprMonkeyJump = SpriteSourceCreate();
+	SpriteSourceLoadTexture(sprMonkeyJump, 1, 1, monkeyJumpFileName);
+	instance.ptrSpriteMonkeyJump = sprMonkeyJump;
+
+	//LivesText
+	SpriteSource* sprLivesText = SpriteSourceCreate();
+	SpriteSourceLoadTexture(sprLivesText, 16, 8, fontFileName);
+	instance.ptrSpriteLivesText = sprLivesText;
+
+	MeshCreateQuad(0.5, 0.5, 1.0f / 16, 1.0f / 8, "Mesh16x8");
 }
+
+static void Level1SceneSetMonkeyState(Entity* gameObject, enum MonkeyStates newState)
+{
+	if (monkeyState != newState) 
+	{
+		Sprite* sprMonkey = EntityGetSprite(gameObject);
+		Animation* animMonkey = EntityGetAnimation(gameObject);
+
+		switch (newState) 
+		{
+		case MonkeyIdle:
+			SpriteSetMesh(sprMonkey, instance.ptrMesh);
+			SpriteSetSpriteSource(sprMonkey, instance.ptrSpriteMonkeyIdle);
+			AnimationPlay(animMonkey, 1, 0.0f, false);
+		break;
+
+		case MonkeyWalk:
+			SpriteSetMesh(sprMonkey, instance.ptrMesh3x3);
+			SpriteSetSpriteSource(sprMonkey, instance.ptrSpriteMonkeyWalk);
+			AnimationPlay(animMonkey, 8, 0.05f, true);
+		break;
+
+		case MonkeyJump:
+			SpriteSetMesh(sprMonkey, instance.ptrMesh3x3);
+			SpriteSetSpriteSource(sprMonkey, instance.ptrSpriteMonkeyJump);
+			AnimationPlay(animMonkey, 1, 0.0f, false);
+		break;
+
+		}
+	}
+};
 
 // Initialize the variables used by the scene.
 static void Level1SceneInit()
 {
-	Entity* Planet = EntityFactoryBuild("./Data/PlanetJump.txt");
+	Entity* Planet = EntityFactoryBuild("./Data/PlanetBounce.txt");
+	Entity* Monkey = EntityFactoryBuild("./Data/Monkey.txt");
+	Entity* LivesText = EntityFactoryBuild("./Data/MonkeyLivesText.txt");
 
 	// Animation tests
 	//Stream animFile = StreamOpen(animFileName);
@@ -180,6 +236,28 @@ static void Level1SceneInit()
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
 		instance.ptrEntity = Planet;
+	}
+
+	if (Monkey != NULL)
+	{
+		monkeyState = MonkeyInvalid;
+
+		Level1SceneSetMonkeyState(Monkey, MonkeyIdle);
+		instance.Monkey = Monkey;
+	}
+
+	if (LivesText != NULL)
+	{
+		Sprite* sprLivesText = EntityGetSprite(LivesText);
+		SpriteSetMesh(sprLivesText, instance.ptrMesh16x8);
+		SpriteSetSpriteSource(sprLivesText, instance.ptrSpriteLivesText);
+
+		sprintf_s(livesBuffer, _countof(livesBuffer), "Lives: %d", instance.numLives);
+
+		DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
+		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
+
+		instance.LivesText = LivesText;
 	}
 }
 
@@ -246,6 +324,7 @@ static void Level1SceneMovementController(Entity* entity)
 static void Level1SceneUpdate(float dt)
 {	EntityUpdate(instance.ptrEntity, dt);
 	Level1SceneMovementController(instance.ptrEntity);
+	Level1SceneSetMonkeyState(instance.Monkey, MonkeyWalk);
 
 
 	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
