@@ -50,7 +50,7 @@ typedef struct Level1Scene
 	SpriteSource* ptrSpriteMonkeyWalk;
 	SpriteSource* ptrSpriteMonkeyJump;
 	SpriteSource* ptrSpriteLivesText;
-	Entity* ptrEntity;
+	Entity* Planet;
 	Entity* Monkey;
 	Entity* LivesText;
 
@@ -112,6 +112,8 @@ static void Level1SceneExit(void);
 static void Level1SceneUnload(void);
 static void Level1SceneRender(void);
 static void Level1SceneSetMonkeyState(Entity* gameObject, enum MonkeyStates newState);
+static void Level1SceneBounceController(Entity* planet);
+static bool Level1SceneIsColliding(const Entity* entityA, const Entity* entityB);
 
 //------------------------------------------------------------------------------
 // Instance Variable:
@@ -203,14 +205,66 @@ static void Level1SceneSetMonkeyState(Entity* gameObject, enum MonkeyStates newS
 		break;
 
 		case MonkeyJump:
-			SpriteSetMesh(sprMonkey, instance.ptrMesh3x3);
+			SpriteSetMesh(sprMonkey, instance.ptrMesh);
 			SpriteSetSpriteSource(sprMonkey, instance.ptrSpriteMonkeyJump);
 			AnimationPlay(animMonkey, 1, 0.0f, false);
 		break;
 
+
 		}
+		monkeyState = newState;
 	}
 };
+
+static void Level1SceneBounceController(Entity* planet)
+{
+	Physics* planetPhysics = EntityGetPhysics(planet);
+	Transform* planetTransform = EntityGetTransform(planet);
+
+	if (!planetPhysics && !planetTransform)
+	{
+		return;
+	}
+
+	Vector2D currentPos = *TransformGetTranslation(planetTransform);
+	Vector2D currentVelocity = *PhysicsGetVelocity(planetPhysics);
+
+	if (currentPos.x <= -wallDistance)
+	{
+		currentPos.x = -wallDistance;
+		currentVelocity.x = -currentVelocity.x;
+	} 
+	else if (currentPos.x >= wallDistance)
+	{
+		currentPos.x = wallDistance;
+		currentVelocity.x = -currentVelocity.x;
+	}
+
+	if (currentPos.y <= groundHeight)
+	{
+		//conserve energy
+		currentPos.y = groundHeight + (groundHeight - currentPos.y);
+		currentVelocity.y = -currentVelocity.y;
+	}
+
+	TransformSetTranslation(planetTransform, &currentPos);
+	PhysicsSetVelocity(planetPhysics, &currentVelocity);
+}
+
+static bool Level1SceneIsColliding(const Entity* entityA, const Entity* entityB)
+{
+	Transform* transformA = EntityGetTransform(entityA);
+	Transform* transformB = EntityGetTransform(entityB);
+
+	if (Vector2DSquareDistance(TransformGetTranslation(transformA), TransformGetTranslation(transformB)) < CheckSquareDistance)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 // Initialize the variables used by the scene.
 static void Level1SceneInit()
@@ -235,7 +289,7 @@ static void Level1SceneInit()
 		DGL_Graphics_SetBackgroundColor(&white);
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
-		instance.ptrEntity = Planet;
+		instance.Planet = Planet;
 	}
 
 	if (Monkey != NULL)
@@ -252,12 +306,13 @@ static void Level1SceneInit()
 		SpriteSetMesh(sprLivesText, instance.ptrMesh16x8);
 		SpriteSetSpriteSource(sprLivesText, instance.ptrSpriteLivesText);
 
-		sprintf_s(livesBuffer, _countof(livesBuffer), "Lives: %d", instance.numLives);
+		sprintf_s(livesBuffer, _countof(livesBuffer), "Lives %d", instance.numLives);
 
 		DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
 		instance.LivesText = LivesText;
+		SpriteSetText(sprLivesText, livesBuffer);
 	}
 }
 
@@ -277,16 +332,31 @@ static void Level1SceneMovementController(Entity* entity)
 	if (DGL_Input_KeyDown(VK_LEFT))
 	{
 		currVelocity.x = -moveVelocity;
+
+		if (monkeyState != MonkeyJump) 
+		{
+			Level1SceneSetMonkeyState(instance.Monkey, MonkeyWalk);
+		}
+
 		printf("Move left - %f \n", currVelocity.x);
 	}
 	if (DGL_Input_KeyDown(VK_RIGHT))
 	{
 		currVelocity.x = moveVelocity;
 		printf("Move right - %f \n", currVelocity.x);
+
+		if (monkeyState != MonkeyJump)
+		{
+			Level1SceneSetMonkeyState(instance.Monkey, MonkeyWalk);
+		}
 	}
 	if (!DGL_Input_KeyDown(VK_RIGHT) && !DGL_Input_KeyDown(VK_LEFT))
 	{
 		currVelocity.x = 0;
+		if (monkeyState != MonkeyJump)
+		{
+			Level1SceneSetMonkeyState(instance.Monkey, MonkeyIdle);
+		}
 	}
 	
 	// Jump mechanic
@@ -294,25 +364,30 @@ static void Level1SceneMovementController(Entity* entity)
 	{
 		currVelocity.y = jumpVelocity;
 		PhysicsSetAcceleration(ptrPhysics, &gravityNormal);
-		printf("Move jump\n");	
+		printf("Move jump\n");
+
+		Level1SceneSetMonkeyState(instance.Monkey, MonkeyJump);
 	}
 
 
-	// Check for Landing - Annotate
+	// Check for Landing
 	Vector2D translation = *TransformGetTranslation(ptrTransform);
 	Vector2D* currTranslation = &translation;
 
 	if (currTranslation->y < groundHeight)
 	{
+		Level1SceneSetMonkeyState(instance.Monkey, MonkeyIdle);
+
 		currTranslation->y = groundHeight;
 		TransformSetTranslation(ptrTransform, &(*currTranslation));
 		currVelocity.y = 0;
 		PhysicsSetAcceleration(ptrPhysics, &gravityNone);
-		instance.numLives--;
-		if (instance.numLives <= 0)
-		{
-			SceneSystemSetNext(Level2SceneGetInstance());
-		}
+		//instance.numLives--;
+		//if (instance.numLives <= 0)
+		//{
+		//	SceneSystemSetNext(Level2SceneGetInstance());
+		//}
+
 	}
 
 	PhysicsSetVelocity(ptrPhysics, &currVelocity);
@@ -322,10 +397,29 @@ static void Level1SceneMovementController(Entity* entity)
 // Params:
 //	 dt = Change in time (in seconds) since the last game loop.
 static void Level1SceneUpdate(float dt)
-{	EntityUpdate(instance.ptrEntity, dt);
-	Level1SceneMovementController(instance.ptrEntity);
-	Level1SceneSetMonkeyState(instance.Monkey, MonkeyWalk);
+{	
 
+	Level1SceneMovementController(instance.Monkey);
+	Level1SceneBounceController(instance.Planet);
+	//Level1SceneSetMonkeyState(instance.Monkey, MonkeyWalk);
+	//EntityUpdate(instance.Planet, dt);
+	EntityUpdate(instance.Monkey, dt);
+	EntityUpdate(instance.Planet, dt);
+	EntityUpdate(instance.LivesText, dt);
+
+	if (Level1SceneIsColliding(instance.Monkey, instance.Planet))
+	{
+		instance.numLives--;
+		if (instance.numLives <= 0)
+		{
+			// Switch to Level 2
+			SceneSystemSetNext(Level2SceneGetInstance());
+		}
+		else {
+			// Restart Level 1
+			Level1SceneInit();
+		}
+	}
 
 	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
 	if (DGL_Input_KeyTriggered('1'))
@@ -357,13 +451,18 @@ static void Level1SceneUpdate(float dt)
 // Render the scene.
 void Level1SceneRender(void)
 {
-	EntityRender(instance.ptrEntity);
+	EntityRender(instance.Planet);
+	EntityRender(instance.Monkey);
+	EntityRender(instance.LivesText);
+	
 }
 
 // Exit the scene.
 static void Level1SceneExit()
 {
-	EntityFree(&instance.ptrEntity);
+	EntityFree(&instance.Planet);
+	EntityFree(&instance.Monkey);
+	EntityFree(&instance.LivesText);
 }
 
 // Unload any resources used by the scene.

@@ -54,7 +54,7 @@
 		const char* text;
 
 	} Sprite;
-
+	void SpriteDraw(const Sprite* sprite, Transform* transform);
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -143,13 +143,12 @@
 			DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
 			DGL_Graphics_SetTexture(NULL);
 		}
-
 		DGL_Graphics_SetCB_TransformMatrix(TransformGetMatrix(transform));
-
 		DGL_Graphics_SetCB_Alpha(sprite->alpha);
 		DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 		MeshRender(sprite->mesh);
 		DGL_Graphics_SetTexture(NULL);
+		SpriteDraw(sprite, transform);
 	}
 
 	// Get a Sprite's alpha value.
@@ -193,7 +192,7 @@
 	//     TraceMessage("SpriteSetFrame: frame index = %d", frameIndex);
 	void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex)
 	{
-		if (frameIndex >= 0 && frameIndex <= sprite->frameIndex)
+		if (frameIndex >= 0 )
 		{
 			sprite->frameIndex = frameIndex;
 			TraceMessage("SpriteSetFrame: frame index = %d", frameIndex);
@@ -270,7 +269,7 @@
 		DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 		
 		//	If the sprite’s text pointer is NULL,
-		if (sprite != NULL && sprite->text == NULL)
+		if ( sprite->text == NULL)
 		{
 			//	Call TransformGetMatrix().
 			//	Call DGL_Graphics_SetCB_TransformMatrix(), passing the Transform’s matrix.
@@ -281,28 +280,29 @@
 		}
 		else {
 			//Call TransformGetMatrix() to get a local copy of the Transform component’s transformation matrix(“matrix”).
-			Matrix2D transformMatrix = *TransformGetMatrix(transform);
-
 			//Call Matrix2DTranslate() to create an translation matrix(“offset”) with an X value equal to the Transform component’s X scale.
-			Matrix2DTranslate(&transformMatrix, TransformGetScale(transform)->x, TransformGetScale(transform)->y);
-
+			Matrix2D matrix = *TransformGetMatrix(transform);
+			Matrix2D translateMatrix;
+			Matrix2DTranslate(&translateMatrix, TransformGetScale(transform)->x, 0);
 			//Assign a local “const char* ” variable equal to the Sprite’s text pointer.This variable will be used to “walk” through the string without modifying the sprite’s text pointer.
-			// 
+			const char* buffer = sprite->text;
+
+
+
 			//While the local text pointer points at a non - zero character,
 			//	Convert the current character into a zero - based frame index.
-				//	Hint : The font sheet begins at the space character(‘ ‘).
-			
-			//	Set the SpriteSource texture offset using this calculated frame index.
-			
-			//	Call DGL_Graphics_SetCB_TransformMatrix(), passing the local copy of the Transform’s matrix.
-			
-			//	Call MeshRender(), passing the sprite’s mesh.
-			
-			//	Advance the local char pointer to the next character in the string.
-			
-			//	Call Matrix2DConcat() to concatenate the translation matrixand transformation matrix.
-			//	matrix = offset * matrix
+			while (*buffer != '\0')
+			{
+				int tempChar = (*buffer) - ' ' ;
+				SpriteSourceSetTextureOffset(sprite->spriteSource, tempChar);
+				DGL_Graphics_SetCB_TransformMatrix(&matrix);
+				MeshRender(sprite->mesh);
 
+				buffer++;
+				Matrix2DConcat(&matrix, &translateMatrix, &matrix);
+			}
+
+			DGL_Graphics_SetTexture(NULL);
 		}
 	}
 

@@ -79,7 +79,7 @@ void AnimationAdvanceFrame(Animation* animation, float dt)
 		Sprite* animSprite = EntityGetSprite(animation->parent);
 		animation->frameIndex++;
 
-		if (animation->frameIndex >= animation->frameCount)
+		if (animation->frameIndex < animation->frameCount)
 		{
 			if (animation->isRunning)
 			{
@@ -181,7 +181,7 @@ void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bo
 		animation->frameCount = frameCount;
 		animation->frameDelay = 0.0;
 		animation->frameDuration = frameDuration;
-		animation->isRunning = 0;
+		animation->isRunning = true;
 		animation->isLooping = isLooping;
 	
 		Sprite* animSprite = EntityGetSprite(animation->parent);
@@ -200,7 +200,7 @@ void AnimationUpdate(Animation* animation, float dt)
 {
 	if (animation != NULL)
 	{
-		animation->isDone = false; 
+
 
 		if (animation->isRunning)
 		{
