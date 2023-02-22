@@ -20,6 +20,9 @@
 #include "Matrix2D.h"
 #include "Vector2D.h"
 
+#include "Entity.h"
+
+
 
 //------------------------------------------------------------------------------
 // Private Structures:
@@ -113,6 +116,11 @@ static void SandboxSceneLoad(void)
 // Initialize the variables used by the scene.
 static void SandboxSceneInit()
 {
+	Entity* pizza = EntityCreate();
+
+	EntitySetName(pizza, "pizza");
+
+
 }
 
 // Update the the variables used by the scene and render objects (temporary).
@@ -206,7 +214,7 @@ static void SandboxSceneUpdate(float dt)
 
 	// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 	//   it when you are ready to test out a new scene.
-	SceneSystemSetNext(NULL);
+	//SceneSystemSetNext(NULL);
 }
 
 // Render the scene.

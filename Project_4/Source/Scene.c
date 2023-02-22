@@ -13,6 +13,8 @@
 #include <assert.h>
 
 #include "Scene.h"
+#include "EntityContainer.h"
+#include "EntityFactory.h"
 #include "SceneSystem.h"
 #include "Trace.h"
 
@@ -35,6 +37,7 @@
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
+static EntityContainer* entities = NULL;
 
 //------------------------------------------------------------------------------
 // Private Function Declarations:
@@ -66,6 +69,7 @@ void SceneLoad(const Scene* scene)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->load != NULL))
 	{
+		EntityContainerCreate();
 		// TODO: Call TraceMessage, passing the format string "%s: Load" and the name of the scene.
 		TraceMessage("%s: Load", scene->name);
 
@@ -94,6 +98,7 @@ void SceneUpdate(const Scene* scene, float dt)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->update != NULL))
 	{
+		EntityContainerUpdateAll(entities, dt);
 		// TODO: Call TraceMessage, passing the format string "%s: Update" and the name of the scene.
 		TraceMessage("%s: Update", scene->name);
 
@@ -108,6 +113,7 @@ void SceneRender(const Scene* scene)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->render != NULL))
 	{
+		EntityContainerRenderAll(entities);
 		// TODO: Call TraceMessage, passing the format string "%s: Render" and the name of the scene.
 		TraceMessage("%s: Render", scene->name);
 
@@ -122,6 +128,10 @@ void SceneExit(const Scene* scene)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->exit != NULL))
 	{
+		//Problems
+		//EntityContainerFreeAll(entities);
+		//EntityFactoryFreeAll();
+
 		// TODO: Call TraceMessage, passing the format string "%s: Exit" and the name of the scene.
 		TraceMessage("%s: Exit", scene->name);
 
@@ -136,6 +146,7 @@ void SceneUnload(const Scene* scene)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->unload != NULL))
 	{
+		EntityContainerFree(&entities);
 		// TODO: Call TraceMessage, passing the format string "%s: Unload" and the name of the scene.
 		TraceMessage("%s: Unload", scene->name);
 
@@ -150,6 +161,11 @@ void SceneRestart(void)
 	// Tell the Scene System to restart the active scene.
 	SceneSystemRestart();
 
+}
+
+void SceneAddEntity(Entity* entity)
+{
+	UNREFERENCED_PARAMETER(entity);
 }
 
 //------------------------------------------------------------------------------

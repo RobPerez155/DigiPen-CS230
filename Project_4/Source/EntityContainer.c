@@ -15,6 +15,9 @@
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
+
+#include "EntityContainer.h"
+
 //------------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -79,14 +82,20 @@ extern "C" {	// Assume C declarations for C++.
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
-	EntityContainer* EntityContainerCreate();
+	EntityContainer* EntityContainerCreate()
+	{
+		return NULL;
+	}
 
 	// Free the memory associated with an EntityContainer.
 	// (NOTE: If necessary, call EntityContainerFreeAll to free any existing Entities.)
 	// (NOTE: The EntityContainer pointer must be set to NULL.)
 	// Params:
 	//	 entities = Pointer to the EntityContainer pointer.
-	void EntityContainerFree(EntityContainer** entities);
+	void EntityContainerFree(EntityContainer** entities)
+		{
+			UNREFERENCED_PARAMETER(entities);
+		}
 
 	// Add an Entity to the EntityContainer.
 	// (NOTE: If the container is not full, then the Entity should be added to the list
@@ -97,7 +106,12 @@ extern "C" {	// Assume C declarations for C++.
 	//	 If the EntityContainer pointer is valid and the Entity was added successfully,
 	//		then return true,
 	//		else return false.
-	bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity);
+	bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity)
+		{
+		UNREFERENCED_PARAMETER(entities);
+		UNREFERENCED_PARAMETER(entity);
+		return true;
+		}
 
 	// Find an Entity in the EntityContainer that has a matching name.
 	// (HINT: Use the new function, EntityIsNamed, to compare names.)
@@ -108,7 +122,12 @@ extern "C" {	// Assume C declarations for C++.
 	//	 If the EntityContainer pointer is valid and the Entity was located successfully,
 	//		then return a pointer to the Entity,
 	//		else return false.
-	Entity* EntityContainerFindByName(const EntityContainer* entities, const char* entityName);
+	Entity* EntityContainerFindByName(const EntityContainer* entities, const char* entityName)
+		{
+		UNREFERENCED_PARAMETER(entities);
+		UNREFERENCED_PARAMETER(entityName);
+		return NULL;
+		}
 
 	// Determines if the EntityContainer is empty (no Entities exist).
 	// Params:
@@ -117,7 +136,11 @@ extern "C" {	// Assume C declarations for C++.
 	//	 If the EntityContainer pointer is valid and no Entities exist,
 	//		then return true,
 	//		else return false.
-	bool EntityContainerIsEmpty(const EntityContainer* entities);
+	bool EntityContainerIsEmpty(const EntityContainer* entities)
+		{
+		UNREFERENCED_PARAMETER(entities);
+		return true;
+		}
 
 	// Update all Entities in the EntityContainer.
 	// (HINT: You must call EntityUpdate for all Entities.)
@@ -127,13 +150,20 @@ extern "C" {	// Assume C declarations for C++.
 	// Params:
 	//   entities = Pointer to the EntityContainer.
 	//	 dt = Change in time (in seconds) since the last game loop.
-	void EntityContainerUpdateAll(EntityContainer* entities, float dt);
+	void EntityContainerUpdateAll(EntityContainer* entities, float dt)
+		{
+		UNREFERENCED_PARAMETER(entities);
+		UNREFERENCED_PARAMETER(dt);
+		}
 
 	// Render all Entities in the EntityContainer.
 	// (HINT: You must call EntityRender for all Entities.)
 	// Params:
 	//   entities = Pointer to the EntityContainer.
-	void EntityContainerRenderAll(const EntityContainer* entities);
+	void EntityContainerRenderAll(const EntityContainer* entities)
+		{
+		UNREFERENCED_PARAMETER(entities);
+		}
 
 	// Free all Entities in the EntityContainer.
 	// (NOTE: You must call EntityFree for all Entities.)
@@ -141,7 +171,10 @@ extern "C" {	// Assume C declarations for C++.
 	// (HINT: The entityCount should be 0 after all of the Entities have been freed.)
 	// Params:
 	//   entities = Pointer to the EntityContainer.
-	void EntityContainerFreeAll(EntityContainer* entities);
+	void EntityContainerFreeAll(EntityContainer* entities)
+		{
+		UNREFERENCED_PARAMETER(entities);
+		}
 
 	//------------------------------------------------------------------------------
 

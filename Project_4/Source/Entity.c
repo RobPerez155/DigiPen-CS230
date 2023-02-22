@@ -65,6 +65,8 @@
 		// Pointer to an attached animation component.
 		Animation* animation;
 
+		bool isDestroyed;
+
 	} Entity;
 
 	//------------------------------------------------------------------------------
@@ -318,7 +320,88 @@
 		}
 	}
 
+	// Compare the Entity's name with the specified name.
+// Params:
+//	 entity = Pointer to the Entity.
+//   name = Pointer to the name to be checked.
+// Returns:
+//	 If the Entity pointer is valid and the two names match,
+//		then return true,
+//		else return false.
+	bool EntityIsNamed(const Entity* entity, const char* name)
+	{
+		if (entity != NULL && strcmp(entity->name, name) == 0)
+		{
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
+	// Check whether an Entity has been flagged for destruction.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return the value in the "isDestroyed" flag,
+//		else return false.
+	bool EntityIsDestroyed(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->isDestroyed;
+		}
+		else {
+			return false;
+		}
+	}
+
+	// Flag an Entity for destruction.
+// (Note: This is to avoid Entities being destroyed while they are being processed.)
+// Params:
+//	 entity = Pointer to the Entity to be flagged for destruction.
+// Returns:
+//	 If 'entity' is valid,
+//	   then set the 'isDestroyed' flag,
+//	   else do nothing.
+	void EntityDestroy(Entity* entity)
+	{
+		if (entity != NULL) 
+		{
+			entity->isDestroyed = true;
+		}
+	}
+
+	// Get the Behavior component attached to an Entity.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return a pointer to the attached Behavior component,
+//		else return NULL.
+	Behavior* EntityGetBehavior(const Entity* entity);
+
+	// Attach a Behavior component to an Entity.
+	// (NOTE: This function must set the Behavior component's parent pointer by
+	//	  calling the BehaviorSetParent() function.)
+	// Params:
+	//	 entity = Pointer to the Entity.
+	//   behavior = Pointer to the Behavior component to be attached.
+	void EntityAddBehavior(Entity* entity, Behavior* behavior);
+
+// Dynamically allocate a clone of an existing Entity.
+// (Hint: Make sure to perform a shallow copy or deep copy, as appropriate.)
+// (WARNING: You should use the EntityAdd* functions when attaching cloned
+//    components to the cloned Entity.  This will ensure that the 'parent'
+//    variable is set properly.)
+// Params:
+//	 other = Pointer to the Entity to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned Entity,
+//	   else return NULL.
+	Entity* EntityClone(const Entity* other);
 
 	//------------------------------------------------------------------------------
 
