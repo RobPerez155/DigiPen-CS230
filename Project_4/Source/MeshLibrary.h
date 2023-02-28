@@ -36,24 +36,6 @@ typedef struct Mesh Mesh;
 // Public Structures:
 //------------------------------------------------------------------------------
 
-// An example of the structure to be defined in MeshLibrary.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct MeshLibrary
-{
-	// This variable is not required but could be used for tracking the number
-	//   of Mesh objects currently in the list.
-	unsigned int meshCount;
-
-	// A list of all currently loaded meshes.
-	// This list can be a fixed-length array (minimum size of 10 entries)
-	// or a dynamically-sized array, such as a linked list.
-	const Mesh* meshList[meshListSize];
-
-} MeshLibrary;
-#endif
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------

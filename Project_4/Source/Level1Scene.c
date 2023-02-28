@@ -12,9 +12,11 @@
 #include "stdafx.h"
 
 #include "Animation.h"
+#include "AsteroidsScene.h"
 #include "DemoScene.h"
 #include "DGL.h"
 #include "Entity.h"
+#include "EntityContainer.h"
 #include "EntityFactory.h"
 #include "Level1Scene.h"
 #include "Level2Scene.h"
@@ -269,9 +271,12 @@ static bool Level1SceneIsColliding(const Entity* entityA, const Entity* entityB)
 // Initialize the variables used by the scene.
 static void Level1SceneInit()
 {
-	Entity* Planet = EntityFactoryBuild("./Data/PlanetBounce.txt");
-	Entity* Monkey = EntityFactoryBuild("./Data/Monkey.txt");
-	Entity* LivesText = EntityFactoryBuild("./Data/MonkeyLivesText.txt");
+	Entity* Planet = EntityFactoryBuild("PlanetBounce");
+	Entity* Monkey = EntityFactoryBuild("Monkey");
+	Entity* LivesText = EntityFactoryBuild("MonkeyLivesText");
+	//Entity* Planet = EntityFactoryBuild("./Data/PlanetBounce.txt");
+	//Entity* Monkey = EntityFactoryBuild("./Data/Monkey.txt");
+	//Entity* LivesText = EntityFactoryBuild("./Data/MonkeyLivesText.txt");
 
 	// Animation tests
 	//Stream animFile = StreamOpen(animFileName);
@@ -401,8 +406,6 @@ static void Level1SceneUpdate(float dt)
 
 	Level1SceneMovementController(instance.Monkey);
 	Level1SceneBounceController(instance.Planet);
-	//Level1SceneSetMonkeyState(instance.Monkey, MonkeyWalk);
-	//EntityUpdate(instance.Planet, dt);
 	EntityUpdate(instance.Monkey, dt);
 	EntityUpdate(instance.Planet, dt);
 	EntityUpdate(instance.LivesText, dt);
@@ -421,6 +424,12 @@ static void Level1SceneUpdate(float dt)
 		}
 	}
 
+	if (DGL_Input_KeyTriggered('5'))
+	{
+		/*EntityContainerUpdateAll(,dt)*/
+		printf("pizza");
+	}
+
 	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
 	if (DGL_Input_KeyTriggered('1'))
 	{
@@ -432,6 +441,12 @@ static void Level1SceneUpdate(float dt)
 	{
 		// Switch to Level 2
 		SceneSystemSetNext(Level2SceneGetInstance());
+	}
+
+	if (DGL_Input_KeyTriggered('3'))
+	{
+		// Switch to Level 2
+		SceneSystemSetNext(AsteroidsSceneGetInstance());
 	}
 
 	if (DGL_Input_KeyTriggered('9'))

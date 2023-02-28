@@ -27,6 +27,7 @@ extern "C" {
 //------------------------------------------------------------------------------
 
 typedef struct Entity Entity;
+typedef struct EntityContainer EntityContainer;
 
 //------------------------------------------------------------------------------
 // Public Consts:
@@ -59,7 +60,7 @@ Entity* EntityFactoryBuild(const char * entityName);
 // Free all archetype Entities.
 // (Hint: If the "archetypes" container exists, then the EntityContainerFreeAll
 //    function must be called.)
-void EntityFactoryFreeAll();
+void EntityFactoryFreeAll(EntityContainer* archetypes);
 
 //------------------------------------------------------------------------------
 

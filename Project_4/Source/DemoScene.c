@@ -13,6 +13,7 @@
 #include "DGL.h"
 
 #include "DemoScene.h"
+#include "AsteroidsScene.h"
 #include "Scene.h"
 #include "SceneSystem.h"
 #include "Level1Scene.h"
@@ -263,6 +264,12 @@ static void DemoSceneUpdate(float dt)
 		{
 			// Switch to Level 2
 			SceneSystemSetNext(Level2SceneGetInstance());
+		}
+
+		if (DGL_Input_KeyTriggered('3'))
+		{
+			// Switch to Level 2
+			SceneSystemSetNext(AsteroidsSceneGetInstance());
 		}
 
 		if (DGL_Input_KeyTriggered('9'))

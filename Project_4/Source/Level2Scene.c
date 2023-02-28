@@ -12,6 +12,7 @@
 #include "stdafx.h"
 
 #include "Scene.h"
+#include "AsteroidsScene.h"
 #include "SceneSystem.h"
 #include "Level1Scene.h"
 #include "Level2Scene.h"
@@ -109,7 +110,7 @@ static void Level2SceneLoad(void)
 // Initialize the variables used by the scene.
 static void Level2SceneInit()
 {
-	Entity* Spaceship = EntityFactoryBuild("./Data/SpaceshipHoming.txt");
+	Entity* Spaceship = EntityFactoryBuild("SpaceshipHoming");
 
 	if (Spaceship != NULL)
 	{
@@ -177,12 +178,6 @@ static void Level2SceneUpdate(float dt)
 		SpriteSetAlpha(sprSpaceship, 1.0f);
 	}
 
-	if (DGL_Input_KeyTriggered('1'))
-	{
-		// Restart Level 1
-		SceneSystemSetNext(Level1SceneGetInstance());
-	}
-
 	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
 	if (DGL_Input_KeyTriggered('1'))
 	{
@@ -194,6 +189,12 @@ static void Level2SceneUpdate(float dt)
 	{
 		// Switch to Level 2
 		Level2SceneInit();
+	}
+
+	if (DGL_Input_KeyTriggered('3'))
+	{
+		// Switch to Level 2
+		SceneSystemSetNext(AsteroidsSceneGetInstance());
 	}
 
 	if (DGL_Input_KeyTriggered('9'))

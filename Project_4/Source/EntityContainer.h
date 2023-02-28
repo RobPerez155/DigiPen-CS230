@@ -40,31 +40,6 @@ typedef struct EntityContainer EntityContainer;
 // Public Structures:
 //------------------------------------------------------------------------------
 
-// An example of the structure to be defined in EntityContainer.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct EntityContainer
-{
-	// This variable is not required but could be used for tracking the number
-	//   of Entities currently in the list.  Instructions on how to do this
-	//   are included in the function headers.
-	unsigned entityCount;
-
-	// This variable is not required but could be used for different purposes.
-	// - For storing the maximum size of the container.
-	// - For tracking peak usage of the container, used for testing purposes.
-	unsigned entityMax;
-
-	// This list can be a fixed-length array (minimum size of 100 entries)
-	// or a dynamically sized array, such as a linked list.
-	// (NOTE: The implementation details are left up to the student.  However,
-	//    it is your responsiblity to ensure that memory is handled correctly.)
-	Entity*	entities[entityArraySize];
-
-} EntityContainer;
-#endif
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------
@@ -110,7 +85,7 @@ bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity);
 //	 If the EntityContainer pointer is valid and the Entity was located successfully,
 //		then return a pointer to the Entity,
 //		else return false.
-Entity* EntityContainerFindByName(const EntityContainer* entities, const char* entityName);
+Entity* EntityContainerFindByName(EntityContainer* entities, const char* entityName);
 
 // Determines if the EntityContainer is empty (no Entities exist).
 // Params:

@@ -16,7 +16,10 @@
 
 #include <stdlib.h> /* calloc, free */
 #include "Mesh.h"
+#include "Stream.h"
 #include "DGL.h"
+#include "Trace.h"
+#include "Vector2D.h"
 
 //------------------------------------------------------------------------------
 
@@ -56,6 +59,72 @@
 	//------------------------------------------------------------------------------
 	// Public Functions:
 	//------------------------------------------------------------------------------
+
+// Dynamically allocate a new Mesh object but leave it empty.
+// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+// Returns:
+//	 If the mesh was created successfully,
+//	   then return a pointer to the created Mesh,
+//	   else return NULL.
+	Mesh* MeshCreate()
+	{
+		Mesh* newMesh = calloc(1, sizeof(Mesh));
+
+		if (newMesh)
+		{
+			return newMesh;
+		}
+		else {
+			return NULL;
+		}
+	}
+
+	// Read the properties of a Mesh object from a file.
+// (NOTE: First, read a token from the file and verify that it is "Mesh".)
+// (NOTE: Second, read a token and store it in the Mesh's name variable.)
+// (NOTE: Third, read an integer indicating the number of vertices to be read.)
+// (NOTE: For each vertex, read a Vector2D (position), a DGL_Color (color), and a Vector2D (UV).)
+// (HINT: Call DGL_Graphics_AddVertex() to add a single vertex to the mesh.)
+// Params:
+//   mesh = Pointer to the Mesh.
+//	 stream = The data stream used for reading.
+	void MeshRead(Mesh* mesh, Stream stream)
+	{
+		// (NOTE: First, read a token from the file and verify that it is "Mesh".)
+		if (stream != NULL) 
+		{
+			const char* token = StreamReadToken(stream);
+
+			// (NOTE: Second, read a token and store it in the Mesh's name variable.)
+			if (strncmp(token, "Mesh", _countof("Mesh")) == 0)
+			{
+				// Using strcpy because token cannot not be assigned to mesh->name. Because the former is a const and the latter is not.
+				strcpy_s(mesh->name, _countof(mesh->name), token);
+			}
+			else {
+				TraceMessage("Expected token 'Mesh' not found");
+				return;
+			}
+
+			// (NOTE: Third, read an integer indicating the number of vertices to be read.)
+			int numVertices = StreamReadInt(stream);
+
+			// (NOTE: For each vertex, read a Vector2D (position), a DGL_Color (color), and a Vector2D (UV).)
+			for (int i = 0; i < numVertices; i++)
+			{
+				Vector2D* position = calloc(1, sizeof(Vector2D));
+				DGL_Color* color = calloc(1, sizeof(DGL_Color));
+				Vector2D* textureOffset = calloc(1, sizeof(Vector2D));
+
+				StreamReadVector2D(stream, position);
+				StreamReadColor(stream, color);
+				StreamReadVector2D(stream, textureOffset);
+
+				// (HINT: Call DGL_Graphics_AddVertex() to add a single vertex to the mesh.)
+				DGL_Graphics_AddVertex(position, color, textureOffset);
+			}
+		}
+	}
 
 	// Dynamically allocate a new Mesh object AND create a quadrilateral mesh.
 	Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)

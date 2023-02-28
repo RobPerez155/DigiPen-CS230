@@ -70,7 +70,6 @@ if (pResult) { //if statement if for error checking
 	}
 }
 
-//REVIEW CODE
 // In this function, pResult will be set to the opposite of pVec0 (e.g. x = -x & y = -y)
 void Vector2DNeg(Vector2D* pResult, const Vector2D* pVec0) 
 {

@@ -16,6 +16,7 @@
 #include "stdafx.h"
 
 #include "Animation.h"
+#include "Behavior.h"
 #include "Entity.h"
 #include "Physics.h"
 #include "Sprite.h"
@@ -66,6 +67,8 @@
 		Animation* animation;
 
 		bool isDestroyed;
+
+		Behavior* behavior;
 
 	} Entity;
 
@@ -380,7 +383,16 @@
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Behavior component,
 //		else return NULL.
-	Behavior* EntityGetBehavior(const Entity* entity);
+	Behavior* EntityGetBehavior(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->behavior;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Attach a Behavior component to an Entity.
 	// (NOTE: This function must set the Behavior component's parent pointer by
@@ -388,7 +400,11 @@
 	// Params:
 	//	 entity = Pointer to the Entity.
 	//   behavior = Pointer to the Behavior component to be attached.
-	void EntityAddBehavior(Entity* entity, Behavior* behavior);
+	void EntityAddBehavior(Entity* entity, Behavior* behavior)
+	{
+		UNREFERENCED_PARAMETER(behavior);
+		UNREFERENCED_PARAMETER(entity);
+	}
 
 // Dynamically allocate a clone of an existing Entity.
 // (Hint: Make sure to perform a shallow copy or deep copy, as appropriate.)
@@ -401,7 +417,29 @@
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned Entity,
 //	   else return NULL.
-	Entity* EntityClone(const Entity* other);
+	Entity* EntityClone(const Entity* other)
+	{
+		if (other != NULL)
+		{
+			Entity* clonedEntity = calloc(1, sizeof(Entity));
+			if (clonedEntity != NULL)
+			{
+				//Make shallow copy of entity
+				*clonedEntity = *other;
+
+				//Make deep copy
+				//clonedEntity->behavior = BehaviorClone(other->behavior);
+				//clonedEntity->sprite = SpriteClone(other->sprite);
+				//clonedEntity->animation = AnimationClone(other->animation);
+				//clonedEntity->physics = PhysicsClone(other->physics);
+				//clonedEntity->transform = TransformClone(other->transform);
+
+				return clonedEntity;
+			}
+			return NULL;
+		}
+		return NULL;
+	}
 
 	//------------------------------------------------------------------------------
 

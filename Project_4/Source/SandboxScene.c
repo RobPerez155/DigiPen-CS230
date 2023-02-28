@@ -20,7 +20,9 @@
 #include "Matrix2D.h"
 #include "Vector2D.h"
 
+#include "EntityContainer.h"
 #include "Entity.h"
+
 
 
 
@@ -116,11 +118,12 @@ static void SandboxSceneLoad(void)
 // Initialize the variables used by the scene.
 static void SandboxSceneInit()
 {
-	Entity* pizza = EntityCreate();
-
-	EntitySetName(pizza, "pizza");
+	EntityContainer* pizza = EntityContainerCreate();
 
 
+	EntityContainerFreeAll(pizza);
+	//UNREFERENCED_PARAMETER(pizza);
+	printf("pizza");
 }
 
 // Update the the variables used by the scene and render objects (temporary).

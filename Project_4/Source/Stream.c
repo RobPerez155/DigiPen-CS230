@@ -170,6 +170,45 @@ bool StreamReadBoolean(Stream stream)
 	}
 }
 
+// Read the data for a Color from a stream.
+// (NOTE: Verify that the stream and vector pointer are valid first.)
+// (HINT: Use StreamReadFloat() to read the RGBA values, in sequence.)
+// Params:
+//	 stream = The file stream from which to read.
+// Returns:
+//	 If the stream and vector pointer are both valid,
+//	   then read the RGBA components, in sequence,
+//	   else fill the RGBA components with 0.
+//		 (optionally, write an error message to the trace log).
+void StreamReadColor(Stream stream, DGL_Color* color)
+{
+	//if color and stream are valid 
+	if (stream != NULL && color != NULL)
+	{
+		float red = StreamReadFloat(stream);
+		float green = StreamReadFloat(stream);
+		float blue = StreamReadFloat(stream);
+		float alpha = StreamReadFloat(stream);
+
+	//read the color values in order, needed to look at DGL_Color struct to find the order
+		color->r = red;
+		color->g = green;
+		color->b = blue;
+		color->a = alpha;
+	}
+	else
+	{
+		if (color != NULL)
+		{
+			color->r = 0.0f;
+			color->g = 0.0f;
+			color->b = 0.0f;
+			color->a = 0.0f;
+		}
+		TraceMessage("Error: Stream or color pointer is NULL in StreamReadColor.");
+	}
+}
+
 // Close an opened stream.
 // (NOTE: Do not attempt to close the stream if the pointer is null.)
 // (PRO TIP: Avoid dangling pointers by setting the FILE pointer to NULL.)

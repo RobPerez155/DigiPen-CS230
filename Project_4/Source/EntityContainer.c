@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 
+#include "Entity.h"
 #include "EntityContainer.h"
 
 //------------------------------------------------------------------------------
@@ -36,13 +37,18 @@ extern "C" {	// Assume C declarations for C++.
 	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
+	// Private Constants:
+	//------------------------------------------------------------------------------
+	#define entityArraySize 100
+
+	//------------------------------------------------------------------------------
 	// Public Typedefs:
 	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
 	// Public Structures:
 	//------------------------------------------------------------------------------
-/*
+
 // You are free to change the contents of this structure as long as you do not
 //   change the public interface declared in the header.
 	typedef struct EntityContainer
@@ -61,10 +67,10 @@ extern "C" {	// Assume C declarations for C++.
 		// or a dynamically sized array, such as a linked list.
 		// (NOTE: The implementation details are left up to the student.  However,
 		//    it is your responsiblity to ensure that memory is handled correctly.)
-		Entity* entities[entityArraySize];
+		Entity* entitiesList[entityArraySize];
 
 	} EntityContainer;
-	*/
+	
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -73,6 +79,12 @@ extern "C" {	// Assume C declarations for C++.
 	//------------------------------------------------------------------------------
 	// Public Functions:
 	//------------------------------------------------------------------------------
+	
+	//------------------------------------------------------------------------------
+	// Private Functions:
+	//------------------------------------------------------------------------------
+	static void addEntity(EntityContainer* entities, Entity* entity);
+	static Entity* findEntityByName(Entity** list, const char* name);
 
 	// Dynamically allocate a new EntityContainer.
 	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
@@ -84,7 +96,18 @@ extern "C" {	// Assume C declarations for C++.
 	//	   else return NULL.
 	EntityContainer* EntityContainerCreate()
 	{
-		return NULL;
+		EntityContainer* ptrEntityContainer = calloc(1, sizeof(EntityContainer));
+		//container->entities = calloc(1, sizeof(Entity*) * MAX);
+		
+
+		if (ptrEntityContainer != NULL)
+		{
+			return ptrEntityContainer;
+		}
+		else
+		{
+			return NULL;
+		}
 	}
 
 	// Free the memory associated with an EntityContainer.
@@ -94,7 +117,8 @@ extern "C" {	// Assume C declarations for C++.
 	//	 entities = Pointer to the EntityContainer pointer.
 	void EntityContainerFree(EntityContainer** entities)
 		{
-			UNREFERENCED_PARAMETER(entities);
+			EntityContainerFreeAll(*entities);
+			*entities = NULL;
 		}
 
 	// Add an Entity to the EntityContainer.
@@ -108,10 +132,26 @@ extern "C" {	// Assume C declarations for C++.
 	//		else return false.
 	bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity)
 		{
-		UNREFERENCED_PARAMETER(entities);
-		UNREFERENCED_PARAMETER(entity);
-		return true;
+			if (entities->entityCount != entityArraySize)
+			{
+				addEntity(entities, entity);
+				return true;
+			}
+			return false;
 		}
+
+	static void addEntity(EntityContainer* entities, Entity* entity)
+	{
+		for (int i = 0; i < entityArraySize; i++)
+		{
+			if (entities->entitiesList[i] == NULL)
+			{
+				entities->entitiesList[i] = entity;
+				entities->entityCount++;
+				return;
+			}
+		}
+	}
 
 	// Find an Entity in the EntityContainer that has a matching name.
 	// (HINT: Use the new function, EntityIsNamed, to compare names.)
@@ -122,12 +162,38 @@ extern "C" {	// Assume C declarations for C++.
 	//	 If the EntityContainer pointer is valid and the Entity was located successfully,
 	//		then return a pointer to the Entity,
 	//		else return false.
-	Entity* EntityContainerFindByName(const EntityContainer* entities, const char* entityName)
+	Entity* EntityContainerFindByName(EntityContainer* entities, const char* entityName)
 		{
-		UNREFERENCED_PARAMETER(entities);
-		UNREFERENCED_PARAMETER(entityName);
-		return NULL;
+			return findEntityByName(entities->entitiesList, entityName);
 		}
+
+	static Entity* findEntityByName(Entity** list, const char* name)
+	{
+			int i = 0;
+			bool found = false;
+
+			while (i < entityArraySize && !found)
+			{
+				if (list[i] != NULL)
+				{
+					if (strcmp(EntityGetName(list[i]), name) == 0)
+					{
+						found = true;
+						break;
+					}
+				}
+				i++;
+			}
+
+			if (found)
+			{
+				return list[i];
+			}
+			else
+			{
+				return NULL;
+			}
+		}	
 
 	// Determines if the EntityContainer is empty (no Entities exist).
 	// Params:
@@ -138,8 +204,16 @@ extern "C" {	// Assume C declarations for C++.
 	//		else return false.
 	bool EntityContainerIsEmpty(const EntityContainer* entities)
 		{
-		UNREFERENCED_PARAMETER(entities);
-		return true;
+			if (entities != NULL)
+			{
+				int arraySize = sizeof(entities->entitiesList) / sizeof(entities->entitiesList[0]);
+
+				if (arraySize == 0) 
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 
 	// Update all Entities in the EntityContainer.
@@ -152,8 +226,31 @@ extern "C" {	// Assume C declarations for C++.
 	//	 dt = Change in time (in seconds) since the last game loop.
 	void EntityContainerUpdateAll(EntityContainer* entities, float dt)
 		{
-		UNREFERENCED_PARAMETER(entities);
-		UNREFERENCED_PARAMETER(dt);
+			if (entities != NULL)
+			{
+				// Iterate through list
+				for (unsigned int i = 0; i < entities->entityCount; i++)
+				{
+					// for each item run entity update
+					EntityUpdate(entities->entitiesList[i], dt);
+
+					//	// AFTER, if item has been flagged for destruction 
+					// run entityDestroy, remove from the list, free properly, and decrement entity count
+					if (EntityIsDestroyed(entities->entitiesList[i]))
+					{
+						EntityFree(&entities->entitiesList[i]);
+						entities->entitiesList[i] = NULL;
+						entities->entityCount--;
+
+						for (unsigned int j = i; j < entities->entityCount; j++)
+						{
+							entities->entitiesList[j] = entities->entitiesList[j + 1];
+						}
+
+						i--;
+					}
+				}
+			}
 		}
 
 	// Render all Entities in the EntityContainer.
@@ -162,7 +259,15 @@ extern "C" {	// Assume C declarations for C++.
 	//   entities = Pointer to the EntityContainer.
 	void EntityContainerRenderAll(const EntityContainer* entities)
 		{
-		UNREFERENCED_PARAMETER(entities);
+			if (entities != NULL)
+			{
+				// Iterate through list
+				for (unsigned int i = 0; i < entities->entityCount; i++)
+				{
+					// for each item run entity render
+					EntityRender(entities->entitiesList[i]);
+				}
+			}
 		}
 
 	// Free all Entities in the EntityContainer.
@@ -172,10 +277,22 @@ extern "C" {	// Assume C declarations for C++.
 	// Params:
 	//   entities = Pointer to the EntityContainer.
 	void EntityContainerFreeAll(EntityContainer* entities)
+	{
+		if (entities != NULL)
 		{
-		UNREFERENCED_PARAMETER(entities);
-		}
+			// Iterate through list
+			for (unsigned int i = 0; i < entities->entityCount; i++)
+			{
+				// for each item run entity render
+				EntityFree(&entities->entitiesList[i]);
+			}
 
+			if (EntityContainerIsEmpty(entities))
+			{
+				entities->entityCount = 0;
+			}
+		}
+	}
 	//------------------------------------------------------------------------------
 
 #ifdef __cplusplus
