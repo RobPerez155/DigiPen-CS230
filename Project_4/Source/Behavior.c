@@ -15,6 +15,7 @@
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
+#include "Stream.h"
 //------------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -84,13 +85,36 @@ extern "C" {
 	//	 If 'other' is valid and the memory allocation was successful,
 	//	   then return a pointer to the cloned component,
 	//	   else return NULL.
-	Behavior* BehaviorClone(Behavior* other);
+	Behavior* BehaviorClone(Behavior* other)
+	{
+		if (other == NULL)
+		{
+			return NULL;
+		}
+
+		Behavior* behaviorClone = calloc(1, sizeof(Behavior));
+
+		if (behaviorClone == NULL)
+		{
+			return NULL;
+		}
+
+		*behaviorClone = *other;
+
+		return behaviorClone;
+	}
 
 	// Free the memory associated with a Behavior component.
 	// (Also, set the behavior pointer to NULL.)
 	// Params:
 	//	 behavior = Pointer to the Behavior component.
-	void BehaviorFree(Behavior** behavior);
+	void BehaviorFree(Behavior** behavior)
+	{
+		if (*behavior)
+			free(*behavior);
+
+		*behavior = NULL;
+	};
 
 	// Read the properties of a Behavior component from a file.
 	// [NOTE: Read the stateCurr and stateNext values using StreamReadInt.]
@@ -98,20 +122,66 @@ extern "C" {
 	// Params:
 	//	 behavior = Pointer to the Behavior component.
 	//	 stream = Pointer to the data stream used for reading.
-	void BehaviorRead(Behavior* behavior, Stream stream);
+	void BehaviorRead(Behavior* behavior, Stream stream)
+	{
+		if (behavior != NULL)
+		{
+
+			behavior->stateCurr = StreamReadInt(stream);
+			behavior->stateNext = StreamReadInt(stream);
+			behavior->timer = StreamReadFloat(stream);
+		}
+	}
 
 	// Set the parent game object for a Behavior component.
 	// Params:
 	//	 behavior = Pointer to the Behavior component.
 	//	 parent = Pointer to the parent game object.
-	void BehaviorSetParent(Behavior* behavior, Entity* parent);
+	void BehaviorSetParent(Behavior* behavior, Entity* parent)
+	{
+		if (behavior != NULL)
+			behavior->parent = parent;
+	}
 
 	// Update the Behavior component.
 	// (Hint: Refer to the Word document for detailed instructions regarding this function.)
 	// Params:
 	//	 behavior = Pointer to the Behavior component.
 	//	 dt = Change in time (in seconds) since the last game loop.
-	void BehaviorUpdate(Behavior* behavior, float dt);
+
+	//•	The function, BehaviorUpdate, should implement a finite - state machine(FSM), as follows :
+	//o	Validate the behavior pointer.
+	//	If the behavior state is changing(stateCurr != stateNext),
+	//		Call the onExit() function, iff(“if and only if”) it exists.
+	//		Set stateCurr = stateNext
+	//		Call the onInit() function, iff it exists.
+	//	Call the onUpdate function, iff it exists.
+
+	void BehaviorUpdate(Behavior* behavior, float dt)
+	{
+		if (behavior != NULL)
+		{
+			if (behavior->stateCurr != behavior->stateNext)
+			{
+				if (behavior->onExit)
+				{
+					behavior->onExit(behavior);
+				}
+
+				behavior->stateCurr = behavior->stateNext;
+
+				if (behavior->onInit)
+				{
+					behavior->onInit(behavior);
+				}
+			}
+
+			if (behavior->onUpdate)
+			{
+				behavior->onUpdate(behavior, dt);
+			}
+		}
+	}
 
 	//------------------------------------------------------------------------------
 

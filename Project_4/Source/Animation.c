@@ -122,6 +122,35 @@ Animation* AnimationCreate(void)
 		return NULL;
 }
 
+// Dynamically allocate a clone of an existing Animation component.
+// (Hint: Perform a shallow copy of the member variables.)
+// Params:
+//	 other = Pointer to the component to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned component,
+//	   else return NULL.
+Animation* AnimationClone(const Animation* other)
+{
+	if (other == NULL)
+	{
+		return NULL;
+	}
+
+	Animation* animationClone = calloc(1, sizeof(Animation));
+
+	if (animationClone == NULL)
+	{
+		return NULL;
+	}
+
+	*animationClone = *other;
+
+	EntityAddAnimation(other->parent, animationClone);
+
+	return animationClone;
+}
+
 // Free the memory associated with an Animation component.
 // (NOTE: The Animation pointer must be set to NULL.)
 // Params:

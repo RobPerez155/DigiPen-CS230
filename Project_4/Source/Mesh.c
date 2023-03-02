@@ -210,8 +210,15 @@
 	//   mesh = Pointer to the Mesh pointer.
 	void MeshFree(Mesh** mesh) //this is a pointer to a pointer Mesh
 	{
-		Mesh* ptrMesh = *mesh; //dereference mesh pointer so we can get meshResource in the next statement
-		DGL_Graphics_FreeMesh(&ptrMesh->meshResource); //get address of meshResource
-		free(*mesh);
-		*mesh = NULL;
+		if (*mesh != NULL)
+		{
+			Mesh* ptrMesh = *mesh; //dereference mesh pointer so we can get meshResource in the next statement
+			DGL_Graphics_FreeMesh(&ptrMesh->meshResource); //get address of meshResource
+			//free(*mesh); PROBLEM
+			*mesh = NULL;
+		}
+		else {
+			return;
+		}
+
 	}

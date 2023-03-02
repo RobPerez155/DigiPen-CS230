@@ -15,7 +15,7 @@
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
-
+#include <assert.h>
 #include "Entity.h"
 #include "EntityContainer.h"
 
@@ -96,9 +96,7 @@ extern "C" {	// Assume C declarations for C++.
 	//	   else return NULL.
 	EntityContainer* EntityContainerCreate()
 	{
-		EntityContainer* ptrEntityContainer = calloc(1, sizeof(EntityContainer));
-		//container->entities = calloc(1, sizeof(Entity*) * MAX);
-		
+		EntityContainer* ptrEntityContainer = calloc(1, sizeof(EntityContainer));		
 
 		if (ptrEntityContainer != NULL)
 		{
@@ -132,6 +130,9 @@ extern "C" {	// Assume C declarations for C++.
 	//		else return false.
 	bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity)
 		{
+		if (entities == NULL)
+			return false;
+
 			if (entities->entityCount != entityArraySize)
 			{
 				addEntity(entities, entity);
@@ -169,30 +170,18 @@ extern "C" {	// Assume C declarations for C++.
 
 	static Entity* findEntityByName(Entity** list, const char* name)
 	{
-			int i = 0;
-			bool found = false;
-
-			while (i < entityArraySize && !found)
+			//while (i < entityArraySize && !found)
+			for(int i = 0; i < entityArraySize; i++)
 			{
 				if (list[i] != NULL)
 				{
-					if (strcmp(EntityGetName(list[i]), name) == 0)
+					if (EntityIsNamed(list[i], name))
 					{
-						found = true;
-						break;
+						return list[i];
 					}
 				}
-				i++;
 			}
-
-			if (found)
-			{
-				return list[i];
-			}
-			else
-			{
-				return NULL;
-			}
+			return NULL;
 		}	
 
 	// Determines if the EntityContainer is empty (no Entities exist).
@@ -206,9 +195,8 @@ extern "C" {	// Assume C declarations for C++.
 		{
 			if (entities != NULL)
 			{
-				int arraySize = sizeof(entities->entitiesList) / sizeof(entities->entitiesList[0]);
 
-				if (arraySize == 0) 
+				if (entities->entityCount == 0) 
 				{
 					return true;
 				}
@@ -281,16 +269,19 @@ extern "C" {	// Assume C declarations for C++.
 		if (entities != NULL)
 		{
 			// Iterate through list
-			for (unsigned int i = 0; i < entities->entityCount; i++)
+			// Break me for testing, using maxcount
+			for (unsigned int i = 0; i < _countof(entities->entitiesList); i++)
 			{
 				// for each item run entity render
-				EntityFree(&entities->entitiesList[i]);
+				if (entities->entitiesList[i] != NULL)
+				{
+					EntityFree(&entities->entitiesList[i]);
+					entities->entityCount--;
+				}
 			}
 
-			if (EntityContainerIsEmpty(entities))
-			{
-				entities->entityCount = 0;
-			}
+			assert(EntityContainerIsEmpty(entities));
+			
 		}
 	}
 	//------------------------------------------------------------------------------

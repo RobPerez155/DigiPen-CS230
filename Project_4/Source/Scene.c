@@ -15,6 +15,7 @@
 #include "Scene.h"
 #include "EntityContainer.h"
 #include "EntityFactory.h"
+#include "MeshLibrary.h"
 #include "SceneSystem.h"
 #include "Trace.h"
 
@@ -70,7 +71,8 @@ void SceneLoad(const Scene* scene)
 	if (scene && (scene->load != NULL))
 	{
 		EntityContainerCreate();
-		// TODO: Call TraceMessage, passing the format string "%s: Load" and the name of the scene.
+		MeshLibraryInit();		
+
 		TraceMessage("%s: Load", scene->name);
 
 		// Execute the Load function.
@@ -129,8 +131,8 @@ void SceneExit(const Scene* scene)
 	if (scene && (scene->exit != NULL))
 	{
 		//Problems
-		//EntityContainerFreeAll(entities);
-		//EntityFactoryFreeAll();
+		EntityContainerFreeAll(entities);
+		EntityFactoryFreeAll();
 
 		// TODO: Call TraceMessage, passing the format string "%s: Exit" and the name of the scene.
 		TraceMessage("%s: Exit", scene->name);
@@ -147,7 +149,8 @@ void SceneUnload(const Scene* scene)
 	if (scene && (scene->unload != NULL))
 	{
 		EntityContainerFree(&entities);
-		// TODO: Call TraceMessage, passing the format string "%s: Unload" and the name of the scene.
+		MeshLibraryFreeAll();
+
 		TraceMessage("%s: Unload", scene->name);
 
 		// Execute the Load function.
@@ -163,9 +166,13 @@ void SceneRestart(void)
 
 }
 
+// Add an Entity to the Scene.
+// (NOTE: This is done by storing the Entity within an EntityContainer.)
+// Params:
+//   entity = Pointer to the Entity to be added.
 void SceneAddEntity(Entity* entity)
 {
-	UNREFERENCED_PARAMETER(entity);
+	EntityContainerAddEntity(entities, entity);
 }
 
 //------------------------------------------------------------------------------

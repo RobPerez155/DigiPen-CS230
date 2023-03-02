@@ -88,6 +88,33 @@
 		return ptrTransform;
 	}
 
+	// Dynamically allocate a clone of an existing Transform.
+// (Hint: Perform a shallow copy of the member variables.)
+// Params:
+//	 other = Pointer to the component to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned component,
+//	   else return NULL.
+	Transform* TransformClone(const Transform* other)
+	{
+		if (other == NULL)
+		{
+			return NULL;
+		}
+
+		Transform* transformClone = calloc(1, sizeof(Transform));
+
+		if (transformClone == NULL)
+		{
+			return NULL;
+		}
+
+		*transformClone = *other;
+
+		return transformClone;
+	}
+
 	// Free the memory associated with a Transform component.
 	// (NOTE: The Transform pointer must be set to NULL.)
 	// Params:

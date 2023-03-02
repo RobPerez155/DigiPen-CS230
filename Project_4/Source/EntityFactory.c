@@ -77,37 +77,55 @@ static EntityContainer* archetypes = NULL;
 //Annotate ME
 Entity* EntityFactoryBuild(const char* entityName)
 {
+	//If there is no entity to build exit this function
 	if (entityName == NULL)
 	{
 		return NULL;
 	}
 
-	//EntityContainer* newEntContainer = NULL;
-	Entity* entityNotFound;
+	// Initialize an entity to store the archetype
+	//Entity* archetype;
 
-	// If the “archetypes” variable is NULL, then initialize the variable by calling EntityContainerCreate.
+	// If the “archetypes” variable is NULL, then create a new archetype by calling EntityContainerCreate.
 	if (archetypes == NULL)
 	{
 		archetypes = EntityContainerCreate();
 	}
 
-	entityNotFound = EntityContainerFindByName(archetypes, entityName);
-	
-	if (entityNotFound == NULL)
+	// Checks to see if the archetype already exists
+	//archetype = EntityContainerFindByName(archetypes, entityName);
+	Entity* entity = EntityContainerFindByName(archetypes, entityName);
+	//if (archetype == NULL)
+	// If there is no existing archetype create then one
+	if (!entity)
 	{
+		// initializes the pathname
 		char pathName[FILENAME_MAX] = "";
+		//Set the pathname equal to the entityName variable
 		sprintf_s(pathName, _countof(pathName), "Data/%s.txt", entityName);
 
+		// Pass the new pathanme into StreamOpen to open a new file and set it the value filestream
 		Stream fileStream = StreamOpen(pathName);
+
+		//If the file is opened successfully, 
 		if (fileStream != NULL) {
 
+			//Use streamReadToken to read file.
 			const char* token = StreamReadToken(fileStream);
 
+			//check for the word Entity
 			if (strncmp(token, "Entity", _countof("Entity")) == 0)
 			{
-				Entity* entity = EntityCreate();
-				EntityRead(entity, fileStream);
-				EntityContainerAddEntity(archetypes, entity);
+				// if the there is an entity, proceed to create an new archetype
+				Entity* archetype = EntityCreate();
+
+				//Add data from stream to the new archetype
+				EntityRead(archetype, fileStream);
+
+				//Add the new archetype to the Archetypes Container
+				EntityContainerAddEntity(archetypes, archetype);
+
+				// Close the file we read from
 				StreamClose(&fileStream);
 
 				// If the archetype existed or was created successfully,
@@ -115,29 +133,27 @@ Entity* EntityFactoryBuild(const char* entityName)
 				// Return the cloned Entity.
 				if (archetypes != NULL)
 				{
-					EntityClone(entity);
+					return EntityClone(archetype);
 				}
-				return entity;
+				return NULL;
 			}
-
-			StreamClose(&fileStream);
-			return NULL;
+			
 		}
-
 	}
 
-	TraceMessage(" Error Function %s\n File: %s\n Line: %d.", __FUNCTION__, __FILE__, __LINE__);
-	return NULL;
+	//TraceMessage(" Error Function %s\n File: %s\n Line: %d.", __FUNCTION__, __FILE__, __LINE__);
+	return EntityClone(entity);
 	}
 
 // Free all archetype Entities.
 // (Hint: If the "archetypes" container exists, then the EntityContainerFreeAll
 //    function must be called.)
-void EntityFactoryFreeAll(EntityContainer* archetype)
+void EntityFactoryFreeAll()
 {
-	if (archetype != NULL) 
+	if (archetypes != NULL) 
 	{
-		EntityContainerFreeAll(archetype);
+		EntityContainerFreeAll(archetypes);
+		archetypes = NULL;
 	}
 }
 

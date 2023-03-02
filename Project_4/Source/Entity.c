@@ -123,6 +123,9 @@
 		Animation* animation = EntityGetAnimation(*entity);
 		AnimationFree(&animation);
 
+		Behavior* behavior = EntityGetBehavior(*entity);
+		BehaviorFree(&behavior);
+
 		free(*entity); //Find the ID where the Post-it note says, 
 		*entity = NULL; 
 	}
@@ -163,6 +166,18 @@
 					AnimationRead(tempAnim, stream);
 					EntityAddAnimation(entity, tempAnim);
 				}
+				//else if ((strncmp(token, "BehaviorSpaceship", _countof("BehaviorSpaceship")) == 0))
+				//{
+				//	Behavior* spaceship = BehaviorSpaceshipCreate();
+				//	BehaviorRead(spaceship, stream);
+				//	EntityAddBehavior(entity, spaceship);
+				//}
+				//else if ((strncmp(token, "BehaviorBullet", _countof("BehaviorBullet")) == 0))
+				//{
+				//	Behavior* bullet = BehaviorBulletCreate();
+				//	BehaviorRead(bullet, stream);
+				//	EntityAddBehavior(entity, bullet);
+				//}
 				else if (token[0] == 0) {
 					break;
 				}
@@ -210,6 +225,12 @@
 	void EntityAddTransform(Entity* entity, Transform* transform)
 	{
 		entity->transform = transform;
+	}
+
+	void EntityAddBehavior(Entity* entity, Behavior* behavior)
+	{
+		entity->behavior = behavior;
+		BehaviorSetParent(behavior, entity);
 	}
 
 	// Set the Entity's name.
@@ -299,6 +320,22 @@
 			return NULL;
 	}
 
+// Get the Behavior component attached to an Entity.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return a pointer to the attached Behavior component,
+//		else return NULL.
+	Behavior* EntityGetBehavior(const Entity* entity)
+	{
+		if (entity != NULL)
+			return entity->behavior;
+		else
+			return NULL;
+	}
+
+
 	// Update any components attached to the Entity.
 	// Params:
 	//	 entity = Pointer to the Entity.
@@ -308,6 +345,7 @@
 		if (entity != NULL)
 		{
 			PhysicsUpdate(entity->physics, entity->transform, dt);
+			BehaviorUpdate(entity->behavior, dt);
 			AnimationUpdate(entity->animation, dt);
 		}
 	}
@@ -376,36 +414,6 @@
 		}
 	}
 
-	// Get the Behavior component attached to an Entity.
-// Params:
-//	 entity = Pointer to the Entity.
-// Returns:
-//	 If the Entity pointer is valid,
-//		then return a pointer to the attached Behavior component,
-//		else return NULL.
-	Behavior* EntityGetBehavior(const Entity* entity)
-	{
-		if (entity != NULL)
-		{
-			return entity->behavior;
-		}
-		else {
-			return NULL;
-		}
-	}
-
-	// Attach a Behavior component to an Entity.
-	// (NOTE: This function must set the Behavior component's parent pointer by
-	//	  calling the BehaviorSetParent() function.)
-	// Params:
-	//	 entity = Pointer to the Entity.
-	//   behavior = Pointer to the Behavior component to be attached.
-	void EntityAddBehavior(Entity* entity, Behavior* behavior)
-	{
-		UNREFERENCED_PARAMETER(behavior);
-		UNREFERENCED_PARAMETER(entity);
-	}
-
 // Dynamically allocate a clone of an existing Entity.
 // (Hint: Make sure to perform a shallow copy or deep copy, as appropriate.)
 // (WARNING: You should use the EntityAdd* functions when attaching cloned
@@ -428,11 +436,11 @@
 				*clonedEntity = *other;
 
 				//Make deep copy
-				//clonedEntity->behavior = BehaviorClone(other->behavior);
-				//clonedEntity->sprite = SpriteClone(other->sprite);
-				//clonedEntity->animation = AnimationClone(other->animation);
-				//clonedEntity->physics = PhysicsClone(other->physics);
-				//clonedEntity->transform = TransformClone(other->transform);
+				clonedEntity->behavior = BehaviorClone(other->behavior);
+				clonedEntity->sprite = SpriteClone(other->sprite);
+				clonedEntity->animation = AnimationClone(other->animation);
+				clonedEntity->physics = PhysicsClone(other->physics);
+				clonedEntity->transform = TransformClone(other->transform);
 
 				return clonedEntity;
 			}

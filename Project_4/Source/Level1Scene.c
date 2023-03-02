@@ -272,6 +272,9 @@ static bool Level1SceneIsColliding(const Entity* entityA, const Entity* entityB)
 static void Level1SceneInit()
 {
 	Entity* Planet = EntityFactoryBuild("PlanetBounce");
+	//if (!Planet)
+	//	Planet = NULL;
+	//Find out why there is still something in the archetype list when it should be empty
 	Entity* Monkey = EntityFactoryBuild("Monkey");
 	Entity* LivesText = EntityFactoryBuild("MonkeyLivesText");
 	//Entity* Planet = EntityFactoryBuild("./Data/PlanetBounce.txt");
@@ -286,12 +289,12 @@ static void Level1SceneInit()
 
 	if (Planet != NULL)
 	{
-		DGL_Color white = { 1.0f, 1.0f, 1.0f, 1.0f };
+		//DGL_Color white = { 255.0f, 255.0f, 255.0f };
 
 		Sprite* sprPlanet = EntityGetSprite(Planet);
 		SpriteSetMesh(sprPlanet, instance.ptrMesh);
 		SpriteSetSpriteSource(sprPlanet, instance.ptrSpriteMesh);
-		DGL_Graphics_SetBackgroundColor(&white);
+		DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 255.0f, 255.0f, 255.0f, 0.0f });
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
 		instance.Planet = Planet;
@@ -311,7 +314,7 @@ static void Level1SceneInit()
 		SpriteSetMesh(sprLivesText, instance.ptrMesh16x8);
 		SpriteSetSpriteSource(sprLivesText, instance.ptrSpriteLivesText);
 
-		sprintf_s(livesBuffer, _countof(livesBuffer), "Lives %d", instance.numLives);
+		sprintf_s(livesBuffer, _countof(livesBuffer), "Lives: %d", instance.numLives);
 
 		DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
@@ -409,6 +412,7 @@ static void Level1SceneUpdate(float dt)
 	EntityUpdate(instance.Monkey, dt);
 	EntityUpdate(instance.Planet, dt);
 	EntityUpdate(instance.LivesText, dt);
+	//pizza
 
 	if (Level1SceneIsColliding(instance.Monkey, instance.Planet))
 	{
@@ -475,9 +479,9 @@ void Level1SceneRender(void)
 // Exit the scene.
 static void Level1SceneExit()
 {
-	EntityFree(&instance.Planet);
-	EntityFree(&instance.Monkey);
-	EntityFree(&instance.LivesText);
+	//EntityFree(&instance.Planet);
+	//EntityFree(&instance.Monkey);
+	//EntityFree(&instance.LivesText);
 }
 
 // Unload any resources used by the scene.

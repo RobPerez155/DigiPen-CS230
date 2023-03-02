@@ -46,6 +46,8 @@ typedef struct Physics
 
 	// Velocity may be stored as a direction vector and speed scalar, instead.
 	Vector2D	velocity;
+
+	float rotationalVelocity;
 } Physics;
 
 		// Used when calculating acceleration due to forces.
@@ -67,7 +69,7 @@ typedef struct Physics
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
-		Physics* PhysicsCreate(void)
+	Physics* PhysicsCreate(void)
 		{
 			Physics* ptrPhysics = calloc(1, sizeof(Physics));
 
@@ -78,6 +80,61 @@ typedef struct Physics
 				return NULL;
 			}
 		}
+
+	// Dynamically allocate a clone of an existing Physics component.
+	// (Hint: Perform a shallow copy of the member variables.)
+	// Params:
+	//	 other = Pointer to the component to be cloned.
+	// Returns:
+	//	 If 'other' is valid and the memory allocation was successful,
+	//	   then return a pointer to the cloned component,
+	//	   else return NULL.
+	Physics* PhysicsClone(const Physics* other)
+	{
+		if (other == NULL)
+		{
+			return NULL;
+		}
+
+		Physics* physicsClone = calloc(1, sizeof(Physics));
+
+		if (physicsClone == NULL)
+		{
+			return NULL;
+		}
+
+		*physicsClone = *other;
+
+		return physicsClone;
+	}
+
+	// Get the rotational velocity of a physics component.
+// Params:
+//	 physics = Pointer to the physics component.
+// Returns:
+//	 If the physics pointer is valid,
+//		then return the component's rotational velocity value,
+//		else return 0.0f.
+	float PhysicsGetRotationalVelocity(const Physics* physics)
+	{
+		if (physics != NULL)
+		{
+			return physics->rotationalVelocity;
+		}
+		else {
+			return 0.0f;
+		}
+	}
+
+		// Set the rotational velocity of a physics component.
+// Params:
+//	 physics = Pointer to the physics component.
+//	 rotationalVelocity = The new rotational velocity.
+	void PhysicsSetRotationalVelocity(Physics* physics, float rotationalVelocity)
+	{
+		physics->rotationalVelocity = rotationalVelocity;
+	}
+
 
 	// Free the memory associated with a Physics component.
 	// (NOTE: The Physics pointer must be set to NULL.)
@@ -119,6 +176,7 @@ typedef struct Physics
 			return NULL;
 		}
 	}
+	
 	// Get the velocity of a Physics component.
 	// Params:
 	//	 physics = Pointer to the Physics component.
@@ -196,7 +254,10 @@ typedef struct Physics
 
 			//Set new translation
 			TransformSetTranslation(transform, &result);
+			
+			float rotation = TransformGetRotation(transform) + physics->rotationalVelocity * dt;
 
+			TransformSetRotation(transform, rotation);
 		}
 	
 	}

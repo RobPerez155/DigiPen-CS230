@@ -18,6 +18,7 @@
 #include "SpriteSource.h"
 #include "Stream.h"
 #include "Mesh.h"
+#include "MeshLibrary.h"
 #include "Matrix2D.h"
 #include "Trace.h"
 #include "Transform.h"
@@ -97,6 +98,33 @@
 		*sprite = NULL;
 	};
 
+	// Dynamically allocate a clone of an existing Sprite.
+// (Hint: Perform a shallow copy of the member variables.)
+// Params:
+//	 other = Pointer to the component to be cloned.
+// Returns:
+//	 If 'other' is valid and the memory allocation was successful,
+//	   then return a pointer to the cloned component,
+//	   else return NULL.
+	Sprite* SpriteClone(const Sprite* other)
+	{
+		if (other == NULL)
+		{
+			return NULL;
+		}
+
+		Sprite* spriteClone = calloc(1, sizeof(Sprite));
+
+		if (spriteClone == NULL)
+		{
+			return NULL;
+		}
+
+		*spriteClone = *other;
+
+		return spriteClone;
+	}
+
 	// Read the properties of a Sprite component from a file.
 	// Params:
 	//	 sprite = Pointer to the Sprite component.
@@ -107,6 +135,10 @@
 		{
 			sprite->frameIndex = StreamReadInt(stream);
 			sprite->alpha = StreamReadFloat(stream);
+
+			const char* meshName = StreamReadToken(stream);
+			const Mesh* newMesh = MeshLibraryBuild(meshName);
+			SpriteSetMesh(sprite, newMesh);
 		}
 	}
 

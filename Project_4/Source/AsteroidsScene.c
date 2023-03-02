@@ -160,5 +160,5 @@ void AsteroidsSceneExit()
 
 static void AsteroidsSceneUnload(void)
 {
-
+	//EntityFactoryFreeAll();
 }

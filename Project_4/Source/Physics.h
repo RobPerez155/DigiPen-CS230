@@ -39,29 +39,6 @@ typedef FILE* Stream;
 // Public Structures:
 //------------------------------------------------------------------------------
 
-// An example of the structure to be defined in Physics.c.
-#if 0
-typedef struct Physics
-{
-	// Previous position.  May be used for resolving collisions.
-	Vector2D	oldTranslation;
-
-	// Acceleration = inverseMass * (sum of forces)
-	Vector2D	acceleration;
-
-	// Velocity may be stored as a direction vector and speed scalar, instead.
-	Vector2D	velocity;
-
-	// Rotational velocity (in radians).
-	float rotationalVelocity;
-
-	// Used when calculating acceleration due to forces.
-	// Used when resolving collision between two dynamic objects.
-	//float		inverseMass;
-
-} Physics;
-#endif
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------
