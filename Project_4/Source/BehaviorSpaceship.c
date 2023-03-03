@@ -92,9 +92,9 @@ extern "C" {
 		{
 			ptrBehavior->stateCurr = cSpaceshipInvalid;
 			ptrBehavior->stateNext = cSpaceshipInvalid;
-			//ptrBehavior->onInit = BehaviorSpaceshipInit;
-			//ptrBehavior->onUpdate = BehaviorSpaceshipUpdate;
-			//ptrBehavior->onExit = BehaviorSpaceshipExit;
+			ptrBehavior->onInit = BehaviorSpaceshipInit;
+			ptrBehavior->onUpdate = BehaviorSpaceshipUpdate;
+			ptrBehavior->onExit = BehaviorSpaceshipExit;
 
 			return ptrBehavior;
 		}
@@ -206,9 +206,13 @@ extern "C" {
 
 	void BehaviorSpaceshipUpdateWeapon(Behavior* behavior, float dt)
 	{
+		if (behavior == NULL)
+		{
+			return;
+		}
 		if (behavior->timer > 0)
 		{
-			behavior->timer = behavior->timer - dt;
+			behavior->timer -= dt;
 
 			if (behavior->timer < 0)
 			{
@@ -228,12 +232,29 @@ extern "C" {
 
 	void BehaviorSpaceshipSpawnBullet(Behavior* behavior)
 	{
-		UNREFERENCED_PARAMETER(behavior);
+		
 		Entity* bullet = EntityFactoryBuild("Bullet");
 
 		if (bullet != NULL)
 		{
+			// Get transform info
+			Transform* transform = EntityGetTransform(behavior->parent);
+			float rotation = TransformGetRotation(transform);
+			const Vector2D* position = TransformGetTranslation(transform);
 
+			// Set bullet transform
+			Transform* bulletTransform = EntityGetTransform(bullet);
+			TransformSetRotation(bulletTransform, rotation);
+			TransformSetTranslation(bulletTransform, position);
+
+			// Set bullet physics
+			Vector2D rotationVector;
+			Vector2DToAngleRad(&rotationVector);
+			Physics* bulletPhysics = EntityGetPhysics(bullet);
+			Vector2DScale(&rotationVector, &rotationVector, spaceshipWeaponBulletSpeed);
+			PhysicsSetVelocity(bulletPhysics, &rotationVector);
+
+			EntityClone(bullet);			
 		}
 	}
 

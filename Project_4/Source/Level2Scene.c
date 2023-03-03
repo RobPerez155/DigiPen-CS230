@@ -220,7 +220,7 @@ void Level2SceneRender(void)
 // Exit the scene.
 static void Level2SceneExit()
 {
-	//EntityFree(&instance.ptrEntity);
+
 }
 
 // Unload any resources used by the scene.
