@@ -211,10 +211,11 @@ void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bo
 		animation->frameDelay = 0.0;
 		animation->frameDuration = frameDuration;
 		animation->isRunning = true;
+		//animation->isDone = false;
 		animation->isLooping = isLooping;
 	
 		Sprite* animSprite = EntityGetSprite(animation->parent);
-
+		// ANIMATION WONKED, ONLY PLAYING 1 FRAME
 		SpriteSetFrame(animSprite, animation->frameIndex);
 	}
 

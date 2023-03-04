@@ -130,15 +130,15 @@ extern "C" {	// Assume C declarations for C++.
 	//		else return false.
 	bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity)
 		{
-		if (entities == NULL)
-			return false;
-
-			if (entities->entityCount != entityArraySize)
-			{
 				addEntity(entities, entity);
-				return true;
-			}
-			return false;
+
+				if (entities != NULL && entity != NULL)
+				{
+					return true;
+				}
+				else {
+					return false;
+				}
 		}
 
 	static void addEntity(EntityContainer* entities, Entity* entity)
@@ -221,21 +221,18 @@ extern "C" {	// Assume C declarations for C++.
 				{
 					// for each item run entity update
 					EntityUpdate(entities->entitiesList[i], dt);
-
-					//	// AFTER, if item has been flagged for destruction 
-					// run entityDestroy, remove from the list, free properly, and decrement entity count
+				}
+				for (unsigned int i = 0; i < entities->entityCount; i++)
+				{
 					if (EntityIsDestroyed(entities->entitiesList[i]))
 					{
 						EntityFree(&entities->entitiesList[i]);
 						entities->entitiesList[i] = NULL;
-						entities->entityCount--;
-
 						for (unsigned int j = i; j < entities->entityCount; j++)
 						{
 							entities->entitiesList[j] = entities->entitiesList[j + 1];
 						}
-
-						i--;
+						entities->entityCount--;
 					}
 				}
 			}
@@ -245,7 +242,7 @@ extern "C" {	// Assume C declarations for C++.
 	// (HINT: You must call EntityRender for all Entities.)
 	// Params:
 	//   entities = Pointer to the EntityContainer.
-	void EntityContainerRenderAll(const EntityContainer* entities)
+	void EntityContainerRenderAll(const EntityContainer* entities)         
 		{
 			if (entities != NULL)
 			{

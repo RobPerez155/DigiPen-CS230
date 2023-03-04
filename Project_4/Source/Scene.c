@@ -70,7 +70,7 @@ void SceneLoad(const Scene* scene)
 	// Verify that the function pointer is valid.
 	if (scene && (scene->load != NULL))
 	{
-		EntityContainerCreate();
+		entities = EntityContainerCreate();
 		MeshLibraryInit();		
 
 		TraceMessage("%s: Load", scene->name);
@@ -83,6 +83,7 @@ void SceneLoad(const Scene* scene)
 // Initialize the scene.
 void SceneInit(const Scene* scene)
 {
+
 	// Verify that the function pointer is valid.
 	if (scene && (scene->init != NULL))
 	{
@@ -172,6 +173,10 @@ void SceneRestart(void)
 //   entity = Pointer to the Entity to be added.
 void SceneAddEntity(Entity* entity)
 {
+	//here to bypass issue making ship
+	//if (entity != NULL)
+	//	return;
+
 	EntityContainerAddEntity(entities, entity);
 }
 

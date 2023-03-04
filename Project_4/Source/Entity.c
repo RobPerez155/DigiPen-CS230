@@ -17,6 +17,8 @@
 
 #include "Animation.h"
 #include "Behavior.h"
+#include "BehaviorBullet.h"
+#include "BehaviorSpaceship.h"
 #include "Entity.h"
 #include "Physics.h"
 #include "Sprite.h"
@@ -166,18 +168,18 @@
 					AnimationRead(tempAnim, stream);
 					EntityAddAnimation(entity, tempAnim);
 				}
-				//else if ((strncmp(token, "BehaviorSpaceship", _countof("BehaviorSpaceship")) == 0))
-				//{
-				//	Behavior* spaceship = BehaviorSpaceshipCreate();
-				//	BehaviorRead(spaceship, stream);
-				//	EntityAddBehavior(entity, spaceship);
-				//}
-				//else if ((strncmp(token, "BehaviorBullet", _countof("BehaviorBullet")) == 0))
-				//{
-				//	Behavior* bullet = BehaviorBulletCreate();
-				//	BehaviorRead(bullet, stream);
-				//	EntityAddBehavior(entity, bullet);
-				//}
+				else if ((strncmp(token, "BehaviorSpaceship", _countof("BehaviorSpaceship")) == 0))
+				{
+					Behavior* spaceship = BehaviorSpaceshipCreate();
+					BehaviorRead(spaceship, stream);
+					EntityAddBehavior(entity, spaceship);
+				}
+				else if ((strncmp(token, "BehaviorBullet", _countof("BehaviorBullet")) == 0))
+				{
+					Behavior* bullet = BehaviorBulletCreate();
+					BehaviorRead(bullet, stream);
+					EntityAddBehavior(entity, bullet);
+				}
 				else if (token[0] == 0) {
 					break;
 				}
@@ -441,6 +443,9 @@
 				clonedEntity->animation = AnimationClone(other->animation);
 				clonedEntity->physics = PhysicsClone(other->physics);
 				clonedEntity->transform = TransformClone(other->transform);
+
+				if (clonedEntity->behavior)
+					BehaviorSetParent(clonedEntity->behavior, clonedEntity);
 
 				return clonedEntity;
 			}

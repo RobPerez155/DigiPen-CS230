@@ -272,20 +272,8 @@ static bool Level1SceneIsColliding(const Entity* entityA, const Entity* entityB)
 static void Level1SceneInit()
 {
 	Entity* Planet = EntityFactoryBuild("PlanetBounce");
-	//if (!Planet)
-	//	Planet = NULL;
-	//Find out why there is still something in the archetype list when it should be empty
 	Entity* Monkey = EntityFactoryBuild("Monkey");
 	Entity* LivesText = EntityFactoryBuild("MonkeyLivesText");
-	//Entity* Planet = EntityFactoryBuild("./Data/PlanetBounce.txt");
-	//Entity* Monkey = EntityFactoryBuild("./Data/Monkey.txt");
-	//Entity* LivesText = EntityFactoryBuild("./Data/MonkeyLivesText.txt");
-
-	// Animation tests
-	//Stream animFile = StreamOpen(animFileName);
-		
-	//
-
 
 	if (Planet != NULL)
 	{

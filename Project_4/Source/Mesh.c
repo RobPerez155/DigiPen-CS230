@@ -94,21 +94,20 @@
 		if (stream != NULL) 
 		{
 			const char* token = StreamReadToken(stream);
-
 			// (NOTE: Second, read a token and store it in the Mesh's name variable.)
-			if (strncmp(token, "Mesh", _countof("Mesh")) == 0)
+				if (strncmp(token, "Mesh", _countof("Mesh")) != 0)
+				//if (strncmp(token, "Mesh", _countof("Mesh")) == 0)
 			{
-				// Using strcpy because token cannot not be assigned to mesh->name. Because the former is a const and the latter is not.
-				strcpy_s(mesh->name, _countof(mesh->name), token);
-			}
-			else {
 				TraceMessage("Expected token 'Mesh' not found");
 				return;
 			}
 
+			token = StreamReadToken(stream);
+			strcpy_s(mesh->name, _countof(mesh->name), token);
+		
+			DGL_Graphics_StartMesh();
 			// (NOTE: Third, read an integer indicating the number of vertices to be read.)
 			int numVertices = StreamReadInt(stream);
-
 			// (NOTE: For each vertex, read a Vector2D (position), a DGL_Color (color), and a Vector2D (UV).)
 			for (int i = 0; i < numVertices; i++)
 			{
@@ -121,8 +120,11 @@
 				StreamReadVector2D(stream, textureOffset);
 
 				// (HINT: Call DGL_Graphics_AddVertex() to add a single vertex to the mesh.)
+
 				DGL_Graphics_AddVertex(position, color, textureOffset);
+
 			}
+			mesh->meshResource = DGL_Graphics_EndMesh();
 		}
 	}
 

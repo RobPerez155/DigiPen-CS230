@@ -15,6 +15,7 @@
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
+#include "DGL.h"
 #include "MeshLibrary.h"
 #include "Mesh.h"
 #include "Stream.h"
@@ -93,6 +94,23 @@ extern "C" {
 	//	 If the mesh was created successfully,
 	//	   then return a pointer to the created mesh,
 	//	   else return NULL.
+
+	// Create a mesh and add it to the mesh manager.
+// 1: Use sprintf_s() to construct a path name using meshName
+//	   (HINT: The correct path name should be constructed using "Data/&s.txt".)
+// 2: Call StreamOpen(), passing the pathname
+// 3: If the stream was opened successfully,
+//	  a: Call MeshCreate() to create an empty Mesh object.
+//    b: Call MeshRead() to construct a mesh using data read from the file
+//	  c: Call MeshLibraryAdd(), passing the created mesh
+//	  d: Close the stream
+//	  e: Return the created mesh
+// Params:
+//	 meshName = The name of the mesh to be created.
+// Returns:
+//	 If the mesh was created successfully,
+//	   then return a pointer to the created mesh,
+//	   else return NULL.
 	const Mesh* MeshLibraryBuild(const char* meshName)
 	{
 	// 1: Use sprintf_s() to construct a path name using meshName

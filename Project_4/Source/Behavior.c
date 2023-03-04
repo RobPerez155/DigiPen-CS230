@@ -101,6 +101,7 @@ extern "C" {
 
 		*behaviorClone = *other;
 
+
 		return behaviorClone;
 	}
 

@@ -24,7 +24,7 @@
 #include "Physics.h"
 #include "Transform.h"
 #include "Vector2D.h"
-
+#include "Scene.h"
 #define PI 3.14159265358979323846
 
 //------------------------------------------------------------------------------
@@ -201,7 +201,7 @@ extern "C" {
 			Vector2DScale(&velocity, &velocity, spaceshipSpeedMax / speed);
 		}
 
-		PhysicsSetVelocity(physics, &velocity);
+	PhysicsSetVelocity(physics, &velocity);
 	}
 
 	void BehaviorSpaceshipUpdateWeapon(Behavior* behavior, float dt)
@@ -249,12 +249,12 @@ extern "C" {
 
 			// Set bullet physics
 			Vector2D rotationVector;
-			Vector2DToAngleRad(&rotationVector);
+			Vector2DFromAngleRad(&rotationVector,rotation);
 			Physics* bulletPhysics = EntityGetPhysics(bullet);
 			Vector2DScale(&rotationVector, &rotationVector, spaceshipWeaponBulletSpeed);
 			PhysicsSetVelocity(bulletPhysics, &rotationVector);
-
-			EntityClone(bullet);			
+			
+			SceneAddEntity(bullet);
 		}
 	}
 

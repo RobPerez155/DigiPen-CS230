@@ -18,6 +18,7 @@
 #include "EntityFactory.h"
 #include "Level1Scene.h"
 #include "Level2Scene.h"
+#include "Mesh.h"
 #include "SandboxScene.h"
 #include "Scene.h"
 

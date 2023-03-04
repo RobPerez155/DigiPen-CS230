@@ -83,7 +83,7 @@ int StreamReadInt(Stream stream)
 		return 0;
 	}
 	else {
-		int streamScan;
+		int streamScan = 0;
 		fscanf_s(stream, "%i", &streamScan);
 		return streamScan;
 	}

@@ -119,6 +119,7 @@ extern "C" {
 			if (behavior->timer <= 0)
 			{
 				EntityDestroy(behavior->parent);
+				
 			}
 		}
 	}
