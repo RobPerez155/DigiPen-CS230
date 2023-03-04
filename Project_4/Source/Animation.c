@@ -146,6 +146,7 @@ Animation* AnimationClone(const Animation* other)
 
 	*animationClone = *other;
 
+
 	EntityAddAnimation(other->parent, animationClone);
 
 	return animationClone;
@@ -211,7 +212,7 @@ void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bo
 		animation->frameDelay = 0.0;
 		animation->frameDuration = frameDuration;
 		animation->isRunning = true;
-		//animation->isDone = false;
+		animation->isDone = false;
 		animation->isLooping = isLooping;
 	
 		Sprite* animSprite = EntityGetSprite(animation->parent);

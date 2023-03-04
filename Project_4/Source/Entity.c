@@ -447,6 +447,11 @@
 				if (clonedEntity->behavior)
 					BehaviorSetParent(clonedEntity->behavior, clonedEntity);
 
+				if (clonedEntity->animation)
+				{
+					AnimationSetParent(clonedEntity->animation, clonedEntity);
+				}
+
 				return clonedEntity;
 			}
 			return NULL;

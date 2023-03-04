@@ -177,9 +177,9 @@ void Matrix2DMultVec(Vector2D* pResult, const Matrix2D* pMtx, const Vector2D* pV
 {
 	static Vector2D multVector;
 
-	multVector.x = pVec->x * pMtx->m[0][0] + pVec->y * pMtx->m[0][1] + pMtx->m[0][2];
+	multVector.x = pVec->x * pMtx->m[0][0] + pVec->y * pMtx->m[0][1] + pMtx->m[0][3];
 
-	multVector.y = pVec->x * pMtx->m[1][0] + pVec->y * pMtx->m[1][1] + pMtx->m[1][2];
+	multVector.y = pVec->x * pMtx->m[1][0] + pVec->y * pMtx->m[1][1] + pMtx->m[1][3];
 
 	*pResult = multVector;
 }

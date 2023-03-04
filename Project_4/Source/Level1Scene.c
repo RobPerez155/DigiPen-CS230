@@ -71,7 +71,7 @@ static const char* animFileName = "./Data/Level1_Lives.txt";
 static const char* monkeyWalkFileName = "./Assets/MonkeyWalk.png";
 static const char* monkeyIdleFileName = "./Assets/MonkeyIdle.png";
 static const char* monkeyJumpFileName = "./Assets/MonkeyJump.png";
-static const char* fontFileName = "./Assets/Roboto_Mono_white.png";
+static const char* fontFileName = "./Assets/Roboto_Mono_black.png";
 static const float groundHeight = -150.0f;
 static const float moveVelocity = 500.0f;
 static const float jumpVelocity = 1000.0f;
@@ -282,7 +282,10 @@ static void Level1SceneInit()
 		Sprite* sprPlanet = EntityGetSprite(Planet);
 		SpriteSetMesh(sprPlanet, instance.ptrMesh);
 		SpriteSetSpriteSource(sprPlanet, instance.ptrSpriteMesh);
-		DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 255.0f, 255.0f, 255.0f, 0.0f });
+
+		DGL_Color clear = { 255.0f, 255.0f, 255.0f, 0.0f };
+		DGL_Graphics_SetBackgroundColor(&clear);
+
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
 		instance.Planet = Planet;
@@ -304,7 +307,6 @@ static void Level1SceneInit()
 
 		sprintf_s(livesBuffer, _countof(livesBuffer), "Lives: %d", instance.numLives);
 
-		DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
 		instance.LivesText = LivesText;
@@ -458,6 +460,7 @@ static void Level1SceneUpdate(float dt)
 // Render the scene.
 void Level1SceneRender(void)
 {
+
 	EntityRender(instance.Planet);
 	EntityRender(instance.Monkey);
 	EntityRender(instance.LivesText);
