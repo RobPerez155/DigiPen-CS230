@@ -9,13 +9,13 @@
 //
 //------------------------------------------------------------------------------
 
-
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include "Sprite.h"
 #include "SpriteSource.h"
+#include "SpriteSourceLibrary.h"
 #include "Stream.h"
 #include "Mesh.h"
 #include "MeshLibrary.h"
@@ -139,6 +139,12 @@
 			const char* meshName = StreamReadToken(stream);
 			const Mesh* newMesh = MeshLibraryBuild(meshName);
 			SpriteSetMesh(sprite, newMesh);
+
+			SpriteSource* newSpriteSourceName = SpriteSourceCreate();
+			SpriteSourceRead(newSpriteSourceName, stream);
+			
+			//const SpriteSource* newSpriteSource = SpriteSourceLibraryBuild(newSpriteSourceName);
+			//SpriteSetSpriteSource(sprite, newSpriteSource);
 		}
 	}
 

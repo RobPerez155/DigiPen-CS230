@@ -19,6 +19,7 @@
 #include "Behavior.h"
 #include "BehaviorBullet.h"
 #include "BehaviorSpaceship.h"
+#include "Collider.h"
 #include "Entity.h"
 #include "Physics.h"
 #include "Sprite.h"
@@ -56,21 +57,26 @@
 		//	 size of the "name" array.]
 		char name[32];
 
-		// Pointer to an attached physics component.
-		Physics* physics;
-
-		// Pointer to an attached sprite component.
-		Sprite* sprite;
-
-		// Pointer to an attached transform component.
-		Transform* transform;
-
-		// Pointer to an attached animation component.
-		Animation* animation;
-
+		// Flag to indicate that the Entity should be destroyed after it has been updated.
 		bool isDestroyed;
 
+		// Pointer to an attached Animation component.
+		Animation* animation;
+
+		// Pointer to an attached Behavior component.
 		Behavior* behavior;
+
+		// Pointer to an attached Collider component.
+		Collider* collider;
+
+		// Pointer to an attached Physics component.
+		Physics* physics;
+
+		// Pointer to an attached Sprite component.
+		Sprite* sprite;
+
+		// Pointer to an attached Transform component.
+		Transform* transform;
 
 	} Entity;
 
@@ -127,6 +133,9 @@
 
 		Behavior* behavior = EntityGetBehavior(*entity);
 		BehaviorFree(&behavior);
+
+		Collider* collider = EntityGetCollider(*entity);
+		ColliderFree(&collider);
 
 		free(*entity); //Find the ID where the Post-it note says, 
 		*entity = NULL; 
@@ -337,7 +346,6 @@
 			return NULL;
 	}
 
-
 	// Update any components attached to the Entity.
 	// Params:
 	//	 entity = Pointer to the Entity.
@@ -443,6 +451,7 @@
 				clonedEntity->animation = AnimationClone(other->animation);
 				clonedEntity->physics = PhysicsClone(other->physics);
 				clonedEntity->transform = TransformClone(other->transform);
+				clonedEntity->collider = ColliderClone(other->collider);
 
 				if (clonedEntity->behavior)
 					BehaviorSetParent(clonedEntity->behavior, clonedEntity);
@@ -452,11 +461,46 @@
 					AnimationSetParent(clonedEntity->animation, clonedEntity);
 				}
 
+				if (clonedEntity->collider)
+				{
+					ColliderSetParent(clonedEntity->collider, clonedEntity);
+				}
+
 				return clonedEntity;
 			}
 			return NULL;
 		}
 		return NULL;
+	}
+
+	// Attach a Collider component to an Entity.
+// (NOTE: This function must also set the Collider component's parent pointer
+//	  by calling the ColliderSetParent() function.)
+// Params:
+//	 entity = Pointer to the Entity.
+//   collider = Pointer to the Collider component to be attached.
+	void EntityAddCollider(Entity* entity, Collider* collider)
+	{
+		entity->collider = collider;
+		ColliderSetParent(collider, entity);
+	}
+
+	// Get the Collider component attached to an Entity.
+// Params:
+//	 entity = Pointer to the Entity.
+// Returns:
+//	 If the Entity pointer is valid,
+//		then return a pointer to the attached Collider component,
+//		else return NULL.
+	Collider* EntityGetCollider(const Entity* entity)
+	{
+		if (entity != NULL)
+		{
+			return entity->collider;
+		}
+		else {
+			return NULL;
+		}
 	}
 
 	//------------------------------------------------------------------------------

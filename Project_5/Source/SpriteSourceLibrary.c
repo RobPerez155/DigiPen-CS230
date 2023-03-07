@@ -10,6 +10,11 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 
+#include "Sprite.h"
+#include "SpriteSource.h"
+#include "SpriteSourceLibrary.h"
+#include "Stream.h"
+
 #pragma once
 
 //------------------------------------------------------------------------------
@@ -55,11 +60,14 @@ extern "C" {
 
 
 	//------------------------------------------------------------------------------
-	// Public Variables:
+	// Private Variables:
+	static SpriteSourceLibrary sprites;
 	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
-	// Public Functions:
+	// Private Functions:
+			static void SpriteSourceLibraryAdd(SpriteSource* spriteSource);
+			static const SpriteSource* SpriteSourceLibraryFind(const char* spriteSource);
 	//------------------------------------------------------------------------------
 
 	// Initialize the SpriteSource Library.
@@ -69,6 +77,7 @@ extern "C" {
 		SpriteSourceLibrary* newLib = calloc(1, sizeof(SpriteSourceLibrary));
 	UNREFERENCED_PARAMETER(newLib);
 	}
+
 	// Create a SpriteSource and add it to the SpriteSource manager.
 	// 1: Call SpriteSourceLibraryFind() to determine if the sprite source already exists
 	// 2: If the named sprite source does not already exist,
@@ -87,14 +96,85 @@ extern "C" {
 	//	 If the SpriteSource already exists or was created successfully,
 	//	   then return a pointer to the SpriteSource,
 	//	   else return NULL.
-	const SpriteSource* SpriteSourceLibraryBuild(const char* spriteSourceName);
+	const SpriteSource* SpriteSourceLibraryBuild(const char* spriteSourceName)
+	{
+		if (SpriteSourceLibraryFind(spriteSourceName) != NULL)
+		{
+			return SpriteSourceLibraryFind(spriteSourceName);
+		}
+
+		// 1: Use sprintf_s() to construct a path name using meshName
+		//	   (HINT: The correct path name should be constructed using "Data/&s.txt".)
+		char pathName[FILENAME_MAX] = "";
+		sprintf_s(pathName, _countof(pathName), "Data/%s.txt", spriteSourceName);
+
+		// 2: Call StreamOpen(), passing the pathname
+		Stream fileStream = StreamOpen(pathName);
+
+		// 3: If the stream was opened successfully,
+		if (fileStream != NULL)
+		{
+			//a: Call MeshCreate() to create an empty Mesh object.
+			SpriteSource* newSpriteSource = SpriteSourceCreate();
+
+			// b: Call MeshRead() to construct a mesh using data read from the file
+			SpriteSourceRead(newSpriteSource, fileStream);
+
+			//c: Call MeshLibraryAdd(), passing the created mesh
+			SpriteSourceLibraryAdd(newSpriteSource);
+
+			//d: Close the stream
+			StreamClose(&fileStream);
+
+			//e: Return the created mesh
+			return newSpriteSource;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+
+	void SpriteSourceLibraryAdd(SpriteSource* spriteSource)
+	{
+		for (int i = 0; i < spriteSourceListSize; i++)
+		{
+			if (sprites.spriteSourceList[i] == NULL)
+			{
+				sprites.spriteSourceList[i] = spriteSource;
+				sprites.spriteSourceCount++;
+			}
+		}
+	}
+
+	const SpriteSource* SpriteSourceLibraryFind(const char* spriteSource)
+	{
+		// for loop to iterate through meshList 
+		for (int i = 0; i < spriteSourceListSize; i++)
+		{
+			const SpriteSource* tempSprite = SpriteSourceCreate();
+			tempSprite = sprites.spriteSourceList[i];
+			if (SpriteSourceIsNamed(tempSprite, spriteSource))
+			{
+				printf("it worked - MESH!!!\n");
+				return tempSprite;
+			}
+		}
+		return NULL;
+	}
 
 	// Free all SpriteSource objects in the SpriteSource Library.
 	// (NOTE: You must call SpriteSourceFree() to free each SpriteSource object.)
 	// (HINT: The list should contain nothing but NULL pointers once this function is done.)
 	void SpriteSourceLibraryFreeAll()
 	{
-		return;
+		// Iterate through list
+		for (int i = 0; i < spriteSourceListSize; i++)
+		{
+			// for each item run entity render
+			SpriteSourceFree(&sprites.spriteSourceList[i]);
+			sprites.spriteSourceList[i] = NULL;
+		}
 	}
 
 	//------------------------------------------------------------------------------

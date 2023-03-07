@@ -215,6 +215,36 @@ Entity* SceneFindEntityByName(const char* entityName)
 	return EntityContainerFindByName(entities, entityName);
 }
 
+// Add an Entity to the Scene.
+// (NOTE: This is done by storing the Entity within an EntityContainer.)
+// Params:
+//   entity = Pointer to the Entity to be added.
+//void SceneAddEntity(Entity* entity)
+//{
+//	EntityContainerAddEntity(entities, entity);
+//}
+//
+//// Find a named Entity within the Scene.
+//// (Hint: Use the function, EntityContainerFindByName, for this purpose.)
+//// Params:
+////   entityName = The name of the Entity to be returned.
+//// Returns:
+////	 If entityName is valid and the Entity was located successfully,
+////		then return a pointer to the Entity,
+////		else return NULL.
+//Entity* SceneFindEntityByName(const char* entityName)
+//{
+//	Entity* entityFound = EntityContainerFindByName(entities, entityName);
+//
+//	if (entityFound != NULL)
+//	{
+//		return entityFound;
+//	}
+//	else {
+//		return NULL;
+//	}
+//}
+
 //------------------------------------------------------------------------------
 // Private Functions:
 //------------------------------------------------------------------------------

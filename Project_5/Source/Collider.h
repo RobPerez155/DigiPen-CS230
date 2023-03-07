@@ -40,19 +40,6 @@ typedef FILE* Stream;
 
 typedef void(*CollisionEventHandler)(Entity* entity1, Entity* entity2);
 
-// An example of the structure to be defined in Collider.c.
-#if 0
-typedef struct Collider
-{
-	// Pointer to the collider's parent Entity.
-	Entity* parent;
-
-	// Pointer to a function that handles collisions between two objects.
-	CollisionEventHandler	handler;
-
-} Collider;
-#endif
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------

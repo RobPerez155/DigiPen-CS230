@@ -57,8 +57,30 @@
 	//------------------------------------------------------------------------------
 	Mesh* MeshQuad;
 	//------------------------------------------------------------------------------
-	// Public Functions:
+	// Private Functions:
+
+	static void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name);
 	//------------------------------------------------------------------------------
+	
+	MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
+	{
+		DGL_Graphics_StartMesh(); // Like taking out pen
+
+		strcpy_s(mesh->name, _countof(mesh->name), name);
+
+		DGL_Graphics_StartMesh();
+
+		DGL_Graphics_AddTriangle(
+			&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
+			&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, 0.0f },
+			&(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize });
+		DGL_Graphics_AddTriangle(
+			&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
+			&(DGL_Vec2){ -xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
+			&(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, 0.0f });
+
+		mesh->meshResource = DGL_Graphics_EndMesh(); // Putting pen away
+	}
 
 // Dynamically allocate a new Mesh object but leave it empty.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
@@ -94,9 +116,27 @@
 		if (stream != NULL) 
 		{
 			const char* token = StreamReadToken(stream);
+
 			// (NOTE: Second, read a token and store it in the Mesh's name variable.)
-				if (strncmp(token, "Mesh", _countof("Mesh")) != 0)
-				//if (strncmp(token, "Mesh", _countof("Mesh")) == 0)
+			if (strncmp(token, "Quad", _countof("Quad")) == 0)
+			{
+				Vector2D* position = calloc(1, sizeof(Vector2D));
+				StreamReadVector2D(stream, position);
+				
+				if (position == NULL)
+					return;
+
+				float half = 0.5;
+				Vector2D halfSized = { position->x * half, position->y * half };
+				
+				int cols = StreamReadInt(stream);
+				int rows = StreamReadInt(stream);
+				const char* meshName = StreamReadToken(stream);
+				
+				MeshCreateQuad(halfSized.x, halfSized.y, (float)cols, (float)rows, meshName);
+			}
+
+			if (strncmp(token, "Mesh", _countof("Mesh")) != 0)
 			{
 				TraceMessage("Expected token 'Mesh' not found");
 				return;

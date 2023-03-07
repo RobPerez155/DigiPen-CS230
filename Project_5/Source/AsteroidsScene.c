@@ -96,7 +96,8 @@ static void AsteroidsSceneLoad(void)
 void AsteroidsSceneInit()
 {
 	Entity* Spaceship = EntityFactoryBuild("Spaceship");
-	
+//Entity* Spaceship = EntityFactoryBuild("AsteroidsHighScore");
+
 	if (Spaceship != NULL)
 	{
 		SceneAddEntity(Spaceship);

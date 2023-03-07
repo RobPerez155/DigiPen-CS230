@@ -20,8 +20,11 @@
 #include "AsteroidsScene.h"
 #include "Random.h"
 #include "Trace.h"
+#include "Mesh.h"
 #include "Stream.h"
+#include "Sprite.h"
 #include "SpriteSource.h"
+#include "SpriteSourceLibrary.h"
 #include "Matrix2D.h"
 #include "Vector2D.h"
 
@@ -52,7 +55,7 @@ typedef struct SandboxScene
 // Private Constants:
 //------------------------------------------------------------------------------
 static const char* VectorTestFileName = "./Data/VectorTests.txt";
-static const char* SpriteSourceFileName = "./Data/SpriteSourceFontSheet.txt";
+static const char* MeshQuadFileName = "./Data/Mesh16x8.txt";
 
 //------------------------------------------------------------------------------
 // Private Variables:
@@ -131,6 +134,7 @@ static void SandboxSceneLoad(void)
 static void SandboxSceneInit()
 {
 	EntityContainer* pizza = EntityContainerCreate();
+	SpriteSourceLibraryInit();
 
 
 	EntityContainerFreeAll(pizza);
@@ -147,13 +151,25 @@ static void SandboxSceneUpdate(float dt)
 	UNREFERENCED_PARAMETER(dt);
 
 	Stream vectorTest = StreamOpen(VectorTestFileName);
-	Stream spriteSourceTest = StreamOpen(SpriteSourceFileName);
+	//Stream spriteSourceTest = StreamOpen(SpriteSourceFileName);
 
-	SpriteSource* theRealPizza = SpriteSourceCreate();
+	//SpriteSource* theRealPizza = SpriteSourceCreate();
 	/*SpriteSource* theRealPizza;*/
-	SpriteSourceRead(theRealPizza, spriteSourceTest);
-	SpriteSourceIsNamed(theRealPizza, "SpriteSourceFontSheet");
-	printf("POW");
+	//SpriteSourceRead(theRealPizza, spriteSourceTest);
+	//SpriteSourceIsNamed(theRealPizza, "SpriteSourceFontSheet");
+	//SpriteSourceLibraryBuild("SpriteSourceFontSheet");
+	//printf("POW");
+
+
+
+	if (DGL_Input_KeyTriggered('M'))
+	{
+		Stream fileStream = StreamOpen(MeshQuadFileName);
+		Mesh* test = MeshCreate();
+		MeshRead(test, fileStream);
+		//SpriteRead(test, fileStream);
+		//StreamClose(MeshQuadFileName);
+	}
 
 	if (vectorTest != NULL)
 	{

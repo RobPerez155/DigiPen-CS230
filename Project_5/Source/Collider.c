@@ -10,6 +10,10 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 
+#include "Entity.h"
+#include "Transform.h"
+#include "Vector2D.h"
+
 #pragma once
 
 //------------------------------------------------------------------------------
@@ -41,8 +45,6 @@ extern "C" {
 
 	typedef void(*CollisionEventHandler)(Entity* entity1, Entity* entity2);
 
-	// An example of the structure to be defined in Collider.c.
-#if 0
 	typedef struct Collider
 	{
 		// Pointer to the collider's parent Entity.
@@ -52,7 +54,6 @@ extern "C" {
 		CollisionEventHandler	handler;
 
 	} Collider;
-#endif
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -64,7 +65,18 @@ extern "C" {
 
 	// Dynamically allocate a new Collider component.
 	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-	Collider* ColliderCreate(void);
+	Collider* ColliderCreate(void)
+	{
+		Collider* ptrCollider = calloc(1, sizeof(Collider));
+
+		if (ptrCollider != NULL)
+		{
+			return ptrCollider;
+		}
+		else {
+			return NULL;
+		}
+	}
 
 	// Dynamically allocate a clone of an existing Collider component.
 	// (Hint: Perform a shallow copy of the member variables.)
@@ -74,26 +86,57 @@ extern "C" {
 	//	 If 'other' is valid and the memory allocation was successful,
 	//	   then return a pointer to the cloned component,
 	//	   else return NULL.
-	Collider* ColliderClone(const Collider* other);
+	Collider* ColliderClone(const Collider* other)
+	{
+		if (other == NULL)
+		{
+			return NULL;
+		}
+
+		Collider* colliderClone = calloc(1, sizeof(Collider));
+
+		if (colliderClone == NULL)
+		{
+			return NULL;
+		}
+
+		*colliderClone = *other;
+
+		return colliderClone;
+	}
 
 	// Free the memory associated with a Collider component.
 	// (Also, set the collider pointer to NULL.)
 	// Params:
 	//	 collider = Pointer to the Collider component.
-	void ColliderFree(Collider** collider);
+	void ColliderFree(Collider** collider)
+	{
+		if (*collider)
+			free(*collider);
+
+		*collider = NULL;
+	}
 
 	// Read the properties of a Collider component from a file.
 	// [NOTE: No values need to be read at this time.]
 	// Params:
 	//	 collider = Pointer to the Collider component.
 	//	 stream = Pointer to the data stream used for reading.
-	void ColliderRead(Collider* collider, Stream stream);
+	void ColliderRead(Collider* collider, Stream stream)
+	{
+		UNREFERENCED_PARAMETER(collider);
+		UNREFERENCED_PARAMETER(stream);
+	}
 
 	// Set the parent Entity for a Collider component.
 	// Params:
 	//	 collider = Pointer to the Collider component.
 	//	 parent = Pointer to the parent Entity.
-	void ColliderSetParent(Collider* collider, Entity* parent);
+	void ColliderSetParent(Collider* collider, Entity* parent)
+	{
+		if (collider != NULL)
+			collider->parent = parent;
+	}
 
 	// Check if two Entities are colliding.
 	// (Hint: Refer to the project instructions for implementation suggestions.)
@@ -102,7 +145,15 @@ extern "C" {
 	// Params:
 	//	 collider1 = Pointer to the first Collider component.
 	//	 collider2 = Pointer to the second Collider component.
-	void ColliderCheck(Collider* collider, Collider* other);
+	void ColliderCheck(Collider* collider, Collider* other)
+	{
+		if (collider == NULL || other == NULL)
+		{
+			return;
+		}
+
+
+	}
 
 	// Set the collision event handler for a collider.
 	// (Hint: This allows other components, such as Behaviors, to respond to collision events.)

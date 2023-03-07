@@ -182,10 +182,6 @@ extern "C" {
 			// for each item run entity render
 			MeshFree(&meshes.meshList[i]);
 			meshes.meshList[i] = NULL;
-			//if (meshes.meshList[i] == NULL)
-			//{
-			//	printf("mesh %i is NULL\n", i);
-			//}
 		}
 	}
 
