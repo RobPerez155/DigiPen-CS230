@@ -79,31 +79,33 @@ void AnimationAdvanceFrame(Animation* animation, float dt)
 		Sprite* animSprite = EntityGetSprite(animation->parent);
 		animation->frameIndex++;
 
-		if (animation->frameIndex < animation->frameCount)
+		if (animation->frameIndex >= animation->frameCount)
 		{
-			if (animation->isRunning)
+			if (animation->isLooping)
 			{
-				SpriteSetFrame(animSprite, animation->frameIndex);
-				animation->frameDelay += animation->frameDuration;
-				return;
+				animation->frameIndex = 0;
+				animation->isDone = true;
 			}
-			else {
-				return;
+			else
+			{
+				animation->frameIndex--;
+				//animation->frameIndex = -1;
+				animation->isRunning = false;
+				animation->isDone = true;
 			}
 		}
-		else if (animation->isLooping)
+
+		if (animation->isRunning)
 		{
-			animation->frameIndex = 0;
-			animation->isDone = true;
+			SpriteSetFrame(animSprite, animation->frameIndex);
+			animation->frameDelay += animation->frameDuration;
+			return;
 		}
-		else
-		{
-			animation->frameIndex--;
-			//animation->frameIndex = -1;
-			animation->isRunning = false;
+		else {
+			animation->frameDelay = 0;
+			return;
 		}
 	}
-
 }
 
 //------------------------------------------------------------------------------
@@ -146,8 +148,7 @@ Animation* AnimationClone(const Animation* other)
 
 	*animationClone = *other;
 
-
-	EntityAddAnimation(other->parent, animationClone);
+	//EntityAddAnimation(other->parent, animationClone);
 
 	return animationClone;
 }
@@ -209,15 +210,15 @@ void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bo
 	{
 		animation->frameIndex = 0;
 		animation->frameCount = frameCount;
-		animation->frameDelay = 0.0;
+		animation->frameDelay = frameDuration;
 		animation->frameDuration = frameDuration;
 		animation->isRunning = true;
-		animation->isDone = false;
 		animation->isLooping = isLooping;
 	
 		Sprite* animSprite = EntityGetSprite(animation->parent);
-		// ANIMATION WONKED, ONLY PLAYING 1 FRAME
 		SpriteSetFrame(animSprite, animation->frameIndex);
+		
+		animation->isDone = false;
 	}
 
 	return;
@@ -231,7 +232,7 @@ void AnimationUpdate(Animation* animation, float dt)
 {
 	if (animation != NULL)
 	{
-
+		animation->isDone = false;
 
 		if (animation->isRunning)
 		{

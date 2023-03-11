@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	Behavior.h
-// Author(s):	Doug Schilling (dschilling)
+// File Name:	Behavior.c
+// Author(s):	Rob Perez(rob.perez)
 // Project:		Project 4
 // Course:		CS230S23
 //

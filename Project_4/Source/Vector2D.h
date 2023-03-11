@@ -113,6 +113,7 @@ void Vector2DFromAngleRad(DGL_Vec2 *pResult, float angle);
 // NOTE: If the pointer is NULL, then return 0.0f.
 float Vector2DToAngleRad(const DGL_Vec2 * pVec);
 
+void circleTriangles(int divisions);
 //------------------------------------------------------------------------------
 
 #ifdef __cplusplus

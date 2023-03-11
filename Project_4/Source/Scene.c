@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Scene.c
-// Author(s):	Doug Schilling (dschilling)
+// Author(s):	Rob Perez(rob.perez)
 // Project:		Project 0
 // Course:		CS230S23
 //
@@ -183,4 +183,3 @@ void SceneAddEntity(Entity* entity)
 //------------------------------------------------------------------------------
 // Private Functions:
 //------------------------------------------------------------------------------
-

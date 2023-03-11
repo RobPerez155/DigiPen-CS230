@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	MeshLibrary.h
-// Author(s):	Doug Schilling (dschilling)
+// File Name:	MeshLibrary.c
+// Author(s):	Rob Perez(rob.perez)
 // Project:		Project 4
 // Course:		CS230S22
 //
@@ -170,7 +170,7 @@ extern "C" {
 			meshes.meshList[i] = NULL;
 			if (meshes.meshList[i] == NULL)
 			{
-				printf("mesh %i is NULL\n", i);
+				//printf("mesh %i is NULL\n", i);
 			}
 		}
 	}

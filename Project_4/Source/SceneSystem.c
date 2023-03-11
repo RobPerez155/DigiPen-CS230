@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	SceneSystem.c
-// Author(s):	Doug Schilling (dschilling)
+// Author(s):	Rob Perez(rob.perez)
 // Project:		Project 0
 // Course:		CS230S23
 //

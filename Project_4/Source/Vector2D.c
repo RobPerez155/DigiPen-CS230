@@ -205,7 +205,26 @@ float Vector2DToAngleRad(const Vector2D* pVec)
 	return 0.0;
 }
 
-
+//void circleTriangles(int);
+//void circleTriangles(int divisions)
+//{
+//	for (int i = 0; i <= divisions; i++)
+//	{
+//		float x;
+//		float y;
+//		float u;
+//		float v;
+//		float angle = 360.0f / divisions;
+//
+//		x = (float)sinf(angle * i) * 0.5f;
+//		y = (float)cosf(angle * i) * 0.5f;
+//
+//		u = x + 0.5f;
+//		v = y + 0.5f;
+//
+//		printf("%f %f 1.0 1.0 1.0 1.0 %f %f\n", x, y, u, v);
+//	}
+//}
 //------------------------------------------------------------------------------
 
 #ifdef __cplusplus
