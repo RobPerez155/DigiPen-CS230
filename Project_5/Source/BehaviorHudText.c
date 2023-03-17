@@ -1,16 +1,23 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	BehaviorHudText.h
-// Author(s):	Doug Schilling (dschilling)
+// File Name:	BehaviorHudText.c
+// Author(s):	Rob Perez (rob.perez)
 // Project:		Project 5
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
 //
 //------------------------------------------------------------------------------
+#pragma once
+
 #include "stdafx.h"
 
-#pragma once
+#include "Behavior.h"
+#include "BehaviorHudText.h"
+#include "Entity.h"
+#include "ScoreSystem.h"
+#include "Sprite.h"
+#include "Stream.h"
 
 //------------------------------------------------------------------------------
 // Include Files:
@@ -34,22 +41,17 @@ extern "C" {
 	// Public Consts:
 	//------------------------------------------------------------------------------
 
-	// An example of the enums to be defined in BehaviorHudText.c.
-#if 0
 	typedef enum HudTextStates
 	{
 		cHudTextInvalid = -1,	// HUD Text has not yet been initialized.
 		cHudTextIdle,			// HUD Text will normally remain static.
 
 	} HudTextStates;
-#endif
 
 	//------------------------------------------------------------------------------
 	// Public Structures:
 	//------------------------------------------------------------------------------
 
-	// An example of the structure to be defined in BehaviorHudText.c.
-#if 0
 	typedef struct BehaviorHudText
 	{
 		// Inherit the base behavior structure.
@@ -59,7 +61,7 @@ extern "C" {
 
 		// The format string to be used with sprintf_s() when updating the HUD Text object.
 		// (For example: "Score: %d")
-		const char* formatString;
+		char formatString[32];
 
 		// The buffer to be used with sprintf_s() when updating the HUD Text object.
 		// (For example: "Score: 9001")
@@ -71,25 +73,48 @@ extern "C" {
 		// (NOTE: This value will be compared against displayValue to determine when the text must be updated.)
 		const int* watchValue;
 
+		int scoreSystem;
+
 		// The value currently being displayed by the HUD Text object.
 		// (NOTE: This value can be compared with *watchValue to determine when the text must be updated.)
 		// (NOTE: Make sure to update this value each time the text is updated.)
 		unsigned displayValue;
 
 	} BehaviorHudText;
-#endif
 
 	//------------------------------------------------------------------------------
 	// Public Variables:
 	//------------------------------------------------------------------------------
 
 	//------------------------------------------------------------------------------
-	// Public Functions:
+	// Private Functions:
 	//------------------------------------------------------------------------------
+	static void BehaviorHudTextInit(Behavior*);
+	static void BehaviorHudTextUpdate(Behavior*, float dt);
+	static void BehaviorHudTextExit(Behavior*);
+	static void BehaviorHudTextUpdateText(BehaviorHudText*);
+
 
 	// Dynamically allocate a new (HUD Text) behavior component.
 	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-	Behavior* BehaviorHudTextCreate(void);
+	Behavior* BehaviorHudTextCreate(void)
+	{
+		BehaviorHudText* behaviorHudText = calloc(1, sizeof(BehaviorHudText));
+
+		if (behaviorHudText != NULL)
+		{
+			behaviorHudText->base.memorySize = sizeof(BehaviorHudText);
+			behaviorHudText->base.onInit = BehaviorHudTextInit;
+			behaviorHudText->base.onUpdate = BehaviorHudTextUpdate;
+			behaviorHudText->base.onExit = BehaviorHudTextExit;
+			behaviorHudText->base.stateCurr = cHudTextInvalid;
+			behaviorHudText->base.stateNext = cHudTextIdle;
+			behaviorHudText->scoreSystem = SsiInvalid;
+
+			return (Behavior*)behaviorHudText;
+		}
+		return NULL;
+	}
 
 	// Read the properties of a Behavior component from a file.
 	// (NOTE: Read the base Behavior values using BehaviorRead.)
@@ -98,8 +123,66 @@ extern "C" {
 	// Params:
 	//	 behavior = Pointer to the Behavior component.
 	//	 stream = Pointer to the data stream used for reading.
-	void BehaviorHudTextRead(Behavior* behavior, Stream stream);
+	void BehaviorHudTextRead(Behavior* behavior, Stream stream)
+	{
+		if (behavior != NULL)
+		{
+			BehaviorRead(behavior, stream);
+			BehaviorHudText* tempBehavior = (BehaviorHudText*)behavior;
+			//behavior is empty
+	
+			strcpy_s(tempBehavior->formatString, _countof(tempBehavior->formatString), StreamReadToken(stream));
+			tempBehavior->scoreSystem = StreamReadInt(stream);
+		}
+	}
 
+
+	void BehaviorHudTextExit(Behavior* behavior)
+	{
+		UNREFERENCED_PARAMETER(behavior);
+	}
+
+	void BehaviorHudTextUpdate(Behavior* behavior, float dt)
+	{
+		BehaviorHudText* hudText = (BehaviorHudText*)behavior;
+		BehaviorHudTextUpdateText(hudText);
+		UNREFERENCED_PARAMETER(dt);
+	}
+
+	void BehaviorHudTextInit(Behavior* behavior)
+	{
+		BehaviorHudText* hudText = (BehaviorHudText*)behavior;
+		Sprite* sprite = EntityGetSprite(behavior->parent);
+
+		BehaviorHudTextUpdateText(hudText);
+
+		if (sprite != NULL)
+		{
+			SpriteSetText(sprite, hudText->displayString);
+		}
+
+
+	}
+
+
+	void BehaviorHudTextUpdateText(BehaviorHudText* behaviorText)
+	{
+		//UNREFERENCED_PARAMETER(behaviorText);
+		//if (behaviorText->watchValue != NULL && *behaviorText->watchValue != behaviorText->displayValue)
+		//{
+		//	behaviorText->displayValue = *behaviorText->watchValue;
+		//	sprintf_s(behaviorText->displayString, 32, behaviorText->formatString, behaviorText->displayValue);
+		//	
+		//}
+
+
+		if (behaviorText->scoreSystem != SsiInvalid)
+		{
+			behaviorText->displayValue = ScoreSystemGetValue(behaviorText->scoreSystem);
+			//sprintf_s(behaviorText->displayString, behaviorText->formatString, behaviorText->displayValue);
+			sprintf_s(behaviorText->displayString, 32, behaviorText->formatString, behaviorText->displayValue);
+		}
+	}
 	//------------------------------------------------------------------------------
 
 #ifdef __cplusplus

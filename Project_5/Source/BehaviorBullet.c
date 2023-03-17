@@ -17,7 +17,9 @@
 #include "stdafx.h"
 #include "Behavior.h"
 #include "BehaviorBullet.h"
+#include "Collider.h"
 #include "Entity.h"
+#include "Teleporter.h"
 //------------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -55,10 +57,10 @@ extern "C" {
 	// Private Functions:
 	// 
 		static void BehaviorBulletUpdateLifeTimer(Behavior* behavior, float dt);
+		static void BehaviorBulletCollisionHandler(Entity* entity1, Entity* entity2);
 	//------------------------------------------------------------------------------
 
 	// Dynamically allocate a new (Bullet) behavior component.
-	// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 	Behavior* BehaviorBulletCreate(void)
 	{
 		Behavior* bullet = calloc(1, sizeof(Behavior));
@@ -69,6 +71,7 @@ extern "C" {
 			bullet->stateNext = cBulletInvalid;
 			bullet->onInit = BehaviorBulletInit;
 			bullet->onUpdate = BehaviorBulletUpdate;
+			bullet->memorySize = sizeof(Behavior);
 			bullet->onExit = BehaviorBulletExit;
 
 			return bullet;
@@ -77,13 +80,34 @@ extern "C" {
 			return NULL;
 	}
 
+	void BehaviorBulletCollisionHandler(Entity* entity1, Entity* entity2)
+	{
+		if (entity1 != NULL && entity2 != NULL)
+		{
+			const char* asteroid = "Asteroid";
+			const char* ent2 = EntityGetName(entity2);
+			if (strcmp(ent2, asteroid) == 0)
+			{
+				EntityDestroy(entity1);
+			}
+		}
+	}
+
 	// Initialize the current state of the behavior component.
 	// (Hint: Refer to the lecture notes on finite state machines (FSM).)
 	// Params:
 	//	 behavior = Pointer to the behavior component.
 	void BehaviorBulletInit(Behavior* behavior)
 	{
-		UNREFERENCED_PARAMETER(behavior);
+		if (behavior->stateCurr == cBulletIdle)
+		{
+			Collider* parentCollider = EntityGetCollider(behavior->parent);
+
+			if (parentCollider != NULL)
+			{
+				ColliderSetCollisionHandler(parentCollider, BehaviorBulletCollisionHandler);
+			}
+		}
 	}
 
 	// Update the current state of the behavior component.
@@ -99,6 +123,8 @@ extern "C" {
 			BehaviorBulletUpdateLifeTimer(behavior, dt);
 			break;
 		}
+
+		TeleporterUpdateEntity(behavior->parent);
 	}
 
 	// Exit the current state of the behavior component.

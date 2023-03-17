@@ -62,13 +62,13 @@
 	static void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name);
 	//------------------------------------------------------------------------------
 	
-	MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
+	void MeshBuildQuad(Mesh* mesh, float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
 	{
 		DGL_Graphics_StartMesh(); // Like taking out pen
 
 		strcpy_s(mesh->name, _countof(mesh->name), name);
 
-		DGL_Graphics_StartMesh();
+		//DGL_Graphics_StartMesh();
 
 		DGL_Graphics_AddTriangle(
 			&(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
@@ -126,14 +126,13 @@
 				if (position == NULL)
 					return;
 
-				float half = 0.5;
-				Vector2D halfSized = { position->x * half, position->y * half };
+				Vector2D halfSized = { position->x, position->y };
 				
 				int cols = StreamReadInt(stream);
 				int rows = StreamReadInt(stream);
 				const char* meshName = StreamReadToken(stream);
 				
-				MeshCreateQuad(halfSized.x, halfSized.y, (float)cols, (float)rows, meshName);
+				MeshBuildQuad(mesh,halfSized.x, halfSized.y, (float)1/cols, (float)1/rows, meshName);
 			}
 
 			if (strncmp(token, "Mesh", _countof("Mesh")) != 0)
@@ -171,37 +170,14 @@
 	// Dynamically allocate a new Mesh object AND create a quadrilateral mesh.
 	Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize, const char* name)
 	{
-		//(Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 		Mesh* ptrMesh = calloc(1, sizeof(Mesh));
-		
-		DGL_Graphics_StartMesh(); // Like taking out pen
+		MeshBuildQuad(ptrMesh, xHalfSize, yHalfSize, uSize, vSize, name);
 
-		if (ptrMesh != NULL) 
-		{
-
-			strcpy_s(ptrMesh->name, _countof(ptrMesh->name), name);
-
-			DGL_Graphics_StartMesh();
-
-			DGL_Graphics_AddTriangle(
-        &(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
-        &(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, 0.0f },
-        &(DGL_Vec2){  xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, vSize });
-      DGL_Graphics_AddTriangle(
-        &(DGL_Vec2){ -xHalfSize, -yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, vSize },
-        &(DGL_Vec2){ -xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ 0.0f, 0.0f },
-        &(DGL_Vec2){  xHalfSize,  yHalfSize }, &(DGL_Color){ 0.0f, 0.0f, 0.0f, 1.0f }, &(DGL_Vec2){ uSize, 0.0f });
-
-			ptrMesh->meshResource = DGL_Graphics_EndMesh(); // Putting pen away
-
-			return ptrMesh;
-		}
-
-		return NULL;
+		return ptrMesh;
 	}
 
 	// Create a "spaceship" mesh.
-	// (NOTE: This must be a "unit"-sized triangular mesh as described in the Project 2 instructions.)
+	// (NOTE: This mxust be a "unit"-sized triangular mesh as described in the Project 2 instructions.)
 	// (NOTE: The Mesh object must first be made using calloc().)
 	// (NOTE: The Mesh name can be stored using strcpy_s().)
 	// (NOTE: The DGL_Mesh object must be created using DGL_Graphics_StartMesh,

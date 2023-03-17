@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	BehaviorSpaceship.h
-// Author(s):	Doug Schilling (dschilling)
+// Author(s):	Rob Perez (rob.perez)
 // Project:		Project 4
 // Course:		CS230S23
 //
@@ -19,9 +19,11 @@
 #include "DGL.h"
 #include "Behavior.h"
 #include "BehaviorSpaceship.h"
+#include "Collider.h"
 #include "Entity.h"
 #include "EntityFactory.h"
 #include "Physics.h"
+#include "Teleporter.h"
 #include "Transform.h"
 #include "Vector2D.h"
 #include "Scene.h"
@@ -58,14 +60,16 @@ extern "C" {
 	static const float spaceshipAcceleration = 150.0f;
 	static const float spaceshipSpeedMax = 500.0f;
 	static const float spaceshipTurnRateMax = (float) PI / 1.5f;
-	static const float spaceshipWeaponCooldownTime = 0.034f;
+	static const float spaceshipWeaponCooldownTime = 0.25f;
 	static const float spaceshipWeaponBulletSpeed = 750.0f;
+	static const float spaceshipDeathDuration = 3.0f;
 
 
 	enum SpaceshipState {
 		cSpaceshipInvalid = -1,
 		cSpaceshipIdle,
-		cSpaceshipThrust
+		cSpaceshipThrust,
+		cSpaceshipDead
 	};
 
 	//------------------------------------------------------------------------------
@@ -74,12 +78,13 @@ extern "C" {
 
 	//------------------------------------------------------------------------------
 	// Private Functions:
-	//-----------------------------
 	static void BehaviorSpaceshipUpdateRotation(Behavior* behavior, float dt);
 	static void BehaviorSpaceshipUpdateVelocity(Behavior* behavior, float dt);
 	static void BehaviorSpaceshipUpdateWeapon(Behavior* behavior, float dt);
 	static void BehaviorSpaceshipSpawnBullet(Behavior* behavior);
-
+	static void BehaviorSpaceshipCollisionHandler(Entity* entity1, Entity* entity2);
+	static void BehaviorSpaceshipDeadAnimation(Behavior* behavior);
+	//-----------------------------
 
 
 	// Dynamically allocate a new (Spaceship) behavior component.
@@ -92,6 +97,7 @@ extern "C" {
 		{
 			ptrBehavior->stateCurr = cSpaceshipInvalid;
 			ptrBehavior->stateNext = cSpaceshipInvalid;
+			ptrBehavior->memorySize = sizeof(Behavior);
 			ptrBehavior->onInit = BehaviorSpaceshipInit;
 			ptrBehavior->onUpdate = BehaviorSpaceshipUpdate;
 			ptrBehavior->onExit = BehaviorSpaceshipExit;
@@ -102,6 +108,18 @@ extern "C" {
 			return NULL;
 	}
 
+	void BehaviorSpaceshipCollisionHandler(Entity* entity1, Entity* entity2)
+	{
+		if (entity1 != NULL && entity2 != NULL)
+		{ 
+			if (strcmp(EntityGetName(entity2), "Asteroid") == 0)
+			{
+				Behavior* ent1Behavior = EntityGetBehavior(entity1);
+			
+				ent1Behavior->stateNext = cSpaceshipDead;
+			}
+		}
+	}
 
 	// Initialize the current state of the behavior component.
 	// (Hint: Refer to the lecture notes on finite state machines (FSM).)
@@ -109,7 +127,20 @@ extern "C" {
 	//	 behavior = Pointer to the behavior component.
 	void BehaviorSpaceshipInit(Behavior* behavior)
 	{
-		UNREFERENCED_PARAMETER(behavior);
+		if (behavior->stateCurr == cSpaceshipIdle)
+		{
+			Collider* parentCollider = EntityGetCollider(behavior->parent);
+			if (parentCollider)
+			{
+				ColliderSetCollisionHandler(parentCollider, BehaviorSpaceshipCollisionHandler);
+			}
+		}
+		
+		else if (behavior->stateCurr == cSpaceshipDead)
+		{
+			behavior->timer = spaceshipDeathDuration;
+			BehaviorSpaceshipDeadAnimation(behavior);
+		}
 	}
 
 	// Update the current state of the behavior component.
@@ -139,6 +170,18 @@ extern "C" {
 				behavior->stateNext = cSpaceshipIdle;
 			}
 			break;
+		}
+		
+		TeleporterUpdateEntity(behavior->parent);
+
+		if (behavior->stateCurr == cSpaceshipDead)
+		{
+			behavior->timer -= dt;
+			if (behavior->timer < 0)
+			{
+				SceneRestart();
+			}
+			BehaviorSpaceshipDeadAnimation(behavior);
 		}
 	}
 
@@ -258,6 +301,18 @@ extern "C" {
 		}
 	}
 
+	static void BehaviorSpaceshipDeadAnimation(Behavior* behavior)
+	{
+		// Make ship spin
+		Physics* physics = EntityGetPhysics(behavior->parent);
+		PhysicsSetRotationalVelocity(physics, PhysicsGetRotationalVelocity(physics) + 15);
+
+		// Make ship shrink
+		Transform* transform = EntityGetTransform(behavior->parent);
+		Vector2D scale = *TransformGetScale(transform);
+		Vector2DScale(&scale, &scale, 0.75f);
+		TransformSetScale(transform, &scale);
+	}
 	//------------------------------------------------------------------------------
 
 #ifdef __cplusplus

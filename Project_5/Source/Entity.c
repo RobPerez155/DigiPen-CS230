@@ -17,7 +17,9 @@
 
 #include "Animation.h"
 #include "Behavior.h"
+#include "BehaviorAsteroid.h"
 #include "BehaviorBullet.h"
+#include "BehaviorHudText.h"
 #include "BehaviorSpaceship.h"
 #include "Collider.h"
 #include "Entity.h"
@@ -169,6 +171,7 @@
 				else if ((strncmp(token, "Sprite", _countof("Sprite")) == 0))
 				{
 					entity->sprite = SpriteCreate();
+					//AsteroidsScore is getting read incorrectly here
 					SpriteRead(entity->sprite, stream);
 				}
 				else if ((strncmp(token, "Animation", _countof("Animation")) == 0))
@@ -188,6 +191,24 @@
 					Behavior* bullet = BehaviorBulletCreate();
 					BehaviorRead(bullet, stream);
 					EntityAddBehavior(entity, bullet);
+				}
+				else if ((strncmp(token, "BehaviorAsteroid", _countof("BehaviorAsteroid")) == 0))
+				{
+					Behavior* asteroid = BehaviorAsteroidCreate();
+					BehaviorRead(asteroid, stream);
+					EntityAddBehavior(entity, asteroid);
+				}
+				else if ((strncmp(token, "BehaviorHudText", _countof("BehaviorHudText")) == 0))
+				{
+					Behavior* hudText = BehaviorHudTextCreate();
+					BehaviorHudTextRead(hudText, stream);
+					EntityAddBehavior(entity, hudText);
+				}
+				else if ((strncmp(token, "Collider", _countof("Collider")) == 0))
+				{
+					Collider* collider = ColliderCreate();
+					ColliderRead(collider, stream);
+					EntityAddCollider(entity, collider);
 				}
 				else if (token[0] == 0) {
 					break;

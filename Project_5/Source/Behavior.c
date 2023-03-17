@@ -1,7 +1,7 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Behavior.h
-// Author(s):	Doug Schilling (dschilling)
+// Author(s):	Rob Perez (rob.perez)
 // Project:		Project 4
 // Course:		CS230S23
 //
@@ -51,6 +51,11 @@ extern "C" {
 		// Pointer to the behavior's parent game object.
 		Entity* parent;
 
+		// The following variable is used to allocate the correct amount of memory
+//   when cloning a behavior component.  Cloning of "derived" behaviors will
+//   fail if insufficient memory is allocated.
+		unsigned int memorySize;
+
 		// Behavior Finite-State Machine (FSM) state variables.
 		int stateCurr;
 		int stateNext;
@@ -92,15 +97,15 @@ extern "C" {
 			return NULL;
 		}
 
-		Behavior* behaviorClone = calloc(1, sizeof(Behavior));
+		Behavior* behaviorClone = calloc(1, other->memorySize);
 
 		if (behaviorClone == NULL)
 		{
 			return NULL;
 		}
 
-		*behaviorClone = *other;
-
+		//*behaviorClone = *other;
+		memcpy(behaviorClone, other, other->memorySize);
 
 		return behaviorClone;
 	}

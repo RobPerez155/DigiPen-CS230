@@ -201,8 +201,8 @@
 			const char* spriteName = StreamReadToken(stream);
 
 			strcpy_s(spriteSource->name, _countof(spriteSource->name), spriteName);
-			spriteSource->numRows = StreamReadInt(stream);
 			spriteSource->numCols = StreamReadInt(stream);
+			spriteSource->numRows = StreamReadInt(stream);
 			spriteSource->texture = DGL_Graphics_LoadTexture(StreamReadToken(stream));
 		}
 	}

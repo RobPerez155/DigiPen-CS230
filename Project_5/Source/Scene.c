@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------
 //
 // File Name:	Scene.c
-// Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
+// Author(s):	Rob Perez (rob.perez)
+// Project:		Project 0
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

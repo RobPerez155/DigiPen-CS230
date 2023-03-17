@@ -13,6 +13,7 @@
 
 #include <DGL.h>
 #include "Scene.h"
+#include "Behavior.h"
 #include "SceneSystem.h"
 #include "SandboxScene.h"
 #include "Level1Scene.h"
@@ -106,14 +107,14 @@ const Scene* SandboxSceneGetInstance(void)
 //	MeshIsNamed(instance.ptrMesh, "Mesh1x1");
 //}
 
-static void SandboxSceneTraceFloat(const char* text, float f) 
-{
-	TraceMessage("Vector Test: %s = %f", text, f);
-}
+//static void SandboxSceneTraceFloat(const char* text, float f) 
+//{
+//	TraceMessage("Vector Test: %s = %f", text, f);
+//}
 
-static void SandboxSceneTraceVector(const char* text, const DGL_Vec2* v) {
-	TraceMessage("Vector Test: %s = [%f, %f]", text, v->x, v->y);
-}
+//static void SandboxSceneTraceVector(const char* text, const DGL_Vec2* v) {
+//	TraceMessage("Vector Test: %s = [%f, %f]", text, v->x, v->y);
+//}
 
 //static void SandboxSceneTraceMatrix(const char* text, const DGL_Mat4* v) {
 //	TraceMessage("Matrix Test: %s = [%f, %f]", text, v->m[0][0]);
@@ -150,9 +151,10 @@ static void SandboxSceneUpdate(float dt)
 	// Tell the compiler that the 'dt' variable is unused.
 	UNREFERENCED_PARAMETER(dt);
 
-	Stream vectorTest = StreamOpen(VectorTestFileName);
-	//Stream spriteSourceTest = StreamOpen(SpriteSourceFileName);
 
+	//SpriteSource testing
+	//-----------------------------------------------------------------
+	//Stream spriteSourceTest = StreamOpen(SpriteSourceFileName);
 	//SpriteSource* theRealPizza = SpriteSourceCreate();
 	/*SpriteSource* theRealPizza;*/
 	//SpriteSourceRead(theRealPizza, spriteSourceTest);
@@ -160,8 +162,42 @@ static void SandboxSceneUpdate(float dt)
 	//SpriteSourceLibraryBuild("SpriteSourceFontSheet");
 	//printf("POW");
 
+	//Behavior testing
+	//-----------------------------------------------------------------
+	/*if (DGL_Input_KeyTriggered('N'))
+	{
+	Behavior* testBehavior = calloc(1, sizeof(Behavior));
+	Entity* testPizza = EntityCreate();
 
 
+	testBehavior->memorySize = 100;
+	testBehavior->onExit = NULL;
+	testBehavior->onInit = NULL;
+	testBehavior->onUpdate = NULL;
+	testBehavior->parent = testPizza;
+	testBehavior->stateCurr = 1;
+	testBehavior->stateNext = 3;
+	testBehavior->timer = 27.0;
+
+	Behavior* pizza = BehaviorClone(testBehavior);
+	UNREFERENCED_PARAMETER(pizza);
+	printf("success");
+}*/
+
+	//if (DGL_Input_KeyTriggered('B'))
+	//{
+	//	Stream vectorTest = StreamOpen(VectorTestFileName);
+	//if (vectorTest != NULL)
+	//{
+	//	if (DGL_Input_KeyTriggered(' '))
+	//	{
+	//		RandomRangeFloat(10, 100);
+	//	}
+
+	//}
+
+	//Mesh testing
+//-----------------------------------------------------------------
 	if (DGL_Input_KeyTriggered('M'))
 	{
 		Stream fileStream = StreamOpen(MeshQuadFileName);
@@ -171,17 +207,10 @@ static void SandboxSceneUpdate(float dt)
 		//StreamClose(MeshQuadFileName);
 	}
 
-	if (vectorTest != NULL)
-	{
-		if (DGL_Input_KeyTriggered(' '))
-		{
-			RandomRangeFloat(10, 100);
-		}
-
-		DGL_Vec2* testInputA = malloc(sizeof * testInputA);
-		DGL_Vec2* testInputB = malloc(sizeof * testInputB);
-		DGL_Vec2* testInputC = malloc(sizeof * testInputC);
-		DGL_Vec2* testInputD = malloc(sizeof * testInputD);
+		//DGL_Vec2* testInputA = malloc(sizeof * testInputA);
+		//DGL_Vec2* testInputB = malloc(sizeof * testInputB);
+		//DGL_Vec2* testInputC = malloc(sizeof * testInputC);
+		//DGL_Vec2* testInputD = malloc(sizeof * testInputD);
 
 		// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
 		if (DGL_Input_KeyTriggered('1'))
@@ -202,82 +231,81 @@ static void SandboxSceneUpdate(float dt)
 			SceneSystemSetNext(AsteroidsSceneGetInstance());
 		}
 
-		Vector2DZero(testInputA);
-		SandboxSceneTraceVector("Vector2DZero", testInputA);
+		/*if (DGL_Input_KeyTriggered('Z'))
+		{
+			Vector2DZero(testInputA);
+			SandboxSceneTraceVector("Vector2DZero", testInputA);
 
-		Vector2DSet(testInputA, 1.0f, 1.5f);
-		SandboxSceneTraceVector("Vector2DSet", testInputA);
+			Vector2DSet(testInputA, 1.0f, 1.5f);
+			SandboxSceneTraceVector("Vector2DSet", testInputA);
 
-		Vector2DNeg(testInputA, testInputA);
-		SandboxSceneTraceVector("Vector2DNeg", testInputA);
+			Vector2DNeg(testInputA, testInputA);
+			SandboxSceneTraceVector("Vector2DNeg", testInputA);
 
-		Vector2DAdd(testInputA, testInputA, testInputA);
-		SandboxSceneTraceVector("Vector2DAdd", testInputA);
+			Vector2DAdd(testInputA, testInputA, testInputA);
+			SandboxSceneTraceVector("Vector2DAdd", testInputA);
 
-		Vector2DSub(testInputA, testInputA, testInputA);
-		SandboxSceneTraceVector("Vector2DSub", testInputA);
+			Vector2DSub(testInputA, testInputA, testInputA);
+			SandboxSceneTraceVector("Vector2DSub", testInputA);
 
-		StreamReadVector2D(vectorTest, testInputA);
-		SandboxSceneTraceVector("StreamReadVector2D", testInputA);
+			StreamReadVector2D(vectorTest, testInputA);
+			SandboxSceneTraceVector("StreamReadVector2D", testInputA);
 
-		Vector2DNormalize(testInputA, testInputA);
-		SandboxSceneTraceVector("Vector2DNormalize", testInputA);
+			Vector2DNormalize(testInputA, testInputA);
+			SandboxSceneTraceVector("Vector2DNormalize", testInputA);
 
-		float scale = StreamReadFloat(vectorTest);
-		SandboxSceneTraceFloat("StreamReadFloat", scale);
+			float scale = StreamReadFloat(vectorTest);
+			SandboxSceneTraceFloat("StreamReadFloat", scale);
 
-		Vector2DScale(testInputA, testInputA, scale);
-		SandboxSceneTraceVector("Vector2DScale", testInputA);	
+			Vector2DScale(testInputA, testInputA, scale);
+			SandboxSceneTraceVector("Vector2DScale", testInputA);
 
-		Vector2DScaleAdd(testInputA, testInputA, testInputA, scale);
-		SandboxSceneTraceVector("Vector2DScaleAdd", testInputA);
+			Vector2DScaleAdd(testInputA, testInputA, testInputA, scale);
+			SandboxSceneTraceVector("Vector2DScaleAdd", testInputA);
 
-		Vector2DScaleSub(testInputA, testInputA, testInputA, scale);
-		SandboxSceneTraceVector("Vector2DScaleSub", testInputA);
+			Vector2DScaleSub(testInputA, testInputA, testInputA, scale);
+			SandboxSceneTraceVector("Vector2DScaleSub", testInputA);
 
-		float lengthA = Vector2DLength(testInputA);
-		SandboxSceneTraceFloat("Vector2DLength", lengthA);
+			float lengthA = Vector2DLength(testInputA);
+			SandboxSceneTraceFloat("Vector2DLength", lengthA);
 
-		float sqLengthA = Vector2DSquareLength(testInputA);
-		SandboxSceneTraceFloat("Vector2DSquareLength", sqLengthA);
+			float sqLengthA = Vector2DSquareLength(testInputA);
+			SandboxSceneTraceFloat("Vector2DSquareLength", sqLengthA);
 
-		StreamReadVector2D(vectorTest, testInputB);
-		SandboxSceneTraceVector("StreamReadVector2D", testInputB);
+			StreamReadVector2D(vectorTest, testInputB);
+			SandboxSceneTraceVector("StreamReadVector2D", testInputB);
 
-		StreamReadVector2D(vectorTest, testInputC);
-		SandboxSceneTraceVector("StreamReadVector2D", testInputC);
+			StreamReadVector2D(vectorTest, testInputC);
+			SandboxSceneTraceVector("StreamReadVector2D", testInputC);
 
-		float distanceBC = Vector2DDistance(testInputB, testInputC);
-		SandboxSceneTraceFloat("Vector2DDistance", distanceBC);
+			float distanceBC = Vector2DDistance(testInputB, testInputC);
+			SandboxSceneTraceFloat("Vector2DDistance", distanceBC);
 
-		float sqDistanceBC = Vector2DSquareDistance(testInputB, testInputC);
-		SandboxSceneTraceFloat("Vector2DSquareDistance", sqDistanceBC);
+			float sqDistanceBC = Vector2DSquareDistance(testInputB, testInputC);
+			SandboxSceneTraceFloat("Vector2DSquareDistance", sqDistanceBC);
 
-		float vectorDotProdBC = Vector2DDotProduct(testInputB, testInputC);
-		SandboxSceneTraceFloat("Vector2DDotProduct", vectorDotProdBC);
+			float vectorDotProdBC = Vector2DDotProduct(testInputB, testInputC);
+			SandboxSceneTraceFloat("Vector2DDotProduct", vectorDotProdBC);
 
-		float angleDeg = StreamReadFloat(vectorTest);
-		SandboxSceneTraceFloat("StreamReadFloat", angleDeg);
+			float angleDeg = StreamReadFloat(vectorTest);
+			SandboxSceneTraceFloat("StreamReadFloat", angleDeg);
 
-		Vector2DFromAngleDeg(testInputD, angleDeg);
-		SandboxSceneTraceVector("Vector2DFromAngleDeg", testInputD);
+			Vector2DFromAngleDeg(testInputD, angleDeg);
+			SandboxSceneTraceVector("Vector2DFromAngleDeg", testInputD);
 
-		float angleRad = StreamReadFloat(vectorTest);
-		SandboxSceneTraceFloat("StreamReadFloat", angleRad);
+			float angleRad = StreamReadFloat(vectorTest);
+			SandboxSceneTraceFloat("StreamReadFloat", angleRad);
 
-		Vector2DFromAngleRad(testInputD, angleRad);
-		SandboxSceneTraceVector("Vector2DFromAngleRad", testInputD);
+			Vector2DFromAngleRad(testInputD, angleRad);
+			SandboxSceneTraceVector("Vector2DFromAngleRad", testInputD);
 
-		float toAngleRad = Vector2DToAngleRad(testInputD);
-		SandboxSceneTraceFloat("Vector2DToAngleRad", toAngleRad);
+			float toAngleRad = Vector2DToAngleRad(testInputD);
+			SandboxSceneTraceFloat("Vector2DToAngleRad", toAngleRad);
 
-		StreamClose(&vectorTest);
+			StreamClose(&vectorTest);
+		}*/
 	}
-
-	// NOTE: This call causes the engine to exit immediately.  Make sure to remove
-	//   it when you are ready to test out a new scene.
-	//SceneSystemSetNext(NULL);
-}
+//}
 
 // Render the scene.
 void SandboxSceneRender(void)

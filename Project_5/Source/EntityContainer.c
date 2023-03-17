@@ -16,6 +16,7 @@
 //------------------------------------------------------------------------------
 #include "stdafx.h"
 #include <assert.h>
+#include "Collider.h"
 #include "Entity.h"
 #include "EntityContainer.h"
 
@@ -98,8 +99,10 @@ extern "C" {	// Assume C declarations for C++.
 	{
 		EntityContainer* ptrEntityContainer = calloc(1, sizeof(EntityContainer));		
 
+
 		if (ptrEntityContainer != NULL)
 		{
+			ptrEntityContainer->entityMax = entityArraySize;
 			return ptrEntityContainer;
 		}
 		else
@@ -228,14 +231,15 @@ extern "C" {	// Assume C declarations for C++.
 			if (entities != NULL)
 			{
 				// Iterate through list
-				for (unsigned int i = 0; i < entities->entityCount; i++)
+				for (unsigned int i = 0; i < entities->entityMax; i++)
 				{
-					// for each item run entity update
-					EntityUpdate(entities->entitiesList[i], dt);
+					if (entities->entitiesList[i])
+						// for each item run entity update
+						EntityUpdate(entities->entitiesList[i], dt);
 				}
-				for (unsigned int i = 0; i < entities->entityCount; i++)
+				for (unsigned int i = 0; i < entities->entityMax; i++)
 				{
-					if (EntityIsDestroyed(entities->entitiesList[i]))
+					if (entities->entitiesList[i] && EntityIsDestroyed(entities->entitiesList[i]))
 					{
 						EntityFree(&entities->entitiesList[i]);
 						entities->entitiesList[i] = NULL;
@@ -258,10 +262,11 @@ extern "C" {	// Assume C declarations for C++.
 			if (entities != NULL)
 			{
 				// Iterate through list
-				for (unsigned int i = 0; i < entities->entityCount; i++)
+				for (unsigned int i = 0; i < entities->entityMax; i++)
 				{
-					// for each item run entity render
-					EntityRender(entities->entitiesList[i]);
+					if(entities->entitiesList[i])
+						// for each item run entity render
+						EntityRender(entities->entitiesList[i]);
 				}
 			}
 		}
@@ -305,7 +310,27 @@ extern "C" {	// Assume C declarations for C++.
 //   entities = Pointer to the EntityContainer.
 	void EntityContainerCheckCollisions(EntityContainer* entities)
 	{
-		UNREFERENCED_PARAMETER(entities);
+		for (unsigned int i = 0; i < entities->entityMax - 1; i++)
+		{
+ 			if (entities->entitiesList[i] != NULL)
+			{
+				Collider* collider1 = EntityGetCollider(entities->entitiesList[i]);
+				if (collider1 != NULL)
+				{
+					for (unsigned int j = i + 1; j < entities->entityMax; j++)
+					{
+						if (entities->entitiesList[j] != NULL)
+						{
+							Collider* collider2 = EntityGetCollider(entities->entitiesList[j]);
+							if (collider2 != NULL)
+							{
+								ColliderCheck(collider1, collider2);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 	//------------------------------------------------------------------------------
 

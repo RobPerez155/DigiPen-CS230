@@ -13,6 +13,7 @@
 #include "Entity.h"
 #include "Transform.h"
 #include "Vector2D.h"
+#include <DGL.h>
 
 #pragma once
 
@@ -42,7 +43,6 @@ extern "C" {
 	//------------------------------------------------------------------------------
 	// Public Structures:
 	//------------------------------------------------------------------------------
-
 	typedef void(*CollisionEventHandler)(Entity* entity1, Entity* entity2);
 
 	typedef struct Collider
@@ -147,12 +147,35 @@ extern "C" {
 	//	 collider2 = Pointer to the second Collider component.
 	void ColliderCheck(Collider* collider, Collider* other)
 	{
-		if (collider == NULL || other == NULL)
+		if (collider != NULL && other != NULL)
 		{
+			Transform* colliderTransform = EntityGetTransform(collider->parent);
+			Transform* otherTransform = EntityGetTransform(other->parent);
+
+			const Vector2D* collPos = TransformGetTranslation(colliderTransform);
+			const Vector2D* otherPos = TransformGetTranslation(otherTransform);
+
+			const Vector2D* collScale = TransformGetScale(colliderTransform);
+			const Vector2D* otherScale = TransformGetScale(otherTransform);
+
+			
+			float distanceSquared = Vector2DDistance(collPos, otherPos);
+
+
+			float distanceScale = collScale->x * .5f + otherScale->x * .5f;
+
+			if (distanceScale >= distanceSquared)
+			{
+				if (collider->handler)
+					collider->handler(collider->parent, other->parent);
+
+				if (other->handler)
+					other->handler(other->parent, collider->parent);
+			}
+		
+
 			return;
 		}
-
-
 	}
 
 	// Set the collision event handler for a collider.
@@ -161,7 +184,10 @@ extern "C" {
 	// Params:
 	//	 collider = Pointer to the Collider component.
 	//	 handler = Pointer to the collision event handler (may be NULL).
-	void ColliderSetCollisionHandler(Collider* collider, CollisionEventHandler handler);
+	void ColliderSetCollisionHandler(Collider* collider, CollisionEventHandler handler)
+	{
+		collider->handler = handler;
+	}
 
 	//------------------------------------------------------------------------------
 

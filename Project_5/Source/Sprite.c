@@ -140,11 +140,16 @@
 			const Mesh* newMesh = MeshLibraryBuild(meshName);
 			SpriteSetMesh(sprite, newMesh);
 
-			SpriteSource* newSpriteSourceName = SpriteSourceCreate();
-			SpriteSourceRead(newSpriteSourceName, stream);
+			const char* ss_name = StreamReadToken(stream);
+			if (strcmp(ss_name, "None") != 0 || ss_name[0] != '\0')
+			{
+				
+				sprite->spriteSource = SpriteSourceLibraryBuild(ss_name);
+			}
+
 			
-			//const SpriteSource* newSpriteSource = SpriteSourceLibraryBuild(newSpriteSourceName);
-			//SpriteSetSpriteSource(sprite, newSpriteSource);
+
+		
 		}
 	}
 

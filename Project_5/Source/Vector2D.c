@@ -155,9 +155,9 @@ float Vector2DDistance(const Vector2D* pVec0, const Vector2D* pVec1)
 // NOTE: The square root function must NOT be called by this function.
 float Vector2DSquareDistance(const Vector2D* pVec0, const Vector2D* pVec1) 
 {
-	float resultX = (pVec0->x - pVec1->x);
+	float resultX = fabsf(pVec0->x - pVec1->x);
 	resultX *= resultX;
-	float resultY = (pVec0->y - pVec1->y);
+	float resultY = fabsf(pVec0->y - pVec1->y);
 	resultY *= resultY;
 
 	return (resultX + resultY);

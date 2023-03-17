@@ -47,7 +47,6 @@
 // Private Variables:
 //------------------------------------------------------------------------------
 static EntityContainer* archetypes = NULL;
-//static EntityContainer* archetypes = NULL;
 
 // Build a single instance of the specified game object.
 // Params:

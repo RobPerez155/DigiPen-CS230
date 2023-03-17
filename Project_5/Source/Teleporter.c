@@ -11,6 +11,9 @@
 #include "stdafx.h"
 
 #include "DGL.h"
+#include "Entity.h"
+#include "Physics.h"
+#include "Transform.h"
 #include "Vector2D.h"
 
 
@@ -54,6 +57,9 @@ extern "C" {
 	//	 entity = Pointer to the Entity to be checked.
 	void TeleporterUpdateEntity(Entity* entity)
 	{
+		Transform* transform = EntityGetTransform(entity);
+		Physics* physics = EntityGetPhysics(entity);
+
 		// Position of the screen edges
 		
 		//Call DGL_Window_GetSize() to get the X / Y dimensions of the window.
@@ -69,9 +75,56 @@ extern "C" {
 		//The top - right corner of the window is at + halfSize.
 		DGL_Vec2 topRight = halfWindowSize;
 
-		UNREFERENCED_PARAMETER(entity);
-		UNREFERENCED_PARAMETER(botLeft);
-		UNREFERENCED_PARAMETER(topRight);
+		//UNREFERENCED_PARAMETER(entity);
+		//UNREFERENCED_PARAMETER(botLeft);
+		//UNREFERENCED_PARAMETER(topRight);
+
+		if (entity == NULL || transform == NULL || physics == NULL)
+			return;
+
+		// get velocity
+		Vector2D const* position = TransformGetTranslation(transform);
+		Vector2D const* velocity = PhysicsGetVelocity(physics);
+		Vector2D point = { 0,0 };
+
+		// Moving positive x direction
+		if (velocity->x > 0)
+		{
+			if (position->x > topRight.x)
+			{
+				point.x = botLeft.x;
+			}
+		}
+		//Moving in negative x direction
+		else
+		{
+			if	(position->x < botLeft.x)
+			{
+				point.x = topRight.x;
+			}
+		}
+
+		// Moving positive y direction
+		if (velocity->y > 0)
+		{
+			if (position->y > topRight.x)
+			{
+				point.y = botLeft.y;
+			}
+		}
+		//Moving in negative y direction
+		else
+		{
+			if (position->y < botLeft.y)
+			{
+				point.y = topRight.y;
+			}
+		}
+
+		if (point.x != 0 || point.y != 0)
+		{
+			TransformSetTranslation(transform, &point);
+		}
 	}
 
 	//------------------------------------------------------------------------------

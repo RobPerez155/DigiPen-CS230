@@ -139,6 +139,7 @@ extern "C" {
 		if (fileStream != NULL)
 		{
 			//a: Call MeshCreate() to create an empty Mesh object.
+
 			Mesh* newMesh = MeshCreate();
 
 			// b: Call MeshRead() to construct a mesh using data read from the file
@@ -167,6 +168,7 @@ extern "C" {
 			{
 				meshes.meshList[i] = mesh;
 				meshes.meshCount++;
+				return;
 			}
 		}
 	}

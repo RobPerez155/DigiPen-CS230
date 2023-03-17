@@ -143,6 +143,7 @@ extern "C" {
 			{
 				sprites.spriteSourceList[i] = spriteSource;
 				sprites.spriteSourceCount++;
+				return;
 			}
 		}
 	}

@@ -15,12 +15,14 @@
 #include "AsteroidsScene.h"
 #include "DemoScene.h"
 #include "DGL.h"
+#include "EntityContainer.h"
 #include "EntityFactory.h"
 #include "Level1Scene.h"
 #include "Level2Scene.h"
 #include "Mesh.h"
 #include "SandboxScene.h"
 #include "Scene.h"
+#include "ScoreSystem.h"
 
 
 #include "Entity.h"
@@ -39,6 +41,7 @@ typedef struct AsteroidsScene
 	Scene	base;
 
 	// Add any scene-specific variables second.
+	unsigned asteroidSpawnCount;
 
 } AsteroidsScene;
 
@@ -49,6 +52,9 @@ typedef struct AsteroidsScene
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
+static const unsigned cAsteroidSpawnInitial = 8;
+static const unsigned cAsteroidSpawnMaximum = 20;
+static unsigned asteroidsSpawnCount;
 
 //------------------------------------------------------------------------------
 // Private Function Declarations:
@@ -59,6 +65,9 @@ static void AsteroidsSceneUpdate(float dt);
 static void AsteroidsSceneExit(void);
 static void AsteroidsSceneUnload(void);
 static void AsteroidsSceneRender(void);
+static void AsteroidsSceneSpawnAsteroidWave(void);
+static void AsteroidsSceneSpawnAsteroid(void);
+
 
 //------------------------------------------------------------------------------
 // Instance Variable:
@@ -82,21 +91,23 @@ const Scene* AsteroidsSceneGetInstance(void)
 	return &(instance.base);
 }
 
-
-//------------------------------------------------------------------------------
-// Private Functions:
-//------------------------------------------------------------------------------
-
-static void AsteroidsSceneLoad(void)
-{
-
-}
-
 // Initialize the ...
 void AsteroidsSceneInit()
 {
 	Entity* Spaceship = EntityFactoryBuild("Spaceship");
-//Entity* Spaceship = EntityFactoryBuild("AsteroidsHighScore");
+	Entity* AsteroidsScore = EntityFactoryBuild("AsteroidsScore");
+	Entity* AsteroidsHighScore = EntityFactoryBuild("AsteroidsHighScore");
+	Entity* AsteroidsWave = EntityFactoryBuild("AsteroidsWave");
+
+	SceneAddEntity(AsteroidsScore);
+	SceneAddEntity(AsteroidsHighScore);
+	SceneAddEntity(AsteroidsWave);
+
+	ScoreSystemReset();
+
+	asteroidsSpawnCount = cAsteroidSpawnInitial;
+
+	AsteroidsSceneSpawnAsteroidWave();
 
 	if (Spaceship != NULL)
 	{
@@ -115,6 +126,11 @@ void AsteroidsSceneUpdate(float dt)
 {
 	/* Tell the compiler that the 'dt' variable is unused. */
 	UNREFERENCED_PARAMETER(dt);
+
+	if (SceneFindEntityByName("Asteroid") == NULL)
+	{
+		AsteroidsSceneSpawnAsteroidWave();
+	}
 
 	// Switch to Level 1
 	if (DGL_Input_KeyTriggered('1'))
@@ -163,4 +179,36 @@ void AsteroidsSceneExit()
 static void AsteroidsSceneUnload(void)
 {
 	//EntityFactoryFreeAll();
+}
+
+//------------------------------------------------------------------------------
+// Private Functions:
+//------------------------------------------------------------------------------
+
+static void AsteroidsSceneSpawnAsteroidWave(void)
+{
+	ScoreSystemIncreaseWave();
+	for (unsigned i = 0; i < asteroidsSpawnCount; i++)
+	{
+		AsteroidsSceneSpawnAsteroid();
+	}
+	asteroidsSpawnCount++;
+	
+	// Limit how many asteroids there to max
+	if (asteroidsSpawnCount > cAsteroidSpawnMaximum)
+	{
+		asteroidsSpawnCount = cAsteroidSpawnMaximum;
+	}
+}
+
+static void AsteroidsSceneSpawnAsteroid(void)
+{
+	Entity* Asteroid = EntityFactoryBuild("Asteroid");
+	Entity* clone = EntityClone(Asteroid);
+	SceneAddEntity(clone);
+}
+
+static void AsteroidsSceneLoad(void)
+{
+	ScoreSystemClear();
 }
