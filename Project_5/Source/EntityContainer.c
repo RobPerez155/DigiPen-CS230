@@ -119,6 +119,7 @@ extern "C" {	// Assume C declarations for C++.
 	void EntityContainerFree(EntityContainer** entities)
 		{
 			EntityContainerFreeAll(*entities);
+			free(*entities);
 			*entities = NULL;
 		}
 
@@ -285,7 +286,7 @@ extern "C" {	// Assume C declarations for C++.
 			// Break me for testing, using maxcount
 			for (unsigned int i = 0; i < _countof(entities->entitiesList); i++)
 			{
-				// for each item run entity render
+				// for each item run entity
 				if (entities->entitiesList[i] != NULL)
 				{
 					EntityFree(&entities->entitiesList[i]);

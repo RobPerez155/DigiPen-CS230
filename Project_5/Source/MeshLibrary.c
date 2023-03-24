@@ -97,7 +97,6 @@ extern "C" {
 			tempMesh = meshes.meshList[i];
 			if (MeshIsNamed(tempMesh, meshName))
 			{
-				printf("it worked - MESH!!!\n");
 				return tempMesh;
 			}
 		}

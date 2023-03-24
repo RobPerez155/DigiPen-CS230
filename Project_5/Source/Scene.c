@@ -17,6 +17,7 @@
 #include "MeshLibrary.h"
 #include "Scene.h"
 #include "SceneSystem.h"
+#include "ScoreSystem.h"
 #include "SpriteSourceLibrary.h"
 #include "Trace.h"
 
@@ -185,6 +186,7 @@ void SceneUnload(const Scene* scene)
 void SceneRestart(void)
 {
 	// Tell the Scene System to restart the active scene.
+	ScoreSystemReset();
 	SceneSystemRestart();
 }
 

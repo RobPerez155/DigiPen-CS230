@@ -420,7 +420,6 @@ static void Level1SceneUpdate(float dt)
 	if (DGL_Input_KeyTriggered('5'))
 	{
 		/*EntityContainerUpdateAll(,dt)*/
-		printf("pizza");
 	}
 
 	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed

@@ -38,14 +38,6 @@ extern "C" {	// Assume C declarations for C++.
 		unsigned waveCount;
 
 	}	ScoreSystem;
-
-	//------------------------------------------------------------------------------
-	// Public Constants:
-	//------------------------------------------------------------------------------
-
-	//------------------------------------------------------------------------------
-	// Public Typedefs:
-	//------------------------------------------------------------------------------
 	
 	//------------------------------------------------------------------------------
 	// Public Variables:
@@ -117,7 +109,7 @@ extern "C" {	// Assume C declarations for C++.
 		score.score = 0;
 		score.highScore = 0;
 		score.waveCount = 0;
-		newScore.highScore = 0;
+		newScore.highScore = score.score;
 	}
 
 	// Reset the Score System.
@@ -125,14 +117,14 @@ extern "C" {	// Assume C declarations for C++.
 	// (Step 2: The score and waveCount variables should be set to zero.)
 	void ScoreSystemReset(void)
 	{
-		if (score.highScore >= newScore.highScore)
+		if (score.score >= score.highScore /* >= newScore.highScore*/)
 		{
-			newScore.highScore = score.highScore;
+			score.highScore = score.score /*= score.highScore*/;
 			score.score = 0;
 			score.waveCount = 0;
 		}
 		else {
-			newScore.highScore;
+			score.highScore = score.highScore;
 			score.score = 0;
 			score.waveCount = 0;
 		}

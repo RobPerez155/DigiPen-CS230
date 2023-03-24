@@ -75,10 +75,6 @@ extern "C" {
 		//The top - right corner of the window is at + halfSize.
 		DGL_Vec2 topRight = halfWindowSize;
 
-		//UNREFERENCED_PARAMETER(entity);
-		//UNREFERENCED_PARAMETER(botLeft);
-		//UNREFERENCED_PARAMETER(topRight);
-
 		if (entity == NULL || transform == NULL || physics == NULL)
 			return;
 
@@ -93,6 +89,7 @@ extern "C" {
 			if (position->x > topRight.x)
 			{
 				point.x = botLeft.x;
+				point.y = position->y;
 			}
 		}
 		//Moving in negative x direction
@@ -101,6 +98,7 @@ extern "C" {
 			if	(position->x < botLeft.x)
 			{
 				point.x = topRight.x;
+				point.y = position->y;
 			}
 		}
 
@@ -110,6 +108,7 @@ extern "C" {
 			if (position->y > topRight.x)
 			{
 				point.y = botLeft.y;
+				point.x = position->x;
 			}
 		}
 		//Moving in negative y direction
@@ -118,6 +117,7 @@ extern "C" {
 			if (position->y < botLeft.y)
 			{
 				point.y = topRight.y;
+				point.x = position->x;
 			}
 		}
 

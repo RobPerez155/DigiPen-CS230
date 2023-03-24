@@ -62,7 +62,7 @@ extern "C" {
 	static const float spaceshipTurnRateMax = (float) PI / 1.5f;
 	static const float spaceshipWeaponCooldownTime = 0.25f;
 	static const float spaceshipWeaponBulletSpeed = 750.0f;
-	static const float spaceshipDeathDuration = 3.0f;
+	static const float spaceshipDeathDuration = 5.0f;
 
 
 	enum SpaceshipState {
@@ -310,7 +310,8 @@ extern "C" {
 		// Make ship shrink
 		Transform* transform = EntityGetTransform(behavior->parent);
 		Vector2D scale = *TransformGetScale(transform);
-		Vector2DScale(&scale, &scale, 0.75f);
+
+		Vector2DScale(&scale, &scale, 0.99f);
 		TransformSetScale(transform, &scale);
 	}
 	//------------------------------------------------------------------------------

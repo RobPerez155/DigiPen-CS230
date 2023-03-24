@@ -232,7 +232,6 @@
 	{ 
 		if (mesh != NULL && strcmp(mesh->name, name) == 0)
 		{
-			printf("It Matches!!! %s\n", mesh->name);
 			return true;
 		}
 		else {

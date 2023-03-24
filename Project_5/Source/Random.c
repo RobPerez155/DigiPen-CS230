@@ -65,7 +65,7 @@ extern "C" {
 	//   A random number in the interval [rangeMin, rangeMax].
 	int RandomRange(int rangeMin, int rangeMax)
 	{
-		int random = (rand() % (rangeMax - rangeMin + 1) + rangeMin);
+		int random = (rand() % (rangeMax + 1 - rangeMin) + rangeMin);
 		return random;
 	}
 
@@ -75,8 +75,8 @@ extern "C" {
 	//	 rangeMax = The highest possible number generated.
 	float RandomRangeFloat(float rangeMin, float rangeMax)
 	{
-		float random = (rand() / (rangeMax - rangeMin + 1) + rangeMin);
-		printf("%f\n", random);
+		//float random = (rand() / (rangeMax - rangeMin + 1) + rangeMin);
+		float random = ((rangeMax - rangeMin) * ((float)rand() / RAND_MAX) + rangeMin);
 		return random;
 
 	}

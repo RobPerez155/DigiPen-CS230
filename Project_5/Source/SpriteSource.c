@@ -219,7 +219,6 @@
 	{
 		if (spriteSource != NULL && strcmp(spriteSource->name, name) == 0)
 		{
-			printf("It Matches!!! %s\n", spriteSource->name);
 			return true;
 		}
 		else {

@@ -140,7 +140,6 @@ static void SandboxSceneInit()
 
 	EntityContainerFreeAll(pizza);
 	//UNREFERENCED_PARAMETER(pizza);
-	printf("pizza");
 }
 
 // Update the the variables used by the scene and render objects (temporary).

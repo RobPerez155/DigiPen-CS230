@@ -182,23 +182,23 @@ void BehaviorAsteroidSetPosition(BehaviorAsteroid* behaviorAsteroid)
 	switch (behaviorAsteroid->origin)
 	{
 	case cAsteroidOriginTlc:
-		newPosition.x = botLeft.x + behaviorAsteroid->origin;
-		newPosition.y = topRight.y - behaviorAsteroid->origin;
+		newPosition.x = botLeft.x;/*+ behaviorAsteroid->origin;*/
+		newPosition.y = topRight.y ;/*- behaviorAsteroid->origin;*/
 	break;
 
 	case cAsteroidOriginTrc:
-		newPosition.x = topRight.x - behaviorAsteroid->origin;
-		newPosition.y = topRight.y - behaviorAsteroid->origin;
+		newPosition.x = topRight.x ;/*- behaviorAsteroid->origin;*/
+		newPosition.y = topRight.y ;/*- behaviorAsteroid->origin;*/
 	break;
 
 	case cAsteroidOriginBlc:
-		newPosition.x = botLeft.x + behaviorAsteroid->origin;
-		newPosition.y = botLeft.y + behaviorAsteroid->origin;
+		newPosition.x = botLeft.x ;/*+ behaviorAsteroid->origin;*/
+		newPosition.y = botLeft.y ;/*+ behaviorAsteroid->origin;*/
 	break;
 
 	case cAsteroidOriginBrc:
-		newPosition.x = topRight.x - behaviorAsteroid->origin;
-		newPosition.y = botLeft.y + behaviorAsteroid->origin;
+		newPosition.x = topRight.x ;/*- behaviorAsteroid->origin;*/
+		newPosition.y = botLeft.y ;/*+ behaviorAsteroid->origin;*/
 	break;
 
 	default:
@@ -219,7 +219,7 @@ void BehaviorAsteroidSetVelocity(BehaviorAsteroid* behaviorAsteroid)
 		break;
 
 	case cAsteroidOriginTrc:
-		newAngle = RandomRangeFloat(-100, -170);
+		newAngle = RandomRangeFloat(-170, -100);
 		break;
 
 	case cAsteroidOriginBlc:

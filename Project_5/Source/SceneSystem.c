@@ -133,8 +133,7 @@ static bool SceneSystemInit(void)
 {
 	// Set the starting (Default) scene.
 	// TODO: Change the starting (Default) scene from "Stub" to "Demo":
-	if (1)SceneSystemSetNext(SandboxSceneGetInstance());
-	//if (1)SceneSystemSetNext(AsteroidsSceneGetInstance());
+	if (1)SceneSystemSetNext(AsteroidsSceneGetInstance());
 
 	return true;
 }

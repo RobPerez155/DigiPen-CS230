@@ -157,7 +157,6 @@ extern "C" {
 			tempSprite = sprites.spriteSourceList[i];
 			if (SpriteSourceIsNamed(tempSprite, spriteSource))
 			{
-				printf("it worked - MESH!!!\n");
 				return tempSprite;
 			}
 		}
