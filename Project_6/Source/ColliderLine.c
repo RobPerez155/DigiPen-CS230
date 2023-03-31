@@ -196,7 +196,7 @@ bool ColliderLineIsCollidingWithCircle(const Collider* collider, const Collider*
 		if ((dotProdA >= dotProdB) && (dotProdC > dotProdD))
 			continue;
 
-		Vector2D vNew = { (Be->x - Bs->x), 0 };
+		Vector2D vNew = { (Be->x - Bs->x), (Be->y - Bs->y) };
 		float nvDotProd = Vector2DDotProduct(&n, &vNew);
 
 		// Slide 19 - Time of intersection
@@ -239,16 +239,16 @@ bool ColliderLineIsCollidingWithCircle(const Collider* collider, const Collider*
 
 		// Slide 24 - Reflection
 		// Incident Vector
-		Vector2D i = { 0 };
-		i.x = Be->x - Bi.x;
-		i.x = Be->y - Bi.y;
+		Vector2D I = { 0 };
+		I.x = Be->x - Bi.x;
+		I.x = Be->y - Bi.y;
 
 		// Slide 24 - Penetration Vector
 		Vector2D s = { 0 };
 		float IxN = 0.0;
 		Vector2D NxIN = { 0 };
 
-		IxN = Vector2DDotProduct(&i, &n);
+		IxN = Vector2DDotProduct(&I, &n);
 		NxIN.x = IxN * n.x;
 		NxIN.y = IxN * n.y;
 
@@ -260,11 +260,27 @@ bool ColliderLineIsCollidingWithCircle(const Collider* collider, const Collider*
 		twoXs.x = 2 * s.x;
 		twoXs.y = 2 * s.y;
 
-		Vector2DSub(&r, &i, &twoXs);
+		Vector2DSub(&r, &I, &twoXs);
 
 		// Slide 24 new endpoint, Br
 		Vector2D Br = { 0 };
 		Vector2DAdd(&Br, &Bi, &r);
+
+		// Slide 27 - Reflection
+		float angle = Vector2DToAngleRad(&r);
+
+		Physics* otherPhysics = EntityGetPhysics(other->parent);
+		Transform* otherTransform = EntityGetTransform(other->parent);
+		Vector2D* oldVel = PhysicsGetVelocity(otherPhysics);
+		float speed = Vector2DLength(oldVel);
+		Vector2D normR = { 0 };
+		Vector2DNormalize(&normR, &r);
+		normR.x *= speed;
+		normR.y *= speed;
+
+		Vector2D vel = { 0 };
+		PhysicsSetVelocity(otherPhysics, &vel);
+		TransformSetRotation(otherTransform, angle);
 
 		UNREFERENCED_PARAMETER(P0);
 		UNREFERENCED_PARAMETER(P1);
