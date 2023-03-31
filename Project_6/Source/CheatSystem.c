@@ -99,7 +99,7 @@ static const CheatSystemKeyBinding keyBindings[] =
 		{'1', Level1SceneGetInstance},
 		{'2', Level2SceneGetInstance},
 		{'3', AsteroidsSceneGetInstance},
-		{'4', SandboxSceneGetInstance},
+		{'4', OmegaSceneGetInstance},
 		{'5', DemoSceneGetInstance},
 		{'6', OmegaSceneGetInstance}
 };

@@ -240,11 +240,11 @@ typedef struct Physics
 	{	
 		if (physics != NULL && transform != NULL)
 		{
-			// Find translation after velocity and acceleration are applied with dt
-			Vector2D result;
-
 			// Update previous translation
 			physics->oldTranslation = *TransformGetTranslation(transform);
+
+			// Find translation after velocity and acceleration are applied with dt
+			Vector2D result;
 
 			//Update acceleration after dt is applied add acceleration from current velocity
 			Vector2DScaleAdd(&physics->velocity, &physics->acceleration, &physics->velocity, dt);
@@ -259,7 +259,6 @@ typedef struct Physics
 
 			TransformSetRotation(transform, rotation);
 		}
-	
 	}
 
 	//------------------------------------------------------------------------------

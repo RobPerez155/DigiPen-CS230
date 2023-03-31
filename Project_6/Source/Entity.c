@@ -23,6 +23,7 @@
 #include "BehaviorSpaceship.h"
 #include "Collider.h"
 #include "ColliderCircle.h"
+#include "ColliderLine.h"
 #include "Entity.h"
 #include "Physics.h"
 #include "Sprite.h"
@@ -166,8 +167,10 @@
 				}
 				else if ((strncmp(token, "Physics", _countof("Physics")) == 0))
 				{
-					entity->physics = PhysicsCreate();
-					PhysicsRead(entity->physics, stream);
+					//entity->physics = PhysicsCreate();
+					Physics* physics = PhysicsCreate();
+					PhysicsRead(physics, stream);
+					EntityAddPhysics(entity, physics);
 				}
 				else if ((strncmp(token, "Sprite", _countof("Sprite")) == 0))
 				{
@@ -212,9 +215,9 @@
 				}
 				else if ((strncmp(token, "ColliderLine", _countof("ColliderLine")) == 0))
 				{
-					//Collider* lineCollider = ColliderCreate();
-					//ColliderRead(lineCollider, stream);
-					//EntityAddCollider(entity, lineCollider);
+					Collider* lineCollider = ColliderLineCreate();
+					ColliderLineRead(lineCollider, stream);
+					EntityAddCollider(entity, lineCollider);
 				}
 				else if (token[0] == 0) {
 					break;

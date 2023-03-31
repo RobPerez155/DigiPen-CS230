@@ -12,6 +12,7 @@
 
 #include "Collider.h"
 #include "ColliderCircle.h"
+#include "ColliderLine.h"
 #include "Entity.h"
 #include "Transform.h"
 #include "Vector2D.h"
@@ -56,6 +57,8 @@ extern "C" {
 
 	static bool ColliderIsColliding(const Collider* collider1, const Collider* collider2)
 	{
+		//ColliderLineIsCollidingWithCircle(collider1, collider2);
+
 		if (collider1->type == ColliderTypeCircle && collider2->type == ColliderTypeCircle)
 		{
 			return ColliderCircleIsCollidingWithCircle(collider1, collider2);
@@ -63,13 +66,13 @@ extern "C" {
 		else if (collider1->type == ColliderTypeCircle && collider2->type == ColliderTypeLine)
 		{
 			//make sure order is correct for function call
-			//return ColliderLineIsCollidingWithCircle(collider1, collider2);
-			return false;
+			return ColliderLineIsCollidingWithCircle(collider1, collider2);
+			//return false;
 		}
 		else if (collider1->type == ColliderTypeLine && collider2->type == ColliderTypeCircle)
 		{
-			//return ColliderLineIsCollidingWithCircle(collider1, collider2);
-			return false;
+			return ColliderLineIsCollidingWithCircle(collider1, collider2);
+			//return false;
 		}
 		else if (collider1->type == ColliderTypeLine && collider2->type == ColliderTypeLine)
 		{

@@ -92,9 +92,8 @@ Entity* EntityFactoryBuild(const char* entityName)
 	}
 
 	// Checks to see if the archetype already exists
-	//archetype = EntityContainerFindByName(archetypes, entityName);
 	Entity* entity = EntityContainerFindByName(archetypes, entityName);
-	//if (archetype == NULL)
+
 	// If there is no existing archetype create then one
 	if (!entity)
 	{

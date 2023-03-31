@@ -69,7 +69,7 @@ typedef struct Level1Scene
 //------------------------------------------------------------------------------
 
 static const char* livesFileName = "./Data/Level1_Lives.txt";
-static const char* arena = "./Data/Arena.txt";
+//static const char* arena = "./Data/Arena.txt";
 static const char* animFileName = "./Data/Level1_Lives.txt";
 static const char* monkeyWalkFileName = "./Assets/MonkeyWalk.png";
 static const char* monkeyIdleFileName = "./Assets/MonkeyIdle.png";
@@ -414,17 +414,18 @@ static void Level1SceneUpdate(float dt)
 		}
 	}
 
-	if (DGL_Input_KeyTriggered('P'))
-	{
-		// Switch to Sandbox Scene
-		Stream sand = StreamOpen(arena);
+	//if (DGL_Input_KeyTriggered('P'))
+	//{
+	//	// Switch to Sandbox Scene
+	//	Stream sand = StreamOpen(arena);
+	//	Entity* test = EntityCreate();
+	//	EntityRead(test, sand);
+	//	//Collider* pizza = ColliderLineCreate();
+	//	//ColliderLineRead(pizza, sand);
 
-		Collider* pizza = ColliderLineCreate();
-		ColliderLineRead(pizza, sand);
-		// Step into this to figure out what's going on
-		pizza;
-		StreamClose(&sand);
-	}
+	//	//pizza;
+	//	StreamClose(&sand);
+	//}
 }
 
 // Render the scene.

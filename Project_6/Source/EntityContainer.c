@@ -1,6 +1,6 @@
 //------------------------------------------------------------------------------
 //
-// File Name:	EntityContainer.h
+// File Name:	EntityContainer.c
 // Author(s):	Rob Perez (rob.perez)
 // Project:		Project 4
 // Course:		CS230S23

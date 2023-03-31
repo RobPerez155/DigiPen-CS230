@@ -153,14 +153,11 @@
 	//		else return a NULL pointer.
 	const Vector2D* TransformGetTranslation(const Transform* transform)
 	{
-		Vector2D* zilch = NULL;
-
 		if (transform != NULL) {
 			return &transform->translation;
 		}
 		else {
-			// Could be a problem
-			return zilch;
+			return NULL;
 		}
 	}
 

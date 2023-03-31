@@ -120,6 +120,7 @@ void SceneUpdate(const Scene* scene, float dt)
 		EntityContainerUpdateAll(entities, dt);
 
 		// Check for collisions between Entities.
+		//OldTranslation is correct here
 		EntityContainerCheckCollisions(entities);
 	}
 }

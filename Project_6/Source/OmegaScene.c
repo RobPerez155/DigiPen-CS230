@@ -2,7 +2,7 @@
 //
 // File Name:	OmegaScene.c
 // Author(s):	Rob Perez (rob.perez)
-// Project:		Project 0
+// Project:		Project 6
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -11,69 +11,60 @@
 
 #include "stdafx.h"
 
-#include "Scene.h"
-#include "AsteroidsScene.h"
-#include "SceneSystem.h"
-#include "Level1Scene.h"
-#include "OmegaScene.h"
-#include "DemoScene.h"
-#include "SandboxScene.h"
-#include "Stream.h"
-#include "SpriteSource.h"
-#include "Mesh.h"
+#include "ColliderCircle.h"
+#include "ColliderLine.h"
 #include "DGL.h"
 #include "Entity.h"
-#include "Sprite.h"
+#include "EntityContainer.h"
+#include "EntityFactory.h"
+#include "Mesh.h"
+#include "Physics.h"
+#include "Scene.h"
+#include "SceneSystem.h"
+#include "ScoreSystem.h"
 #include "Transform.h"
 #include "Vector2D.h"
-#include "Physics.h"
-#include "EntityFactory.h"
+
+//------------------------------------------------------------------------------
+// Private Constants:
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 // Private Structures:
 //------------------------------------------------------------------------------
-
 typedef struct OmegaScene
 {
 	// WARNING: The base class must always be included first.
 	Scene	base;
 
 	// Add any scene-specific variables second.
-	//int numLives;
-	//int numHealth;
-	Mesh* ptrMesh;
-	Entity* ptrEntity;
-} OmegaScene;
+	unsigned asteroidSpawnCount;
 
+} OmegaScene;
 
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// Private Constants:
-//------------------------------------------------------------------------------
-static const float spaceshipSpeed = 500.0f;
-
-//static const char* livesFileName = "./Data/Omega_Lives.txt";
-//static const char* healthFileName = "./Data/Omega_Health.txt";
-
-//------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
-//static FILE* livesFile;
-//static FILE* healthFile;
+static const unsigned cAsteroidSpawnInitial = 0; //8
+static const unsigned cAsteroidSpawnMaximum = 0; //20  
+static unsigned asteroidsSpawnCount;
+
 //------------------------------------------------------------------------------
 // Private Function Declarations:
 //------------------------------------------------------------------------------
-
 static void OmegaSceneLoad(void);
 static void OmegaSceneInit(void);
-static void OmegaSceneMovementController(Entity* entity);
 static void OmegaSceneUpdate(float dt);
 static void OmegaSceneExit(void);
 static void OmegaSceneUnload(void);
 static void OmegaSceneRender(void);
+static void OmegaSceneSpawnAsteroidWave(void);
+static void OmegaSceneSpawnAsteroid(void);
+
 
 //------------------------------------------------------------------------------
 // Instance Variable:
@@ -82,9 +73,10 @@ static void OmegaSceneRender(void);
 static OmegaScene instance =
 {
 	// Initialize the base structure:
-	{ "Omega", OmegaSceneLoad, OmegaSceneInit, OmegaSceneUpdate, OmegaSceneRender, OmegaSceneExit, OmegaSceneUnload },
+	{ "OmegaScene", OmegaSceneLoad, OmegaSceneInit, OmegaSceneUpdate, OmegaSceneRender, OmegaSceneExit, OmegaSceneUnload },
 
 	// Initialize any scene-specific variables:
+
 };
 
 //------------------------------------------------------------------------------
@@ -96,136 +88,103 @@ const Scene* OmegaSceneGetInstance(void)
 	return &(instance.base);
 }
 
-//------------------------------------------------------------------------------
-// Private Functions:
-//------------------------------------------------------------------------------
-
-// Load any resources used by the scene.
-static void OmegaSceneLoad(void)
+// Initialize the ...
+void OmegaSceneInit()
 {
-	//Load spaceship mesh
-	instance.ptrMesh = MeshCreateSpaceship();
-}
+	Entity* SpaceshipOmega = EntityFactoryBuild("SpaceshipOmega");
+	Entity* Arena = EntityFactoryBuild("Arena");
+	Entity* OmegaScore = EntityFactoryBuild("OmegaScore");
+	Entity* OmegaHighScore = EntityFactoryBuild("OmegaHighScore");
+	Entity* OmegaWave = EntityFactoryBuild("OmegaWave");
 
-// Initialize the variables used by the scene.
-static void OmegaSceneInit()
-{
-	Entity* Spaceship = EntityFactoryBuild("SpaceshipHoming");
+	SceneAddEntity(Arena);
+	SceneAddEntity(OmegaScore);
+	SceneAddEntity(OmegaHighScore);
+	SceneAddEntity(OmegaWave);
 
-	if (Spaceship != NULL)
+	ScoreSystemReset();
+
+	asteroidsSpawnCount = cAsteroidSpawnInitial;
+
+	OmegaSceneSpawnAsteroidWave();
+
+	if (SpaceshipOmega != NULL)
 	{
-		DGL_Color black = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-		Sprite* sprSpaceship = EntityGetSprite(Spaceship);
-		SpriteSetMesh(sprSpaceship, instance.ptrMesh);
-		SpriteSetSpriteSource(sprSpaceship, NULL);
-		DGL_Graphics_SetBackgroundColor(&black);
-		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
-
-		instance.ptrEntity = Spaceship;
-	}
-}
-
-static void OmegaSceneMovementController(Entity* entity)
-{
-	Physics* ptrPhysics = EntityGetPhysics(entity);
-	Transform* ptrTransform = EntityGetTransform(entity);
-
-	// Check if pointers are valid
-	if (ptrPhysics == NULL || ptrTransform == NULL)
-	{
-		return;
+		SceneAddEntity(SpaceshipOmega);
 	}
 
-	DGL_Vec2 mousePosition = DGL_Input_GetMousePosition();
-	DGL_Vec2 mouseWorldCoord = DGL_Camera_ScreenCoordToWorld(&mousePosition);
+	DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 
-	Vector2D translation = *TransformGetTranslation(ptrTransform);
-
-	// Ship to mouse cursor math
-	Vector2D shipToMouseDirectionVec;
-	Vector2DSub(&shipToMouseDirectionVec, &mouseWorldCoord, &translation);
-	Vector2DNormalize(&shipToMouseDirectionVec, &shipToMouseDirectionVec);
-
-	// Set spaceship angle
-	float shipAngleToMouse = Vector2DToAngleRad(&shipToMouseDirectionVec);
-	TransformSetRotation(ptrTransform, shipAngleToMouse);
-
-	//Sets the spaceship velocity
-	Vector2DScale(&shipToMouseDirectionVec, &shipToMouseDirectionVec, spaceshipSpeed);
-	PhysicsSetVelocity(ptrPhysics, &shipToMouseDirectionVec);
+	DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 }
 
-// Update the the variables used by the scene and render objects (temporary).
+// Update the ...
 // Params:
 //	 dt = Change in time (in seconds) since the last game loop.
-static void OmegaSceneUpdate(float dt)
+void OmegaSceneUpdate(float dt)
 {
-	OmegaSceneMovementController(instance.ptrEntity);
-	EntityUpdate(instance.ptrEntity, dt);
+	/* Tell the compiler that the 'dt' variable is unused. */
+	UNREFERENCED_PARAMETER(dt);
 
-	if (DGL_Input_KeyTriggered('Z'))
+	//if (DGL_Input_KeyTriggered("A"))
+	//{
+	//	
+	//}
+
+	if (SceneFindEntityByName("Asteroid") == NULL)
 	{
-		// Sets Spaceship's Alpha value
-		Sprite* sprSpaceship = EntityGetSprite(instance.ptrEntity);
-		SpriteSetAlpha(sprSpaceship, 0.5f);
+		OmegaSceneSpawnAsteroidWave();
 	}
 
-	if (DGL_Input_KeyTriggered('X'))
-	{
-		// Sets Spaceship's Alpha value
-		Sprite* sprSpaceship = EntityGetSprite(instance.ptrEntity);
-		SpriteSetAlpha(sprSpaceship, 1.0f);
-	}
 
-	// Hotkeys for scene advancing, when the key changes state from not pressed to pressed
-	if (DGL_Input_KeyTriggered('1'))
-	{
-		// Restart Level 1
-		SceneSystemSetNext(Level1SceneGetInstance());
-	}
-
-	if (DGL_Input_KeyTriggered('2'))
-	{
-		// Switch to Level 2
-		OmegaSceneInit();
-	}
-
-	if (DGL_Input_KeyTriggered('3'))
-	{
-		// Switch to Level 2
-		SceneSystemSetNext(AsteroidsSceneGetInstance());
-	}
-
-	if (DGL_Input_KeyTriggered('9'))
-	{
-		// Switch to Sandbox Scene
-		SceneSystemSetNext(SandboxSceneGetInstance());
-	}
-
-	// Restarts Scene (when the key changes state from not pressed to pressed).
-	if (DGL_Input_KeyTriggered('0'))
-	{
-		// Restarts Scene
-		SceneSystemSetNext(DemoSceneGetInstance());
-	}
 }
 
 // Render the scene.
 void OmegaSceneRender(void)
 {
-	EntityRender(instance.ptrEntity);
+	//SpriteDraw(AsteroidsBackground, (DGL_Vec2) { 0.0f, 0.0f }, (DGL_Vec2) { 1440.0f, 810.0f }, 0.0f);
+
+	//drawButton(AsteroidsButton);
 }
 
-// Exit the scene.
-static void OmegaSceneExit()
+// Shutdown the ...
+void OmegaSceneExit()
 {
-
 }
 
-// Unload any resources used by the scene.
 static void OmegaSceneUnload(void)
 {
-	MeshFree(&instance.ptrMesh);
+	//EntityFactoryFreeAll();
 }
 
+//------------------------------------------------------------------------------
+// Private Functions:
+//------------------------------------------------------------------------------
+
+static void OmegaSceneSpawnAsteroidWave(void)
+{
+	ScoreSystemIncreaseWave();
+	for (unsigned i = 0; i < asteroidsSpawnCount; i++)
+	{
+		OmegaSceneSpawnAsteroid();
+	}
+	asteroidsSpawnCount++;
+
+	// Limit how many asteroids there to max
+	if (asteroidsSpawnCount > cAsteroidSpawnMaximum)
+	{
+		asteroidsSpawnCount = cAsteroidSpawnMaximum;
+	}
+}
+
+static void OmegaSceneSpawnAsteroid(void)
+{
+	Entity* Asteroid = EntityFactoryBuild("Asteroid");
+	Entity* clone = EntityClone(Asteroid);
+	SceneAddEntity(clone);
+}
+
+static void OmegaSceneLoad(void)
+{
+	ScoreSystemClear();
+}
