@@ -64,8 +64,8 @@ extern "C" {
 		
 		//Call DGL_Window_GetSize() to get the X / Y dimensions of the window.
 		DGL_Vec2 windowSize = DGL_Window_GetSize();
-		windowSize.x += 10.f;
-		windowSize.y += 10.f;
+		windowSize.x += 50.f;
+		windowSize.y += 50.f;
 
 
 		//Call Vector2DScale to scale the dimensions by 0.5f to get the window half size.

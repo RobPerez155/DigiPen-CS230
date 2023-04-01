@@ -384,8 +384,8 @@
 	{
 		if (entity != NULL)
 		{
-			PhysicsUpdate(entity->physics, entity->transform, dt);
 			BehaviorUpdate(entity->behavior, dt);
+			PhysicsUpdate(entity->physics, entity->transform, dt);
 			AnimationUpdate(entity->animation, dt);
 		}
 	}

@@ -117,7 +117,6 @@ void AsteroidsSceneInit()
 
 	DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
-	//ColliderCircleCreate();
 }
 
 // Update the ...

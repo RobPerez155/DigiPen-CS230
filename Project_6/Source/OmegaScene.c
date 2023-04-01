@@ -49,8 +49,8 @@ typedef struct OmegaScene
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
-static const unsigned cAsteroidSpawnInitial = 0; //8
-static const unsigned cAsteroidSpawnMaximum = 0; //20  
+static const unsigned cAsteroidSpawnInitial = 8;
+static const unsigned cAsteroidSpawnMaximum = 20;  
 static unsigned asteroidsSpawnCount;
 
 //------------------------------------------------------------------------------
@@ -142,9 +142,7 @@ void OmegaSceneUpdate(float dt)
 // Render the scene.
 void OmegaSceneRender(void)
 {
-	//SpriteDraw(AsteroidsBackground, (DGL_Vec2) { 0.0f, 0.0f }, (DGL_Vec2) { 1440.0f, 810.0f }, 0.0f);
 
-	//drawButton(AsteroidsButton);
 }
 
 // Shutdown the ...

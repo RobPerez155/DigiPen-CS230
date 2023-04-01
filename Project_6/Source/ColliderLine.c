@@ -241,7 +241,7 @@ bool ColliderLineIsCollidingWithCircle(const Collider* collider, const Collider*
 		// Incident Vector
 		Vector2D I = { 0 };
 		I.x = Be->x - Bi.x;
-		I.x = Be->y - Bi.y;
+		I.y = Be->y - Bi.y;
 
 		// Slide 24 - Penetration Vector
 		Vector2D s = { 0 };
@@ -271,7 +271,8 @@ bool ColliderLineIsCollidingWithCircle(const Collider* collider, const Collider*
 
 		Physics* otherPhysics = EntityGetPhysics(other->parent);
 		Transform* otherTransform = EntityGetTransform(other->parent);
-		Vector2D* oldVel = PhysicsGetVelocity(otherPhysics);
+		
+		const Vector2D* oldVel = PhysicsGetVelocity(otherPhysics);
 		float speed = Vector2DLength(oldVel);
 		Vector2D normR = { 0 };
 		Vector2DNormalize(&normR, &r);
@@ -279,8 +280,12 @@ bool ColliderLineIsCollidingWithCircle(const Collider* collider, const Collider*
 		normR.y *= speed;
 
 		Vector2D vel = { 0 };
-		PhysicsSetVelocity(otherPhysics, &vel);
+		vel = normR;
+
+		TransformSetTranslation(otherTransform, &Bi);
+
 		TransformSetRotation(otherTransform, angle);
+		PhysicsSetVelocity(otherPhysics, &vel);
 
 		UNREFERENCED_PARAMETER(P0);
 		UNREFERENCED_PARAMETER(P1);
