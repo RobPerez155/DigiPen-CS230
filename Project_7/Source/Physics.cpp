@@ -71,7 +71,8 @@ typedef struct Physics
 	//	   else return NULL.
 	Physics* PhysicsCreate(void)
 		{
-			Physics* ptrPhysics = calloc(1, sizeof(Physics));
+			//Physics* ptrPhysics = calloc(1, sizeof(Physics));
+			Physics* ptrPhysics = new Physics();
 
 			if (ptrPhysics != NULL)
 			{
@@ -96,7 +97,9 @@ typedef struct Physics
 			return NULL;
 		}
 
-		Physics* physicsClone = calloc(1, sizeof(Physics));
+		//Physics* physicsClone = calloc(1, sizeof(Physics));
+		Physics* physicsClone = new Physics();
+
 
 		if (physicsClone == NULL)
 		{

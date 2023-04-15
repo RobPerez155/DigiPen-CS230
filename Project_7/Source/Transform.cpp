@@ -76,7 +76,9 @@
 	//Allocate Memory, Initialize, Return what's allocated'
 	Transform* TransformCreate(void)
 	{
-		Transform* ptrTransform = calloc(1, sizeof(Transform));
+		//Transform* ptrTransform = calloc(1, sizeof(Transform));
+		Transform* ptrTransform = new Transform();
+
 
 		if (ptrTransform != NULL)
 		{
@@ -103,7 +105,8 @@
 			return NULL;
 		}
 
-		Transform* transformClone = calloc(1, sizeof(Transform));
+		//Transform* transformClone = calloc(1, sizeof(Transform));
+		Transform* transformClone = new Transform();
 
 		if (transformClone == NULL)
 		{

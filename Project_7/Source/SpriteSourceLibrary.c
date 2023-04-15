@@ -74,7 +74,9 @@ extern "C" {
 	// (NOTE: Make sure to initialize all memory to zero.)
 	void SpriteSourceLibraryInit()
 	{
-		SpriteSourceLibrary* newLib = calloc(1, sizeof(SpriteSourceLibrary));
+		//SpriteSourceLibrary* newLib = calloc(1, sizeof(SpriteSourceLibrary));
+		SpriteSourceLibrary* newLib = new SpriteSourceLibrary();
+
 	UNREFERENCED_PARAMETER(newLib);
 	}
 

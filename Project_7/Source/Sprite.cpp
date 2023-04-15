@@ -74,7 +74,8 @@
 	//	   then return a pointer to the allocated memory,
 	//	   else return NULL.
 	Sprite* SpriteCreate(void) {
-		ptrSprite = calloc(1, sizeof(Sprite));
+		//ptrSprite = calloc(1, sizeof(Sprite));
+		ptrSprite = new Sprite();
 
 		if (ptrSprite != NULL)
 		{
@@ -113,7 +114,9 @@
 			return NULL;
 		}
 
-		Sprite* spriteClone = calloc(1, sizeof(Sprite));
+		//Sprite* spriteClone = calloc(1, sizeof(Sprite));
+		Sprite* spriteClone = new Sprite();
+
 
 		if (spriteClone == NULL)
 		{

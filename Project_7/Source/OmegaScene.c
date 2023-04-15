@@ -113,7 +113,9 @@ void OmegaSceneInit()
 		SceneAddEntity(SpaceshipOmega);
 	}
 
-	DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
+	DGL_Color backgroundColor = { 0.0f, 0.0f, 0.0f, 0.0f };
+	DGL_Graphics_SetBackgroundColor(&backgroundColor);
+	//DGL_Graphics_SetBackgroundColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 
 	DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 }

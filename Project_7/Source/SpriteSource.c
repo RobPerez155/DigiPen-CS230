@@ -79,7 +79,9 @@
 	//	   else return NULL.
 	SpriteSource* SpriteSourceCreate()
 	{
-		SpriteSource* ptrSpriteSource = calloc(1, sizeof(SpriteSource));
+		//SpriteSource* ptrSpriteSource = calloc(1, sizeof(SpriteSource));
+		SpriteSource* ptrSpriteSource = new SpriteSource();
+
 	
 		if (ptrSpriteSource != NULL)
 		{
