@@ -78,11 +78,11 @@ typedef struct SpriteSource
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 SpriteSource* SpriteSourceCreate();
 
 // Free the memory associated with a SpriteSource object.
-// (NOTE: The SpriteSource pointer must be set to NULL.)
+// (NOTE: The SpriteSource pointer must be set to nullptr.)
 // Params:
 //	 spriteSource = Pointer to the SpriteSource pointer.
 void SpriteSourceFree(SpriteSource** spriteSource);

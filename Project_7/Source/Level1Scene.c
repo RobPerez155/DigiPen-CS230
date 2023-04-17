@@ -149,7 +149,7 @@ static void Level1SceneLoad(void)
 {
 	Stream lifeFile = StreamOpen(livesFileName);
 
-	if (lifeFile != NULL)
+	if (lifeFile != nullptr)
 	{
 		instance.numLives = StreamReadInt(lifeFile);
 		StreamClose(&lifeFile);
@@ -278,7 +278,7 @@ static void Level1SceneInit()
 	Entity* Monkey = EntityFactoryBuild("Monkey");
 	Entity* LivesText = EntityFactoryBuild("MonkeyLivesText");
 
-	if (Planet != NULL)
+	if (Planet != nullptr)
 	{
 		Sprite* sprPlanet = EntityGetSprite(Planet);
 		SpriteSetMesh(sprPlanet, instance.ptrMesh);
@@ -292,7 +292,7 @@ static void Level1SceneInit()
 		instance.Planet = Planet;
 	}
 
-	if (Monkey != NULL)
+	if (Monkey != nullptr)
 	{
 		monkeyState = MonkeyInvalid;
 
@@ -300,7 +300,7 @@ static void Level1SceneInit()
 		instance.Monkey = Monkey;
 	}
 
-	if (LivesText != NULL)
+	if (LivesText != nullptr)
 	{
 		Sprite* sprLivesText = EntityGetSprite(LivesText);
 		SpriteSetMesh(sprLivesText, instance.ptrMesh16x8);
@@ -320,7 +320,7 @@ static void Level1SceneMovementController(Entity* entity)
 	Physics* ptrPhysics = EntityGetPhysics(entity);
 	Transform* ptrTransform = EntityGetTransform(entity);
 
-	if (ptrPhysics == NULL || ptrTransform == NULL)
+	if (ptrPhysics == nullptr || ptrTransform == nullptr)
 	{
 		return;
 	}

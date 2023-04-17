@@ -19,7 +19,7 @@
 
 #include "targetver.h" /* required by Windows */
 
-#include <stdlib.h> /* NULL, malloc/free */
+#include <stdlib.h> /* nullptr, malloc/free */
 #include <stdio.h> /* printf, fgets */
 #include <stdbool.h> /* bool */
 #include <string.h> /* strcmp, strcpy_s, strtok_s */

@@ -90,32 +90,32 @@ extern "C" {
 	// Returns:
 	//	 If 'other' is valid and the memory allocation was successful,
 	//	   then return a pointer to the cloned component,
-	//	   else return NULL.
+	//	   else return nullptr.
 	Collider* ColliderClone(const Collider* other)
 	{
-		if (other == NULL)
+		if (other == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		//Collider* colliderClone = calloc(1, other->memorySize);
 		Collider* colliderClone = new Collider;
 		colliderClone = static_cast<Collider*>(::operator new(other->memorySize));
 
-		if (colliderClone == NULL)
+		if (colliderClone == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		memcpy(colliderClone, other, other->memorySize);
 		//*colliderClone = *other;
-		colliderClone->parent = NULL;
+		colliderClone->parent = nullptr;
 
 		return colliderClone;
 	}
 
 	// Free the memory associated with a Collider component.
-	// (Also, set the collider pointer to NULL.)
+	// (Also, set the collider pointer to nullptr.)
 	// Params:
 	//	 collider = Pointer to the Collider component.
 	void ColliderFree(Collider** collider)
@@ -123,7 +123,7 @@ extern "C" {
 		if (*collider)
 			free(*collider);
 
-		*collider = NULL;
+		*collider = nullptr;
 	}
 
 	// Set the parent Entity for a Collider component.
@@ -132,7 +132,7 @@ extern "C" {
 	//	 parent = Pointer to the parent Entity.
 	void ColliderSetParent(Collider* collider, Entity* parent)
 	{
-		if (collider != NULL)
+		if (collider != nullptr)
 			collider->parent = parent;
 	}
 
@@ -145,7 +145,7 @@ extern "C" {
 	//	 collider2 = Pointer to the second Collider component.
 	void ColliderCheck(const Collider* collider, const Collider* other)
 	{
-		if (collider != NULL && other != NULL)
+		if (collider != nullptr && other != nullptr)
 		{ 
 			
 			if (ColliderIsColliding(collider, other))
@@ -163,10 +163,10 @@ extern "C" {
 
 	// Set the collision event handler for a collider.
 	// (Hint: This allows other components, such as Behaviors, to respond to collision events.)
-	// (Note: It is acceptable for the handler to be NULL.  This allows an existing handler to be removed.)
+	// (Note: It is acceptable for the handler to be nullptr.  This allows an existing handler to be removed.)
 	// Params:
 	//	 collider = Pointer to the Collider component.
-	//	 handler = Pointer to the collision event handler (may be NULL).
+	//	 handler = Pointer to the collision event handler (may be nullptr).
 	void ColliderSetCollisionHandler(Collider* collider, CollisionEventHandler handler)
 	{
 		collider->handler = handler;

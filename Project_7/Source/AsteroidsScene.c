@@ -108,7 +108,7 @@ void AsteroidsSceneInit()
 
 	AsteroidsSceneSpawnAsteroidWave();
 
-	if (Spaceship != NULL)
+	if (Spaceship != nullptr)
 	{
 		SceneAddEntity(Spaceship);
 	}
@@ -129,7 +129,7 @@ void AsteroidsSceneUpdate(float dt)
 	/* Tell the compiler that the 'dt' variable is unused. */
 	UNREFERENCED_PARAMETER(dt);
 
-	if (SceneFindEntityByName("Asteroid") == NULL)
+	if (SceneFindEntityByName("Asteroid") == nullptr)
 	{
 		AsteroidsSceneSpawnAsteroidWave();
 	}

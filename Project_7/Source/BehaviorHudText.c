@@ -102,7 +102,7 @@ extern "C" {
 		//BehaviorHudText* behaviorHudText = calloc(1, sizeof(BehaviorHudText));
 		BehaviorHudText* behaviorHudText = new BehaviorHudText();
 
-		if (behaviorHudText != NULL)
+		if (behaviorHudText != nullptr)
 		{
 			behaviorHudText->base.memorySize = sizeof(BehaviorHudText);
 			behaviorHudText->base.onInit = BehaviorHudTextInit;
@@ -114,7 +114,7 @@ extern "C" {
 
 			return (Behavior*)behaviorHudText;
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	// Read the properties of a Behavior component from a file.
@@ -126,7 +126,7 @@ extern "C" {
 	//	 stream = Pointer to the data stream used for reading.
 	void BehaviorHudTextRead(Behavior* behavior, Stream stream)
 	{
-		if (behavior != NULL)
+		if (behavior != nullptr)
 		{
 			BehaviorRead(behavior, stream);
 			BehaviorHudText* tempBehavior = (BehaviorHudText*)behavior;
@@ -157,7 +157,7 @@ extern "C" {
 
 		BehaviorHudTextUpdateText(hudText);
 
-		if (sprite != NULL)
+		if (sprite != nullptr)
 		{
 			SpriteSetText(sprite, hudText->displayString);
 		}
@@ -168,18 +168,10 @@ extern "C" {
 
 	void BehaviorHudTextUpdateText(BehaviorHudText* behaviorText)
 	{
-		//UNREFERENCED_PARAMETER(behaviorText);
-		//if (behaviorText->watchValue != NULL && *behaviorText->watchValue != behaviorText->displayValue)
-		//{
-		//	behaviorText->displayValue = *behaviorText->watchValue;
-		//	sprintf_s(behaviorText->displayString, 32, behaviorText->formatString, behaviorText->displayValue);
-		//	
-		//}
-
-
 		if (behaviorText->scoreSystem != SsiInvalid)
 		{
-			behaviorText->displayValue = ScoreSystemGetValue(behaviorText->scoreSystem);
+			behaviorText->displayValue = ScoreSystemGetValue(static_cast<ScoreSystemId>(behaviorText->scoreSystem));
+			//behaviorText->displayValue = ScoreSystemGetValue(behaviorText->scoreSystem);
 			//sprintf_s(behaviorText->displayString, behaviorText->formatString, behaviorText->displayValue);
 			sprintf_s(behaviorText->displayString, 32, behaviorText->formatString, behaviorText->displayValue);
 		}

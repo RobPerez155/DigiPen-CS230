@@ -96,7 +96,7 @@ static void StubSceneUpdate(float dt)
 
 	// NOTE: This call causes the engine to exit immediately.  Make sure to remove
 	//   it when you are ready to test out a new scene.
-	SceneSystemSetNext(NULL);
+	SceneSystemSetNext(nullptr);
 }
 
 // Render the scene.

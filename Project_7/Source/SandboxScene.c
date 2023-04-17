@@ -170,9 +170,9 @@ static void SandboxSceneUpdate(float dt)
 
 
 	testBehavior->memorySize = 100;
-	testBehavior->onExit = NULL;
-	testBehavior->onInit = NULL;
-	testBehavior->onUpdate = NULL;
+	testBehavior->onExit = nullptr;
+	testBehavior->onInit = nullptr;
+	testBehavior->onUpdate = nullptr;
 	testBehavior->parent = testPizza;
 	testBehavior->stateCurr = 1;
 	testBehavior->stateNext = 3;
@@ -186,7 +186,7 @@ static void SandboxSceneUpdate(float dt)
 	//if (DGL_Input_KeyTriggered('B'))
 	//{
 	//	Stream vectorTest = StreamOpen(VectorTestFileName);
-	//if (vectorTest != NULL)
+	//if (vectorTest != nullptr)
 	//{
 	//	if (DGL_Input_KeyTriggered(' '))
 	//	{

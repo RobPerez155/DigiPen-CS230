@@ -108,7 +108,7 @@ void OmegaSceneInit()
 
 	OmegaSceneSpawnAsteroidWave();
 
-	if (SpaceshipOmega != NULL)
+	if (SpaceshipOmega != nullptr)
 	{
 		SceneAddEntity(SpaceshipOmega);
 	}
@@ -133,7 +133,7 @@ void OmegaSceneUpdate(float dt)
 	//	
 	//}
 
-	if (SceneFindEntityByName("Asteroid") == NULL)
+	if (SceneFindEntityByName("Asteroid") == nullptr)
 	{
 		OmegaSceneSpawnAsteroidWave();
 	}

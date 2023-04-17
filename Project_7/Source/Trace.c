@@ -56,8 +56,8 @@ void TraceInit()
 	// Error handling (implementation details to be determined by the student):
 	// https://msdn.microsoft.com/en-us/library/9t0e6085.aspx
 	// https://docs.microsoft.com/en-us/cpp/c-runtime-library/reference/strerror-s-strerror-s-wcserror-s-wcserror-s?f1url=https%3A%2F%2Fmsdn.microsoft.com%2Fquery%2Fdev16.query%3FappId%3DDev16IDEF1%26l%3DEN-US%26k%3Dk(STRING%2Fstrerror_s);k(strerror_s);k(DevLang-C%2B%2B);k(TargetOS-Windows)%26rd%3Dtrue&view=vs-2019
-	//traceFile = NULL;
-	if (traceFile == NULL) {
+	//traceFile = nullptr;
+	if (traceFile == nullptr) {
 		printf("Trace file failed to open.");
 	}
 }
@@ -76,7 +76,7 @@ void TraceMessage(const char * formatString, ...)
 		// Filter out trace messages with a severity less than the minimum level.
 		{
 			// Verify that the traceStream is valid.
-			if (traceFile != NULL)
+			if (traceFile != nullptr)
 			{
 				va_list arg_ptr;
 				va_start(arg_ptr, formatString);
@@ -92,7 +92,7 @@ void TraceMessage(const char * formatString, ...)
 void TraceShutdown()
 {
 	// TODO: Close "trace.log" if it has been opened successfully.
-	if (traceFile != NULL) 
+	if (traceFile != nullptr) 
 	{
 		fclose(traceFile);
 	}

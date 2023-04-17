@@ -88,11 +88,11 @@ typedef struct Behavior
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Behavior* BehaviorClone(Behavior* other);
 
 // Free the memory associated with a Behavior component.
-// (Also, set the behavior pointer to NULL.)
+// (Also, set the behavior pointer to nullptr.)
 // Params:
 //	 behavior = Pointer to the Behavior component.
 void BehaviorFree(Behavior* * behavior);

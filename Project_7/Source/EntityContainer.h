@@ -80,12 +80,12 @@ typedef struct EntityContainer
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 EntityContainer* EntityContainerCreate();
 
 // Free the memory associated with an EntityContainer.
 // (NOTE: If necessary, call EntityContainerFreeAll to free any existing Entities.)
-// (NOTE: The EntityContainer pointer must be set to NULL.)
+// (NOTE: The EntityContainer pointer must be set to nullptr.)
 // Params:
 //	 entities = Pointer to the EntityContainer pointer.
 void EntityContainerFree(EntityContainer** entities);
@@ -109,7 +109,7 @@ bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity);
 // Returns:
 //	 If the EntityContainer pointer is valid and the Entity was located successfully,
 //		then return a pointer to the Entity,
-//		else return NULL.
+//		else return nullptr.
 Entity* EntityContainerFindByName(EntityContainer* entities, const char* entityName);
 
 // Determines if the EntityContainer is empty (no Entities exist).

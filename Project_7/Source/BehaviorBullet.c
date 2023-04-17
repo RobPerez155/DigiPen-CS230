@@ -66,7 +66,7 @@ extern "C" {
 		//Behavior* bullet = calloc(1, sizeof(Behavior));
 		Behavior* bullet = new Behavior();
 
-		if (bullet != NULL)
+		if (bullet != nullptr)
 		{
 			bullet->stateCurr = cBulletInvalid;
 			bullet->stateNext = cBulletInvalid;
@@ -78,12 +78,12 @@ extern "C" {
 			return bullet;
 		}
 		else
-			return NULL;
+			return nullptr;
 	}
 
 	void BehaviorBulletCollisionHandler(Entity* entity1, Entity* entity2)
 	{
-		if (entity1 != NULL && entity2 != NULL)
+		if (entity1 != nullptr && entity2 != nullptr)
 		{
 			const char* asteroid = "Asteroid";
 			const char* ent2 = EntityGetName(entity2);
@@ -104,7 +104,7 @@ extern "C" {
 		{
 			Collider* parentCollider = EntityGetCollider(behavior->parent);
 
-			if (parentCollider != NULL)
+			if (parentCollider != nullptr)
 			{
 				ColliderSetCollisionHandler(parentCollider, BehaviorBulletCollisionHandler);
 			}

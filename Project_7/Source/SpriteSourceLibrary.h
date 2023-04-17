@@ -82,12 +82,12 @@ void SpriteSourceLibraryInit();
 // Returns:
 //	 If the SpriteSource already exists or was created successfully,
 //	   then return a pointer to the SpriteSource,
-//	   else return NULL.
+//	   else return nullptr.
 const SpriteSource* SpriteSourceLibraryBuild(const char * spriteSourceName);
 
 // Free all SpriteSource objects in the SpriteSource Library.
 // (NOTE: You must call SpriteSourceFree() to free each SpriteSource object.)
-// (HINT: The list should contain nothing but NULL pointers once this function is done.)
+// (HINT: The list should contain nothing but nullptr pointers once this function is done.)
 void SpriteSourceLibraryFreeAll();
 
 //------------------------------------------------------------------------------

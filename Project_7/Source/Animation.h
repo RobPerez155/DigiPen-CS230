@@ -92,11 +92,11 @@ Animation* AnimationCreate(void);
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Animation* AnimationClone(const Animation* other);
 
 // Free the memory associated with an Animation component.
-// (NOTE: The Animation pointer must be set to NULL.)
+// (NOTE: The Animation pointer must be set to nullptr.)
 // Params:
 //	 animation = Pointer to the Animation pointer.
 void AnimationFree(Animation** animation);

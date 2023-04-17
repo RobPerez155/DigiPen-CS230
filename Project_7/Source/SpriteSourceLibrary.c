@@ -97,10 +97,10 @@ extern "C" {
 	// Returns:
 	//	 If the SpriteSource already exists or was created successfully,
 	//	   then return a pointer to the SpriteSource,
-	//	   else return NULL.
+	//	   else return nullptr.
 	const SpriteSource* SpriteSourceLibraryBuild(const char* spriteSourceName)
 	{
-		if (SpriteSourceLibraryFind(spriteSourceName) != NULL)
+		if (SpriteSourceLibraryFind(spriteSourceName) != nullptr)
 		{
 			return SpriteSourceLibraryFind(spriteSourceName);
 		}
@@ -114,7 +114,7 @@ extern "C" {
 		Stream fileStream = StreamOpen(pathName);
 
 		// 3: If the stream was opened successfully,
-		if (fileStream != NULL)
+		if (fileStream != nullptr)
 		{
 			//a: Call MeshCreate() to create an empty Mesh object.
 			SpriteSource* newSpriteSource = SpriteSourceCreate();
@@ -133,7 +133,7 @@ extern "C" {
 		}
 		else
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -141,7 +141,7 @@ extern "C" {
 	{
 		for (int i = 0; i < spriteSourceListSize; i++)
 		{
-			if (sprites.spriteSourceList[i] == NULL)
+			if (sprites.spriteSourceList[i] == nullptr)
 			{
 				sprites.spriteSourceList[i] = spriteSource;
 				sprites.spriteSourceCount++;
@@ -162,12 +162,12 @@ extern "C" {
 				return tempSprite;
 			}
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	// Free all SpriteSource objects in the SpriteSource Library.
 	// (NOTE: You must call SpriteSourceFree() to free each SpriteSource object.)
-	// (HINT: The list should contain nothing but NULL pointers once this function is done.)
+	// (HINT: The list should contain nothing but nullptr pointers once this function is done.)
 	void SpriteSourceLibraryFreeAll()
 	{
 		// Iterate through list
@@ -175,7 +175,7 @@ extern "C" {
 		{
 			// for each item run entity render
 			SpriteSourceFree(&sprites.spriteSourceList[i]);
-			sprites.spriteSourceList[i] = NULL;
+			sprites.spriteSourceList[i] = nullptr;
 		}
 	}
 

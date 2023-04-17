@@ -117,10 +117,10 @@ BaseSystem* PlatformSystemGetInstance(HINSTANCE hInstance, int show)
 	initInfo.mWindowIcon = 0; // IDI_DGLTEMPLATE;
 
 	HWND windowHandle = DGL_System_Init(&initInfo);
-	if (windowHandle == NULL)
+	if (windowHandle == nullptr)
 	{
 		TraceMessage("PlatformSystemInit Error: The DigiPen Graphics Library could not be initialized!");
-		return NULL;
+		return nullptr;
 	}
 
 #ifdef _DEBUG
@@ -161,7 +161,7 @@ void PlatformSystemUpdate(float dt)
 	// check if forcing the application to quit
 	if (DGL_Input_KeyTriggered(VK_ESCAPE) || !DGL_System_DoesWindowExist())
 	{
-		SceneSystemSetNext(NULL);
+		SceneSystemSetNext(nullptr);
 	}
 }
 
@@ -185,7 +185,8 @@ static LRESULT CALLBACK PlatformSystemCallback(_In_ HWND hWnd, _In_ UINT message
 
 	switch (message)
 	{
-	default:
+	default: 
+	case NULL:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 		break;
 	}

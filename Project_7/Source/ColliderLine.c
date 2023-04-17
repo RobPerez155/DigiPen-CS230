@@ -68,8 +68,8 @@ Collider* ColliderLineCreate(void)
 	ColliderLine* ptrColliderLine = new ColliderLine();
 
 
-	if (ptrColliderLine == NULL)
-		return NULL;
+	if (ptrColliderLine == nullptr)
+		return nullptr;
 
 	ptrColliderLine->base.type = ColliderTypeLine;
 	ptrColliderLine->base.memorySize = sizeof(ColliderLine);
@@ -88,7 +88,7 @@ Collider* ColliderLineCreate(void)
 // Tested
 void ColliderLineRead(Collider* collider, Stream stream)
 {
-	if (collider != NULL && stream != NULL)
+	if (collider != nullptr && stream != nullptr)
 	{
 		ColliderLine* line = (ColliderLine*)collider;
 		int numberOfLines = StreamReadInt(stream);
@@ -116,7 +116,7 @@ void ColliderLineRead(Collider* collider, Stream stream)
 // Tested
 void ColliderLineAddLineSegment(Collider* collider, const Vector2D* p0, const Vector2D* p1)
 {
-	if (collider == NULL)
+	if (collider == nullptr)
 		return;
 
 	if (collider->type != ColliderTypeLine)

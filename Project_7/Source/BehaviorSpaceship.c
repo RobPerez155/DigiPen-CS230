@@ -94,7 +94,7 @@ extern "C" {
 		//Behavior* ptrBehavior = calloc(1, sizeof(Behavior));
 		Behavior* ptrBehavior = new Behavior();
 
-		if (ptrBehavior != NULL)
+		if (ptrBehavior != nullptr)
 		{
 			ptrBehavior->stateCurr = cSpaceshipInvalid;
 			ptrBehavior->stateNext = cSpaceshipInvalid;
@@ -106,12 +106,12 @@ extern "C" {
 			return ptrBehavior;
 		}
 		else
-			return NULL;
+			return nullptr;
 	}
 
 	void BehaviorSpaceshipCollisionHandler(Entity* entity1, Entity* entity2)
 	{
-		if (entity1 != NULL && entity2 != NULL)
+		if (entity1 != nullptr && entity2 != nullptr)
 		{ 
 			if (strcmp(EntityGetName(entity2), "Asteroid") == 0)
 			{
@@ -220,7 +220,7 @@ extern "C" {
 		Transform* transform = EntityGetTransform(behavior->parent);
 		Physics* physics = EntityGetPhysics(behavior->parent);
 
-		if (transform == NULL || physics == NULL)
+		if (transform == nullptr || physics == nullptr)
 			return;
 			
 		// Get unit vector in direction of rotation
@@ -250,7 +250,7 @@ extern "C" {
 
 	void BehaviorSpaceshipUpdateWeapon(Behavior* behavior, float dt)
 	{
-		if (behavior == NULL)
+		if (behavior == nullptr)
 		{
 			return;
 		}
@@ -279,7 +279,7 @@ extern "C" {
 		
 		Entity* bullet = EntityFactoryBuild("Bullet");
 
-		if (bullet != NULL)
+		if (bullet != nullptr)
 		{
 			// Get transform info
 			Transform* transform = EntityGetTransform(behavior->parent);

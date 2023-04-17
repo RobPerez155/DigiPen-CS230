@@ -110,7 +110,7 @@ void Vector2DFromAngleRad(DGL_Vec2 *pResult, float angle);
 
 // This function computes the angle, in radians, of the specified vector.
 // HINT: Angle (radians) = atan2f(direction Y, direction X).
-// NOTE: If the pointer is NULL, then return 0.0f.
+// NOTE: If the pointer is nullptr, then return 0.0f.
 float Vector2DToAngleRad(const DGL_Vec2 * pVec);
 
 //------------------------------------------------------------------------------

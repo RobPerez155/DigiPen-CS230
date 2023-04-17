@@ -89,21 +89,21 @@ extern "C" {
 	// Returns:
 	//	 If 'other' is valid and the memory allocation was successful,
 	//	   then return a pointer to the cloned component,
-	//	   else return NULL.
+	//	   else return nullptr.
 	Behavior* BehaviorClone(Behavior* other)
 	{
-		if (other == NULL)
+		if (other == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		//Behavior* behaviorClone = calloc(1, other->memorySize);
 		Behavior* behaviorClone = new Behavior;
 		behaviorClone = static_cast<Behavior*>(::operator new(other->memorySize));
 
-		if (behaviorClone == NULL)
+		if (behaviorClone == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		//*behaviorClone = *other;
@@ -113,7 +113,7 @@ extern "C" {
 	}
 
 	// Free the memory associated with a Behavior component.
-	// (Also, set the behavior pointer to NULL.)
+	// (Also, set the behavior pointer to nullptr.)
 	// Params:
 	//	 behavior = Pointer to the Behavior component.
 	void BehaviorFree(Behavior** behavior)
@@ -121,7 +121,7 @@ extern "C" {
 		if (*behavior)
 			free(*behavior);
 
-		*behavior = NULL;
+		*behavior = nullptr;
 	};
 
 	// Read the properties of a Behavior component from a file.
@@ -132,7 +132,7 @@ extern "C" {
 	//	 stream = Pointer to the data stream used for reading.
 	void BehaviorRead(Behavior* behavior, Stream stream)
 	{
-		if (behavior != NULL)
+		if (behavior != nullptr)
 		{
 
 			behavior->stateCurr = StreamReadInt(stream);
@@ -147,7 +147,7 @@ extern "C" {
 	//	 parent = Pointer to the parent game object.
 	void BehaviorSetParent(Behavior* behavior, Entity* parent)
 	{
-		if (behavior != NULL)
+		if (behavior != nullptr)
 			behavior->parent = parent;
 	}
 
@@ -167,7 +167,7 @@ extern "C" {
 
 	void BehaviorUpdate(Behavior* behavior, float dt)
 	{
-		if (behavior != NULL)
+		if (behavior != nullptr)
 		{
 			if (behavior->stateCurr != behavior->stateNext)
 			{

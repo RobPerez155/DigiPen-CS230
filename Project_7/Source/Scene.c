@@ -41,7 +41,7 @@
 // Private Variables:
 //------------------------------------------------------------------------------
 
-static EntityContainer* entities = NULL;
+static EntityContainer* entities = nullptr;
 
 //------------------------------------------------------------------------------
 // Private Function Declarations:
@@ -51,13 +51,13 @@ static EntityContainer* entities = NULL;
 // Public Functions:
 //------------------------------------------------------------------------------
 
-// Verify that a scene is valid (no NULL pointers).
+// Verify that a scene is valid (no nullptr pointers).
 // Params:
 //   scene	Pointer to the scene to be checked.
 bool SceneIsValid(const Scene* scene)
 {
-	// This function should never be called with a "NULL" scene.
-	assert(scene && "SceneIsValid Error: A NULL pointer was passed as a parameter.");
+	// This function should never be called with a "nullptr" scene.
+	assert(scene && "SceneIsValid Error: A nullptr pointer was passed as a parameter.");
 
 	if (scene->name && scene->load && scene->init && scene->update && scene->render && scene->exit && scene->unload)
 	{
@@ -71,7 +71,7 @@ bool SceneIsValid(const Scene* scene)
 void SceneLoad(const Scene* scene)
 {
 	// Verify that the function pointer is valid.
-	if (scene && (scene->load != NULL))
+	if (scene && (scene->load != nullptr))
 	{
 		// TODO: Call TraceMessage, passing the format string "%s: Load" and the name of the scene.
 		TraceMessage("%s: Load", scene->name);
@@ -94,7 +94,7 @@ void SceneLoad(const Scene* scene)
 void SceneInit(const Scene* scene)
 {
 	// Verify that the function pointer is valid.
-	if (scene && (scene->init != NULL))
+	if (scene && (scene->init != nullptr))
 	{
 		// TODO: Call TraceMessage, passing the format string "%s: Init" and the name of the scene.
 		TraceMessage("%s: Init", scene->name);
@@ -108,7 +108,7 @@ void SceneInit(const Scene* scene)
 void SceneUpdate(const Scene* scene, float dt)
 {
 	// Verify that the function pointer is valid.
-	if (scene && (scene->update != NULL))
+	if (scene && (scene->update != nullptr))
 	{
 		// TODO: Call TraceMessage, passing the format string "%s: Update" and the name of the scene.
 		TraceMessage("%s: Update", scene->name);
@@ -129,7 +129,7 @@ void SceneUpdate(const Scene* scene, float dt)
 void SceneRender(const Scene* scene)
 {
 	// Verify that the function pointer is valid.
-	if (scene && (scene->render != NULL))
+	if (scene && (scene->render != nullptr))
 	{
 		// TODO: Call TraceMessage, passing the format string "%s: Render" and the name of the scene.
 		TraceMessage("%s: Render", scene->name);
@@ -146,7 +146,7 @@ void SceneRender(const Scene* scene)
 void SceneExit(const Scene* scene)
 {
 	// Verify that the function pointer is valid.
-	if (scene && (scene->exit != NULL))
+	if (scene && (scene->exit != nullptr))
 	{
 		// TODO: Call TraceMessage, passing the format string "%s: Exit" and the name of the scene.
 		TraceMessage("%s: Exit", scene->name);
@@ -164,7 +164,7 @@ void SceneExit(const Scene* scene)
 void SceneUnload(const Scene* scene)
 {
 	// Verify that the function pointer is valid.
-	if (scene && (scene->unload != NULL))
+	if (scene && (scene->unload != nullptr))
 	{
 		// TODO: Call TraceMessage, passing the format string "%s: Unload" and the name of the scene.
 		TraceMessage("%s: Unload", scene->name);
@@ -212,7 +212,7 @@ void SceneAddEntity(Entity* entity)
 // Returns:
 //	 If entityName is valid and the Entity was located successfully,
 //		then return a pointer to the Entity,
-//		else return NULL.
+//		else return nullptr.
 Entity* SceneFindEntityByName(const char* entityName)
 {
 	return EntityContainerFindByName(entities, entityName);
@@ -234,17 +234,17 @@ Entity* SceneFindEntityByName(const char* entityName)
 //// Returns:
 ////	 If entityName is valid and the Entity was located successfully,
 ////		then return a pointer to the Entity,
-////		else return NULL.
+////		else return nullptr.
 //Entity* SceneFindEntityByName(const char* entityName)
 //{
 //	Entity* entityFound = EntityContainerFindByName(entities, entityName);
 //
-//	if (entityFound != NULL)
+//	if (entityFound != nullptr)
 //	{
 //		return entityFound;
 //	}
 //	else {
-//		return NULL;
+//		return nullptr;
 //	}
 //}
 

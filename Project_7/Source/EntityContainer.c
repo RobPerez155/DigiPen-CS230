@@ -94,33 +94,33 @@ extern "C" {	// Assume C declarations for C++.
 	// Returns:
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
-	//	   else return NULL.
+	//	   else return nullptr.
 	EntityContainer* EntityContainerCreate()
 	{
 		//EntityContainer* ptrEntityContainer = calloc(1, sizeof(EntityContainer));		
 		EntityContainer* ptrEntityContainer = new EntityContainer();
 
-		if (ptrEntityContainer != NULL)
+		if (ptrEntityContainer != nullptr)
 		{
 			ptrEntityContainer->entityMax = entityArraySize;
 			return ptrEntityContainer;
 		}
 		else
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 
 	// Free the memory associated with an EntityContainer.
 	// (NOTE: If necessary, call EntityContainerFreeAll to free any existing Entities.)
-	// (NOTE: The EntityContainer pointer must be set to NULL.)
+	// (NOTE: The EntityContainer pointer must be set to nullptr.)
 	// Params:
 	//	 entities = Pointer to the EntityContainer pointer.
 	void EntityContainerFree(EntityContainer** entities)
 		{
 			EntityContainerFreeAll(*entities);
 			free(*entities);
-			*entities = NULL;
+			*entities = nullptr;
 		}
 
 	// Add an Entity to the EntityContainer.
@@ -136,7 +136,7 @@ extern "C" {	// Assume C declarations for C++.
 		{
 				addEntity(entities, entity);
 
-				if (entities != NULL && entity != NULL)
+				if (entities != nullptr && entity != nullptr)
 				{
 					return true;
 				}
@@ -149,7 +149,7 @@ extern "C" {	// Assume C declarations for C++.
 	{
 		for (int i = 0; i < entityArraySize; i++)
 		{
-			if (entities->entitiesList[i] == NULL)
+			if (entities->entitiesList[i] == nullptr)
 			{
 				entities->entitiesList[i] = entity;
 				entities->entityCount++;
@@ -171,13 +171,13 @@ extern "C" {	// Assume C declarations for C++.
 		{
 		Entity* findByName;
 			
-			if (entities != NULL && entityName != NULL)
+			if (entities != nullptr && entityName != nullptr)
 			{
 				findByName = findEntityByName(entities->entitiesList, entityName);
 				return findByName;
 			}
 			else {
-				return NULL;
+				return nullptr;
 			}
 
 			//return findByName;
@@ -188,7 +188,7 @@ extern "C" {	// Assume C declarations for C++.
 			//while (i < entityArraySize && !found)
 			for(int i = 0; i < entityArraySize; i++)
 			{
-				if (list[i] != NULL)
+				if (list[i] != nullptr)
 				{
 					if (EntityIsNamed(list[i], name))
 					{
@@ -196,7 +196,7 @@ extern "C" {	// Assume C declarations for C++.
 					}
 				}
 			}
-			return NULL;
+			return nullptr;
 		}	
 
 	// Determines if the EntityContainer is empty (no Entities exist).
@@ -208,7 +208,7 @@ extern "C" {	// Assume C declarations for C++.
 	//		else return false.
 	bool EntityContainerIsEmpty(const EntityContainer* entities)
 		{
-			if (entities != NULL)
+			if (entities != nullptr)
 			{
 
 				if (entities->entityCount == 0) 
@@ -229,7 +229,7 @@ extern "C" {	// Assume C declarations for C++.
 	//	 dt = Change in time (in seconds) since the last game loop.
 	void EntityContainerUpdateAll(EntityContainer* entities, float dt)
 		{
-			if (entities != NULL)
+			if (entities != nullptr)
 			{
 				// Iterate through list
 				for (unsigned int i = 0; i < entities->entityMax; i++)
@@ -243,7 +243,7 @@ extern "C" {	// Assume C declarations for C++.
 					if (entities->entitiesList[i] && EntityIsDestroyed(entities->entitiesList[i]))
 					{
 						EntityFree(&entities->entitiesList[i]);
-						entities->entitiesList[i] = NULL;
+						entities->entitiesList[i] = nullptr;
 						for (unsigned int j = i; j < entities->entityCount; j++)
 						{
 							entities->entitiesList[j] = entities->entitiesList[j + 1];
@@ -260,7 +260,7 @@ extern "C" {	// Assume C declarations for C++.
 	//   entities = Pointer to the EntityContainer.
 	void EntityContainerRenderAll(const EntityContainer* entities)         
 		{
-			if (entities != NULL)
+			if (entities != nullptr)
 			{
 				// Iterate through list
 				for (unsigned int i = 0; i < entities->entityMax; i++)
@@ -280,14 +280,14 @@ extern "C" {	// Assume C declarations for C++.
 	//   entities = Pointer to the EntityContainer.
 	void EntityContainerFreeAll(EntityContainer* entities)
 	{
-		if (entities != NULL)
+		if (entities != nullptr)
 		{
 			// Iterate through list
 			// Break me for testing, using maxcount
 			for (unsigned int i = 0; i < _countof(entities->entitiesList); i++)
 			{
 				// for each item run entity
-				if (entities->entitiesList[i] != NULL)
+				if (entities->entitiesList[i] != nullptr)
 				{
 					EntityFree(&entities->entitiesList[i]);
 					entities->entityCount--;
@@ -313,17 +313,17 @@ extern "C" {	// Assume C declarations for C++.
 	{
 		for (unsigned int i = 0; i < entities->entityMax - 1; i++)
 		{
- 			if (entities->entitiesList[i] != NULL)
+ 			if (entities->entitiesList[i] != nullptr)
 			{
 				Collider* collider1 = EntityGetCollider(entities->entitiesList[i]);
-				if (collider1 != NULL)
+				if (collider1 != nullptr)
 				{
 					for (unsigned int j = i + 1; j < entities->entityMax; j++)
 					{
-						if (entities->entitiesList[j] != NULL)
+						if (entities->entitiesList[j] != nullptr)
 						{
 							Collider* collider2 = EntityGetCollider(entities->entitiesList[j]);
-							if (collider2 != NULL)
+							if (collider2 != nullptr)
 							{
 								ColliderCheck(collider1, collider2);
 							}

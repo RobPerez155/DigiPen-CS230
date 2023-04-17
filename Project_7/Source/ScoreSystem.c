@@ -43,8 +43,8 @@ extern "C" {	// Assume C declarations for C++.
 	// Public Variables:
 	//------------------------------------------------------------------------------
 		//------------------------------------------------------------------------------
-	ScoreSystem score;
-	ScoreSystem newScore;
+	//ScoreSystem score;
+	//ScoreSystem newScore;
 	
 	// Private Functions:
 	//------------------------------------------------------------------------------
@@ -63,6 +63,12 @@ extern "C" {	// Assume C declarations for C++.
 		{ "ScoreSystem", ScoreSystemInit, ScoreSystemUpdate, ScoreSystemRender, ScoreSystemExit},
 	};
 
+	static int score = 0;
+	static int highScore = 0;
+	static int waveCount;
+	static int newHighScore; 
+
+
 	//------------------------------------------------------------------------------
 	// Public Functions:
 	//------------------------------------------------------------------------------
@@ -71,6 +77,8 @@ extern "C" {	// Assume C declarations for C++.
 	BaseSystem* ScoreSystemGetInstance(void)
 	{
 		// Initialize any system-specific variables here:
+		//static ScoreSystem score = {};
+		//static ScoreSystem newScore = {};
 
 		// Return a reference to the instance of this system.
 		return (BaseSystem*)&instance;
@@ -106,10 +114,10 @@ extern "C" {	// Assume C declarations for C++.
 	// (Set the score, highScore, and waveCount variables to 0.)
 	void ScoreSystemClear(void)
 	{
-		score.score = 0;
-		score.highScore = 0;
-		score.waveCount = 0;
-		newScore.highScore = score.score;
+		score = 0;
+		highScore = 0;
+		waveCount = 0;
+		newHighScore = score;
 	}
 
 	// Reset the Score System.
@@ -117,16 +125,16 @@ extern "C" {	// Assume C declarations for C++.
 	// (Step 2: The score and waveCount variables should be set to zero.)
 	void ScoreSystemReset(void)
 	{
-		if (score.score >= score.highScore /* >= newScore.highScore*/)
+		if (score >= highScore /* >= newScore.highScore*/)
 		{
-			score.highScore = score.score /*= score.highScore*/;
-			score.score = 0;
-			score.waveCount = 0;
+			highScore = score /*= score.highScore*/;
+			score = 0;
+			waveCount = 0;
 		}
 		else {
-			score.highScore = score.highScore;
-			score.score = 0;
-			score.waveCount = 0;
+			highScore = highScore;
+			score = 0;
+			waveCount = 0;
 		}
 	}
 
@@ -144,15 +152,15 @@ extern "C" {	// Assume C declarations for C++.
 		switch (valueId)
 		{
 		case SsiScore:
-			returnVal = score.score;
+			returnVal = score;
 			break;
 
 		case SsiHighScore:
-			returnVal = score.highScore;
+			returnVal = highScore;
 			break;
 
 		case SsiWaveCount:
-			returnVal = score.waveCount;
+			returnVal = waveCount;
 			break;
 
 		default:
@@ -167,13 +175,13 @@ extern "C" {	// Assume C declarations for C++.
 	//   amount = The amount to be added to the score.
 	void ScoreSystemIncreaseScore(unsigned amount)
 	{
-		score.score += amount;
+		score += amount;
 	}
 
 	// Increase the current wave count by one.
 	void ScoreSystemIncreaseWave(void)
 	{
-		score.waveCount++;
+		waveCount++;
 	}
 
 	/*----------------------------------------------------------------------------*/

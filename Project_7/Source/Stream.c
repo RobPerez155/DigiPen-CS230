@@ -52,7 +52,7 @@ static FILE* streamFile;
 // Params:
 //	 filePath = The file to be opened for reading.
 // Returns:
-//	 NULL if filePath is NULL or the file could not be opened.
+//	 nullptr if filePath is nullptr or the file could not be opened.
 //	 Pointer to a FILE object if the file was opened successfully.
 Stream StreamOpen(const char* filePath)
 {
@@ -61,9 +61,9 @@ Stream StreamOpen(const char* filePath)
 
 	strerror_s(errorMsg, 100, errno);
 
-	if (streamFile == NULL) {
+	if (streamFile == nullptr) {
 		TraceMessage("Error: StreamOpen could not open file %s; %s", filePath, errorMsg);
-		return NULL;
+		return nullptr;
 	}	else {
 		return streamFile;
 	}
@@ -79,7 +79,7 @@ Stream StreamOpen(const char* filePath)
 //	 otherwise, an integer value read from the file.
 int StreamReadInt(Stream stream)
 {
-	if (stream == NULL)
+	if (stream == nullptr)
 	{
 		return 0;
 	}
@@ -98,7 +98,7 @@ int StreamReadInt(Stream stream)
 //	   then return a float value read from the file,
 //	   else return 0.
 float StreamReadFloat(Stream stream) {
-	if (stream == NULL)
+	if (stream == nullptr)
 	{
 		return 0;
 	}
@@ -119,15 +119,15 @@ float StreamReadFloat(Stream stream) {
 //	   then fill the vector with two float values (x & y),
 //	   else do nothing (optionally, write an error message to the trace log).
 void StreamReadVector2D(Stream stream, DGL_Vec2* vector) {
-	if (stream != NULL && vector != NULL) {
+	if (stream != nullptr && vector != nullptr) {
 		vector->x = StreamReadFloat(stream);
 		vector->y = StreamReadFloat(stream);
 	}
-	else if ( StreamReadFloat == NULL) {
+	else if ( StreamReadFloat == nullptr) {
 		TraceMessage("Error: StreamOpen could not open file");
 	}
 	else {
-		TraceMessage("Error: DGL_Vec returned NULL");
+		TraceMessage("Error: DGL_Vec returned nullptr");
 	}
 }
 
@@ -160,7 +160,7 @@ const char* StreamReadToken(Stream stream)
 //	   else return 0.
 bool StreamReadBoolean(Stream stream)
 {
-	if (stream == NULL)
+	if (stream == nullptr)
 	{
 		return 0;
 	}
@@ -184,7 +184,7 @@ bool StreamReadBoolean(Stream stream)
 void StreamReadColor(Stream stream, DGL_Color* color)
 {
 	//if color and stream are valid 
-	if (stream != NULL && color != NULL)
+	if (stream != nullptr && color != nullptr)
 	{
 		float red = StreamReadFloat(stream);
 		float green = StreamReadFloat(stream);
@@ -199,28 +199,28 @@ void StreamReadColor(Stream stream, DGL_Color* color)
 	}
 	else
 	{
-		if (color != NULL)
+		if (color != nullptr)
 		{
 			color->r = 0.0f;
 			color->g = 0.0f;
 			color->b = 0.0f;
 			color->a = 0.0f;
 		}
-		TraceMessage("Error: Stream or color pointer is NULL in StreamReadColor.");
+		TraceMessage("Error: Stream or color pointer is nullptr in StreamReadColor.");
 	}
 }
 
 // Close an opened stream.
 // (NOTE: Do not attempt to close the stream if the pointer is null.)
-// (PRO TIP: Avoid dangling pointers by setting the FILE pointer to NULL.)
+// (PRO TIP: Avoid dangling pointers by setting the FILE pointer to nullptr.)
 // Params:
 //	 stream = The file stream to be closed.
 void StreamClose(Stream* stream) {
-	if (stream == NULL) {
+	if (stream == nullptr) {
 		TraceMessage("Error: StreamClose could not close file");
 	}
 	else {
 		fclose(*stream);
-		*stream = NULL;
+		*stream = nullptr;
 	}
 }

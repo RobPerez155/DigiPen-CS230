@@ -68,19 +68,30 @@ typedef struct Physics
 	// Returns:
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
-	//	   else return NULL.
+	//	   else return nullptr.
 	Physics* PhysicsCreate(void)
 		{
-			//Physics* ptrPhysics = calloc(1, sizeof(Physics));
 			Physics* ptrPhysics = new Physics();
 
-			if (ptrPhysics != NULL)
+			if (ptrPhysics != nullptr)
 			{
 				return ptrPhysics;
 			} else {
-				return NULL;
+				return nullptr;
 			}
 		}
+	//Physics* Physics::Create(void)
+	//{
+	//	Physics* ptrPhysics = new Physics();
+
+	//	if (ptrPhysics != nullptr)
+	//	{
+	//		return ptrPhysics;
+	//	}
+	//	else {
+	//		return nullptr;
+	//	}
+	//}
 
 	// Dynamically allocate a clone of an existing Physics component.
 	// (Hint: Perform a shallow copy of the member variables.)
@@ -89,27 +100,43 @@ typedef struct Physics
 	// Returns:
 	//	 If 'other' is valid and the memory allocation was successful,
 	//	   then return a pointer to the cloned component,
-	//	   else return NULL.
+	//	   else return nullptr.
 	Physics* PhysicsClone(const Physics* other)
 	{
-		if (other == NULL)
+		if (other == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
-		//Physics* physicsClone = calloc(1, sizeof(Physics));
 		Physics* physicsClone = new Physics();
 
-
-		if (physicsClone == NULL)
+		if (physicsClone == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		*physicsClone = *other;
 
 		return physicsClone;
 	}
+	/*Physics* Physics::Clone(const Physics* other)
+	{
+		if (other == nullptr)
+		{
+			return nullptr;
+		}
+
+		Physics* physicsClone = new Physics();
+
+		if (physicsClone == nullptr)
+		{
+			return nullptr;
+		}
+
+		*physicsClone = *other;
+
+		return physicsClone;
+	}*/
 
 	// Get the rotational velocity of a physics component.
 // Params:
@@ -120,7 +147,7 @@ typedef struct Physics
 //		else return 0.0f.
 	float PhysicsGetRotationalVelocity(const Physics* physics)
 	{
-		if (physics != NULL)
+		if (physics != nullptr)
 		{
 			return physics->rotationalVelocity;
 		}
@@ -128,6 +155,16 @@ typedef struct Physics
 			return 0.0f;
 		}
 	}
+	//float Physics::GetRotationalVelocity()
+	//{
+	//	if (this != nullptr)
+	//	{
+	//		return this->rotationalVelocity;
+	//	}
+	//	else {
+	//		return 0.0f;
+	//	}
+	//}
 
 		// Set the rotational velocity of a physics component.
 // Params:
@@ -137,19 +174,30 @@ typedef struct Physics
 	{
 		physics->rotationalVelocity = rotationalVelocity;
 	}
-
+	//void Physics::SetRotationalVelocity(float rotationalVelocity)
+	//{
+	//	this->rotationalVelocity = rotationalVelocity;
+	//}
 
 	// Free the memory associated with a Physics component.
-	// (NOTE: The Physics pointer must be set to NULL.)
+	// (NOTE: The Physics pointer must be set to nullptr.)
 	// Params:
 	//	 physics = Pointer to the Physics component pointer.
 		void PhysicsFree(Physics** physics) 
 		{
 			if (*physics)
-				free(*physics);
+				delete(*physics);
 
-			*physics = NULL;
+			*physics = nullptr;
 		}
+
+		//void Physics::Free(Physics** physics)
+		//{
+		//	if (*physics)
+		//		delete(*physics);
+
+		//	*physics = nullptr;
+		//}
 
 	// Read the properties of a Physics component from a file.
 	// [NOTE: Read the acceleration and velocity values using StreamReadVector2D.]
@@ -161,6 +209,13 @@ typedef struct Physics
 		StreamReadVector2D(stream, &physics->acceleration);
 		StreamReadVector2D(stream, &physics->velocity);
 	}
+	//void Physics::Read(Stream stream)
+	//{
+	//	StreamReadVector2D(stream, &this->acceleration);
+	//	StreamReadVector2D(stream, &this->velocity);
+	//	StreamReadVector2D(stream, &acceleration);
+	//	StreamReadVector2D(stream, &velocity);
+	//}
 
 	// Get the acceleration of a Physics component.
 	// Params:
@@ -168,35 +223,51 @@ typedef struct Physics
 	// Returns:
 	//	 If the physics pointer is valid,
 	//		then return a pointer to the component's acceleration structure,
-	//		else return a NULL pointer.
+	//		else return a nullptr pointer.
 	const Vector2D* PhysicsGetAcceleration(const Physics* physics)
 	{
-		if (physics != NULL)
+		if (physics != nullptr)
 		{
 			return &physics->acceleration;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
-	
+		//const Vector2D* PhysicsGetAcceleration(const Physics* physics)
+	//{
+	//	if (physics != nullptr)
+	//	{
+	//		return &physics->acceleration;
+	//	}
+	//	else {
+	//		return nullptr;
+	//	}
+	//}
+
 	// Get the velocity of a Physics component.
 	// Params:
 	//	 physics = Pointer to the Physics component.
 	// Returns:
 	//	 If the physics pointer is valid,
 	//		then return a pointer to the component's velocity structure,
-	//		else return a NULL pointer.
+	//		else return a nullptr pointer.
 	const Vector2D* PhysicsGetVelocity(const Physics* physics)
 	{
-		if (physics != NULL)
+		if (physics != nullptr)
 		{
 			return &physics->velocity;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
+	//const Vector2D* Physics::GetVelocity(const Physics* physics)
+	//{
+	//	return &velocity;
+	//}
+
+
 
 	// Get the old translation (position) of a Physics component.
 	// Params:
@@ -204,17 +275,28 @@ typedef struct Physics
 	// Returns:
 	//	 If the physics pointer is valid,
 	//		then return a pointer to the component's oldTranslation structure,
-	//		else return a NULL pointer.
+	//		else return a nullptr pointer.
 	const Vector2D* PhysicsGetOldTranslation(Physics* physics)
 	{
-		if (physics != NULL)
+		if (physics != nullptr)
 		{
 			return &physics->oldTranslation;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
+	//const Vector2D* Physics::GetOldTranslation()
+	//{
+	//	if (this != nullptr)
+	//	{
+	//		return &oldTranslation;
+	//	}
+	//	else {
+	//		return nullptr;
+	//	}
+	//}
+
 
 	// Set the acceleration of a Physics component.
 	// Params:
@@ -224,6 +306,14 @@ typedef struct Physics
 	{
 		physics->acceleration = *acceleration;
 	}
+	//void Physics::SetAcceleration(const Vector2D* acceleration)
+	//{
+	//	if (acceleration != nullptr)
+	//	{
+	//		this->acceleration = *acceleration;
+	//	}
+	//}
+
 
 	// Set the velocity of a Physics component.
 	// Params:
@@ -233,6 +323,14 @@ typedef struct Physics
 	{
 		physics->velocity = *velocity;
 	}
+	//void Physics::SetVelocity(const Vector2D* velocity)
+	//{
+	//	if (velocity != nullptr)
+	//	{
+	//		this->velocity = *velocity;
+	//	}
+	//}
+
 
 	// Update the state of a Physics component using the Semi-Implicit Euler method,
 	// Params:
@@ -241,7 +339,7 @@ typedef struct Physics
 	//	 dt = Change in time (in seconds) since the last game loop.
 	void PhysicsUpdate(Physics* physics, Transform* transform, float dt)
 	{	
-		if (physics != NULL && transform != NULL)
+		if (physics != nullptr && transform != nullptr)
 		{
 			// Update previous translation
 			physics->oldTranslation = *TransformGetTranslation(transform);
@@ -263,6 +361,31 @@ typedef struct Physics
 			TransformSetRotation(transform, rotation);
 		}
 	}
+
+	//void Physics::Update(Transform* transform, float dt)
+	//{
+	//	if (this != nullptr && transform != nullptr)
+	//	{
+	//		// Update previous translation
+	//		this->oldTranslation = *transform->GetTranslation();
+
+	//		// Find translation after velocity and acceleration are applied with dt
+	//		Vector2D result;
+
+	//		//Update acceleration after dt is applied add acceleration from current velocity
+	//		Vector2DScaleAdd(&this->velocity, &this->acceleration, &this->velocity, dt);
+
+	//		// Update velocity after dt is applied and add velocity to current translation
+	//		Vector2DScaleAdd(&result, &this->velocity, &this->oldTranslation, dt);
+
+	//		//Set new translation
+	//		transform->SetTranslation(result);
+
+	//		float rotation = transform->GetRotation() + physics->rotationalVelocity * dt;
+
+	//		transform->SetRotation(rotation);
+	//	}
+	//}
 
 	//------------------------------------------------------------------------------
 

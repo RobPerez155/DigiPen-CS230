@@ -55,6 +55,17 @@
 		bool isDirty;
 
 	} Transform;
+	//struct Transform {
+	//	Vector2D translation;
+
+	//	float rotation;
+
+	//	Vector2D scale = { 1.0f, 1.0f };
+
+	//	Matrix2D matrix;
+
+	//	bool isDirty = true;
+	//};
 
 
 	//------------------------------------------------------------------------------
@@ -72,23 +83,36 @@
 	// Pizza
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
-	//	   else return NULL.
+	//	   else return nullptr.
 	//Allocate Memory, Initialize, Return what's allocated'
 	Transform* TransformCreate(void)
 	{
-		//Transform* ptrTransform = calloc(1, sizeof(Transform));
 		Transform* ptrTransform = new Transform();
 
-
-		if (ptrTransform != NULL)
+		if (ptrTransform != nullptr)
 		{
 			//Initialize value
-			ptrTransform->scale = (DGL_Vec2){ 10.0f, 10.0f };
+			DGL_Vec2 scale = { 10.0f, 10.0f };
+			ptrTransform->scale = scale;
 			ptrTransform->isDirty = true;
 		}
 
 		return ptrTransform;
 	}
+	//Transform* TransformCreate()
+	//{
+	//	Transform* ptrTransform = new Transform();
+
+	//	if (ptrTransform != nullptr)
+	//	{
+	//		// Initialize value
+	//		DGL_Vec2 scale = { 10.0f, 10.0f };
+	//		ptrTransform->SetScale(scale);
+	//		ptrTransform->SetDirty(true);
+	//	}
+
+	//	return ptrTransform;
+	//}
 
 	// Dynamically allocate a clone of an existing Transform.
 // (Hint: Perform a shallow copy of the member variables.)
@@ -97,20 +121,19 @@
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 	Transform* TransformClone(const Transform* other)
 	{
-		if (other == NULL)
+		if (other == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
-		//Transform* transformClone = calloc(1, sizeof(Transform));
 		Transform* transformClone = new Transform();
 
-		if (transformClone == NULL)
+		if (transformClone == nullptr)
 		{
-			return NULL;
+			return nullptr;
 		}
 
 		*transformClone = *other;
@@ -119,7 +142,7 @@
 	}
 
 	// Free the memory associated with a Transform component.
-	// (NOTE: The Transform pointer must be set to NULL.)
+	// (NOTE: The Transform pointer must be set to nullptr.)
 	// Params:
 	//	 transform = Pointer to the Transform pointer.
 	void TransformFree(Transform** transform)
@@ -127,8 +150,15 @@
 		if (*transform)
 			free(*transform);
 
-		*transform = NULL;
+		*transform = nullptr;
 	}
+	//void TransformFree(Transform** transform)
+	//{
+	//	if (*transform)
+	//		delete* transform;
+
+	//	*transform = nullptr;
+	//}
 	
 	// Read the properties of a Transform component from a file.
 	// [NOTE: Read the translation value using StreamReadVector2D.]
@@ -139,13 +169,22 @@
 	//	 stream = The data stream used for reading.
 	void TransformRead(Transform* transform, Stream stream)
 	{
-		if (stream != NULL)
+		if (stream != nullptr)
 		{
 			StreamReadVector2D(stream, &transform->translation);
 			transform->rotation = StreamReadFloat(stream);
 			StreamReadVector2D(stream, &transform->scale);
 		}
 	}
+	//void Transform::Read(Stream stream)
+	//{
+	//	if (stream != nullptr)
+	//	{
+	//		StreamReadVector2D(stream, &translation);
+	//		rotation = StreamReadFloat(stream);
+	//		StreamReadVector2D(stream, &scale);
+	//	}
+	//}
 
 	// Get the translation of a Transform component.
 	// Params:
@@ -153,16 +192,26 @@
 	// Returns:
 	//	 If the Transform pointer is valid,
 	//		then return a pointer to the component's translation,
-	//		else return a NULL pointer.
+	//		else return a nullptr pointer.
 	const Vector2D* TransformGetTranslation(const Transform* transform)
 	{
-		if (transform != NULL) {
+		if (transform != nullptr) {
 			return &transform->translation;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
+	//const Vector2D* Transform::GetTranslation() const
+	//{
+	//	if (this != nullptr) {
+	//		return &translation;
+	//	}
+	//	else {
+	//		return nullptr;
+	//	}
+	//}
+
 
 	// Get the rotation value of a Transform component.
 	// Params:
@@ -173,13 +222,23 @@
 	//		else return 0.0f.
 	float TransformGetRotation(const Transform* transform)
 	{
-		if (transform != NULL) {
+		if (transform != nullptr) {
 			return transform->rotation;
 		}
 		else {
 			return 0.0f;
 		}
 	}
+	//float TransformGetRotation(const Transform* transform)
+	//{
+	//	if (transform != nullptr) {
+	//		return transform->rotation;
+	//	}
+	//	else {
+	//		return 0.0f;
+	//	}
+	//}
+
 
 	// Get the scale of a Transform component.
 	// Params:
@@ -187,16 +246,25 @@
 	// Returns:
 	//	 If the Transform pointer is valid,
 	//		then return a pointer to the component's scale,
-	//		else return a NULL pointer.
+	//		else return a nullptr pointer.
+	//const Vector2D* TransformGetScale(const Transform* transform)
+	//{
+	//	Vector2D* zilch = nullptr;
+
+	//	if (transform != nullptr) {
+	//		return &transform->scale;
+	//	}
+	//	else {
+	//		return zilch;
+	//	}
+	//}
 	const Vector2D* TransformGetScale(const Transform* transform)
 	{
-		Vector2D* zilch = NULL;
-
-		if (transform != NULL) {
+		if (transform != nullptr) {
 			return &transform->scale;
 		}
 		else {
-			return zilch;
+			return nullptr;
 		}
 	}
 
@@ -209,6 +277,12 @@
 		transform->translation = *translation;
 		transform->isDirty = true;
 	}
+	//void Transform::SetTranslation(const Vector2D& translation)
+	//{
+	//	this->translation = translation;
+	//	this->isDirty = true;
+	//}
+
 
 	// Set the rotation of a Transform component.
 	// Params:
@@ -237,7 +311,7 @@
 // Returns:
 //	 If the Transform pointer is valid,
 //		then return a pointer to the component's matrix structure,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 	const Matrix2D* TransformGetMatrix(Transform* transform)
 	{
 		if (transform->isDirty)

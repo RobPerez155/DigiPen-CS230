@@ -81,11 +81,11 @@ typedef struct Collider
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Collider* ColliderClone(const Collider* other);
 
 // Free the memory associated with a Collider component.
-// (NOTE: The Collider pointer must be set to NULL.)
+// (NOTE: The Collider pointer must be set to nullptr.)
 // Params:
 //	 collider = Pointer to the Collider pointer.
 void ColliderFree(Collider** collider);
@@ -107,10 +107,10 @@ void ColliderCheck(const Collider* collider, const Collider* other);
 
 // Set the collision event handler for when two entities collide.
 // (Hint: This allows other components, such as Behaviors, to respond to collision events.)
-// (Note: It is acceptable for the handler to be NULL.  This allows an existing handler to be removed.)
+// (Note: It is acceptable for the handler to be nullptr.  This allows an existing handler to be removed.)
 // Params:
 //	 collider = Pointer to the Collider component.
-//	 handler = Pointer to the collision event handler (may be NULL).
+//	 handler = Pointer to the collision event handler (may be nullptr).
 void ColliderSetCollisionHandler(Collider* collider, CollisionEventHandler handler);
 
 //------------------------------------------------------------------------------

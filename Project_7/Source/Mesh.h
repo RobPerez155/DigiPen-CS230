@@ -67,7 +67,7 @@ typedef struct Mesh
 // Returns:
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created Mesh,
-//	   else return NULL.
+//	   else return nullptr.
 Mesh* MeshCreate();
 
 // Dynamically allocate a new Mesh object and create a quadrilateral mesh.
@@ -85,7 +85,7 @@ Mesh* MeshCreate();
 // Returns:
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created Mesh,
-//	   else return NULL.
+//	   else return nullptr.
 Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize, const char * name);
 
 // Create a "spaceship" mesh.
@@ -97,7 +97,7 @@ Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize,
 // Returns:
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created Mesh,
-//	   else return NULL.
+//	   else return nullptr.
 Mesh* MeshCreateSpaceship(void);
 
 // Read the properties of a Mesh object from a file.
@@ -130,7 +130,7 @@ void MeshRender(const Mesh* mesh);
 // Free the memory associated with a mesh.
 // (NOTE: The DGL_Mesh object must be freed using DGL_Graphics_FreeMesh().)
 // (NOTE: The Mesh object must be freed using free().
-// (NOTE: The Mesh pointer must be set to NULL.)
+// (NOTE: The Mesh pointer must be set to nullptr.)
 // Params:
 //   mesh = Pointer to the Mesh pointer.
 void MeshFree(Mesh** mesh);

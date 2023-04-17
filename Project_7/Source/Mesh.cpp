@@ -45,7 +45,8 @@
 		char name[32];
 
 		// Pointer to the DGL_Mesh resource.
-		const DGL_Mesh* meshResource;
+		DGL_Mesh* meshResource;
+		//const DGL_Mesh* meshResource;
 
 		// The draw mode to use when rendering the mesh (Usually "DGL_DM_TRIANGLELIST").
 		DGL_DrawMode drawMode;
@@ -110,7 +111,7 @@
 // Returns:
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created Mesh,
-//	   else return NULL.
+//	   else return nullptr.
 	Mesh* MeshCreate()
 	{
 		//Mesh* newMesh = calloc(1, sizeof(Mesh));
@@ -121,7 +122,7 @@
 			return newMesh;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -137,7 +138,7 @@
 	void MeshRead(Mesh* mesh, Stream stream)
 	{
 		// (NOTE: First, read a token from the file and verify that it is "Mesh".)
-		if (stream != NULL) 
+		if (stream != nullptr) 
 		{
 			const char* token = StreamReadToken(stream);
 
@@ -150,7 +151,7 @@
 
 				StreamReadVector2D(stream, position);
 				
-				if (position == NULL)
+				if (position == nullptr)
 					return;
 
 				Vector2D halfSized = { position->x, position->y };
@@ -221,14 +222,14 @@
 	// Returns:
 	//	 If the mesh was created successfully,
 	//	   then return a pointer to the created Mesh,
-	//	   else return NULL.
+	//	   else return nullptr.
 	Mesh* MeshCreateSpaceship(void)
 	{
 		//Mesh* spaceship = calloc(1, sizeof(Mesh));
 		Mesh* spaceship = new Mesh();
 
 		
-		if (spaceship != NULL) 
+		if (spaceship != nullptr) 
 		{
 			strcpy_s(spaceship->name, _countof(spaceship->name), "spaceship");
 
@@ -258,7 +259,7 @@
 			return spaceship;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 
 	}
@@ -282,7 +283,7 @@
 //		else return false.
 	bool MeshIsNamed(const Mesh* mesh, const char* name)
 	{ 
-		if (mesh != NULL && strcmp(mesh->name, name) == 0)
+		if (mesh != nullptr && strcmp(mesh->name, name) == 0)
 		{
 			return true;
 		}
@@ -295,17 +296,17 @@
 	// Free the memory associated with a mesh.
 	// (NOTE: The DGL_Mesh object must be freed using DGL_Graphics_FreeMesh().)
 	// (NOTE: The Mesh object must be freed using free().
-	// (NOTE: The Mesh pointer must be set to NULL.)
+	// (NOTE: The Mesh pointer must be set to nullptr.)
 	// Params:
 	//   mesh = Pointer to the Mesh pointer.
 	void MeshFree(Mesh** mesh) //this is a pointer to a pointer Mesh
 	{
-		if (*mesh != NULL)
+		if (*mesh != nullptr)
 		{
 			Mesh* ptrMesh = *mesh; //dereference mesh pointer so we can get meshResource in the next statement
 			DGL_Graphics_FreeMesh(&ptrMesh->meshResource); //get address of meshResource
 			//free(*mesh); PROBLEM
-			*mesh = NULL;
+			*mesh = nullptr;
 		}
 		else {
 			return;

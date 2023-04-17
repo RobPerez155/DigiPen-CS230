@@ -97,25 +97,25 @@
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 	Entity* EntityCreate(void)
 	{
 		//Entity* ptrEntity = calloc(1, sizeof(Entity));
 		Entity* ptrEntity = new Entity();
 
 
-		if (ptrEntity != NULL)
+		if (ptrEntity != nullptr)
 		{
 			return ptrEntity;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
 	// Free the memory associated with an Entity.
 // (NOTE: All attached components must be freed using the corresponding Free() functions.)
-// (NOTE: The Entity pointer must be set to NULL.)
+// (NOTE: The Entity pointer must be set to nullptr.)
 // Params:
 //	 entity = Pointer to the Entity pointer.
 // 
@@ -124,7 +124,7 @@
 	//	 entity = Pointer to the Entity pointer.
 	void EntityFree(Entity** entity) //post-it note to where ID is to house
 	{
-		//Look at header - free components first, then entity, then set to NULL
+		//Look at header - free components first, then entity, then set to nullptr
 		Physics* physics = EntityGetPhysics(*entity);
 		PhysicsFree(&physics);
 
@@ -144,7 +144,7 @@
 		ColliderFree(&collider);
 
 		free(*entity); //Find the ID where the Post-it note says, 
-		*entity = NULL; 
+		*entity = nullptr; 
 	}
 
 	// Params:
@@ -152,7 +152,7 @@
 	//	 stream = The data stream used for reading.
 	void EntityRead(Entity* entity, Stream stream)
 	{
-		if (entity != NULL && stream != NULL)
+		if (entity != nullptr && stream != nullptr)
 		{
 			//Annotate me
 			const char* token = StreamReadToken(stream);
@@ -282,7 +282,7 @@
 	//	 name = Pointer to the Entity's new name.
 	void EntitySetName(Entity* entity, const char* name)
 	{
-		if (entity != NULL && name != NULL)
+		if (entity != nullptr && name != nullptr)
 		{
 			strcpy_s(entity->name, _countof(entity->name), name);
 		}
@@ -293,12 +293,12 @@
 	//	 entity = Pointer to the Entity.
 	const char* EntityGetName(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			return entity->name;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -307,12 +307,12 @@
 	//	 entity = Pointer to the Entity.
 	Physics* EntityGetPhysics(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			return entity->physics;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -320,15 +320,15 @@
 	// Returns:
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached Sprite component,
-	//		else return NULL.
+	//		else return nullptr.
 	Sprite* EntityGetSprite(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			return entity->sprite;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -336,15 +336,15 @@
 	// Returns:
 	//	 If the Entity pointer is valid,
 	//		then return a pointer to the attached Transform component,
-	//		else return NULL.
+	//		else return nullptr.
 	Transform* EntityGetTransform(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			return entity->transform;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -354,13 +354,13 @@
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Animation component,
-//		else return NULL.
+//		else return nullptr.
 	Animation* EntityGetAnimation(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 			return entity->animation;
 		else
-			return NULL;
+			return nullptr;
 	}
 
 // Get the Behavior component attached to an Entity.
@@ -369,13 +369,13 @@
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Behavior component,
-//		else return NULL.
+//		else return nullptr.
 	Behavior* EntityGetBehavior(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 			return entity->behavior;
 		else
-			return NULL;
+			return nullptr;
 	}
 
 	// Update any components attached to the Entity.
@@ -384,7 +384,7 @@
 	//	 dt = Change in time (in seconds) since the last game loop.
 	void EntityUpdate(Entity* entity, float dt)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			BehaviorUpdate(entity->behavior, dt);
 			PhysicsUpdate(entity->physics, entity->transform, dt);
@@ -397,7 +397,7 @@
 	//	 entity = Pointer to the Entity.
 	void EntityRender(Entity* entity) 
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			SpriteRender(entity->sprite, entity->transform);
 		}
@@ -413,7 +413,7 @@
 //		else return false.
 	bool EntityIsNamed(const Entity* entity, const char* name)
 	{
-		if (entity != NULL && strcmp(entity->name, name) == 0)
+		if (entity != nullptr && strcmp(entity->name, name) == 0)
 		{
 			return true;
 		}
@@ -431,7 +431,7 @@
 //		else return false.
 	bool EntityIsDestroyed(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			return entity->isDestroyed;
 		}
@@ -450,7 +450,7 @@
 //	   else do nothing.
 	void EntityDestroy(Entity* entity)
 	{
-		if (entity != NULL) 
+		if (entity != nullptr) 
 		{
 			entity->isDestroyed = true;
 		}
@@ -466,15 +466,15 @@
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned Entity,
-//	   else return NULL.
+//	   else return nullptr.
 	Entity* EntityClone(const Entity* other)
 	{
-		if (other != NULL)
+		if (other != nullptr)
 		{
 			//Entity* clonedEntity = calloc(1, sizeof(Entity));
 			Entity* clonedEntity = new Entity();
 
-			if (clonedEntity != NULL)
+			if (clonedEntity != nullptr)
 			{
 				//Make shallow copy of entity
 				*clonedEntity = *other;
@@ -502,9 +502,9 @@
 
 				return clonedEntity;
 			}
-			return NULL;
+			return nullptr;
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	// Attach a Collider component to an Entity.
@@ -525,15 +525,15 @@
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Collider component,
-//		else return NULL.
+//		else return nullptr.
 	Collider* EntityGetCollider(const Entity* entity)
 	{
-		if (entity != NULL)
+		if (entity != nullptr)
 		{
 			return entity->collider;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 

@@ -56,8 +56,8 @@ Collider* ColliderCircleCreate(void)
 	ColliderCircle* ptrCircleCollider = new ColliderCircle();
 
 
-	if (ptrCircleCollider == NULL)
-		return NULL;
+	if (ptrCircleCollider == nullptr)
+		return nullptr;
 	
 	ptrCircleCollider->base.type = ColliderTypeCircle;
 	ptrCircleCollider->base.memorySize = sizeof(ColliderCircle);
@@ -75,7 +75,7 @@ Collider* ColliderCircleCreate(void)
 // Tested
 void ColliderCircleRead(Collider* collider, Stream stream)
 {
-	if (collider != NULL && stream != NULL)
+	if (collider != nullptr && stream != nullptr)
 	{
 		// Need to set collider to be a circleCollider
 		ColliderCircle* circle = (ColliderCircle*)collider;
@@ -94,7 +94,7 @@ void ColliderCircleRead(Collider* collider, Stream stream)
 // Tested
 float ColliderCircleGetRadius(const Collider* collider) 
 {
-	if (collider != NULL)
+	if (collider != nullptr)
 	{
 		ColliderCircle* circle = (ColliderCircle*)collider;
 
@@ -130,7 +130,7 @@ bool ColliderCircleIsCollidingWithCircle(const Collider* collider, const Collide
 	ColliderCircle* collider2 = (ColliderCircle*)other;
 
 	// Check if both are null
-	if (collider1 == NULL || collider2 == NULL)
+	if (collider1 == nullptr || collider2 == nullptr)
 		return false;
 
 	// Check if both are circles
@@ -150,12 +150,12 @@ bool ColliderCircleIsCollidingWithCircle(const Collider* collider, const Collide
 	// if the sum of both the squared circle radii is greater than the new distance return true
 	if (sqRadiiSum > sqDistBetweenColliders)
 	{
-		if (collider->handler != NULL)
+		if (collider->handler != nullptr)
 		{
 			collider->handler(collider->parent, other->parent);
 		}
 
-		if (other->handler != NULL)
+		if (other->handler != nullptr)
 		{
 			other->handler(other->parent, collider->parent);
 		}

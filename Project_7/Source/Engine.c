@@ -44,7 +44,7 @@ typedef struct
 // Private Variables:
 //------------------------------------------------------------------------------
 
-static Engine engine = { 0 };
+static Engine engine = {};
 
 //------------------------------------------------------------------------------
 // Private Function Declarations:
@@ -58,7 +58,7 @@ static Engine engine = { 0 };
 void EngineAddSystem(BaseSystemPtr system)
 {
 	// Verify that a valid system pointer has been passed.
-	assert(system && "EngineAddSystem Error: A NULL system pointer has been passed.");
+	assert(system && "EngineAddSystem Error: A nullptr system pointer has been passed.");
 
 	// Verify that the system container size will not be exceeded.
 	assert((engine.systemCount < systemMax) && "EngineAddSystem Error: The maximum container size has been exceeded.");
@@ -86,7 +86,7 @@ bool EngineInit()
 		BaseSystem* system = engine.systems[i];
 
 		// Verify that the current system is valid.
-		assert(system && "EngineInit Error: A NULL system has been added to the engine.");
+		assert(system && "EngineInit Error: A nullptr system has been added to the engine.");
 		assert(system->init && "EngineInit Error: A system is missing an Init function.");
 
 		// Write a trace message as each system is initialized.
@@ -118,7 +118,7 @@ void EngineUpdate(float dt)
 		BaseSystem* system = engine.systems[i];
 
 		// Verify that the current system is valid.
-		assert(system && "EngineUpdate Error: A NULL system has been added to the engine.");
+		assert(system && "EngineUpdate Error: A nullptr system has been added to the engine.");
 		assert(system->update && "EngineUpdate Error: A system is missing an Update function.");
 
 		// Write a trace message as each system is updated. [Intentionally disabled]
@@ -145,7 +145,7 @@ void EngineRender()
 		BaseSystem* system = engine.systems[i];
 
 		// Verify that the current system is valid.
-		assert(system && "EngineUpdate Error: A NULL system has been added to the engine.");
+		assert(system && "EngineUpdate Error: A nullptr system has been added to the engine.");
 		assert(system->render && "EngineRender Error: A system is missing a Render function.");
 
 		// Write a trace message as each system is rendered. [Intentionally disabled]
@@ -174,7 +174,7 @@ void EngineExit()
 		BaseSystem* system = engine.systems[i - 1];
 
 		// Verify that the current system is valid.
-		assert(system && "EngineExit Error: A NULL system has been added to the engine.");
+		assert(system && "EngineExit Error: A nullptr system has been added to the engine.");
 		assert(system->exit && "EngineExit Error: A system is missing an Exit function.");
 
 		// Write a trace message as each system is exited.

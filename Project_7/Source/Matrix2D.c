@@ -47,7 +47,7 @@ static void Swap(float* one, float* two);
 // This function sets the matrix equal to the identity matrix.
 void Matrix2DIdentity(Matrix2D* pResult)
 {
-	if (pResult != NULL)
+	if (pResult != nullptr)
 	{
 		// Sets values to zero
 		memset(pResult, 0, sizeof(Matrix2D));

@@ -102,7 +102,7 @@ Behavior* BehaviorAsteroidCreate(void)
 	//BehaviorAsteroid* ptrBehaviorAsteroid = calloc(1, sizeof(BehaviorAsteroid));
 	BehaviorAsteroid* ptrBehaviorAsteroid = new BehaviorAsteroid();
 
-	if (ptrBehaviorAsteroid != NULL)
+	if (ptrBehaviorAsteroid != nullptr)
 	{
 		ptrBehaviorAsteroid->base.onInit = BehaviorAsteroidInit;
 		ptrBehaviorAsteroid->base.onUpdate = BehaviorAsteroidUpdate;
@@ -114,8 +114,10 @@ Behavior* BehaviorAsteroidCreate(void)
 		return (Behavior*)ptrBehaviorAsteroid;
 	}
 	else
-		return NULL;
+		return nullptr;
 }
+
+
 
 void BehaviorAsteroidInit(Behavior* behavior)
 {
@@ -123,13 +125,34 @@ void BehaviorAsteroidInit(Behavior* behavior)
 	
 	if (asteroid->base.stateCurr == cAsteroidIdle)
 	{
-		asteroid->origin = RandomRange(0, 3);
+		int aOrigin = RandomRange(0, 3);
+
+		//asteroid->origin = RandomRange(0, 3);
+		switch (aOrigin)
+		{
+		case 0:
+			asteroid->origin = cAsteroidOriginTlc;
+			break;
+		case 1:
+			asteroid->origin = cAsteroidOriginTrc;
+			break;
+		case 2:
+			asteroid->origin = cAsteroidOriginBlc;
+			break;
+		case 3:
+			asteroid->origin = cAsteroidOriginBrc;
+			break;
+		default:
+			asteroid->origin = cAsteroidOriginTlc;
+			break;
+		}
 		BehaviorAsteroidSetPosition(asteroid);
 		BehaviorAsteroidSetVelocity(asteroid);
 		
 		Collider* collider = EntityGetCollider(asteroid->base.parent);
-		if (collider != NULL)
+		if (collider != nullptr)
 		{
+			//			ColliderSetCollisionHandler(collider, static_cast<CollisionEventHandler>(BehaviorAsteroidCollisionHandler(collider->parent, asteroid->base.parent)));
 			ColliderSetCollisionHandler(collider, BehaviorAsteroidCollisionHandler);
 		}
 	}
@@ -152,7 +175,7 @@ void BehaviorAsteroidUpdate(Behavior* behavior, float dt)
 
 void BehaviorAsteroidCollisionHandler(Entity* entity1, const Entity* entity2)
 {
-	if (entity1 != NULL && entity2 != NULL)
+	if (entity1 != nullptr && entity2 != nullptr)
 	{
 		const char* entity2Name = EntityGetName(entity2);
 		if (strcmp(entity2Name, "Bullet") == 0 || strcmp(entity2Name, "Spaceship") == 0)
@@ -238,7 +261,7 @@ void BehaviorAsteroidSetVelocity(BehaviorAsteroid* behaviorAsteroid)
 	float newSpeed = RandomRangeFloat(asteroidSpeedMin, asteroidSpeedMax);
 	Physics* physics = EntityGetPhysics(behaviorAsteroid->base.parent);
 
-	if (physics != NULL)
+	if (physics != nullptr)
 	{
 		Vector2D newVelocity;
 

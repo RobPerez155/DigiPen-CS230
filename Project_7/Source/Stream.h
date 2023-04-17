@@ -57,7 +57,7 @@ typedef struct DGL_Color DGL_Color;
 // Params:
 //	 filePath = The file to be opened for reading.
 // Returns:
-//	 NULL if filePath is NULL or the file could not be opened.
+//	 nullptr if filePath is nullptr or the file could not be opened.
 //	 Pointer to a FILE object if the file was opened successfully.
 Stream StreamOpen(const char * filePath);
 
@@ -130,7 +130,7 @@ const char* StreamReadToken(Stream stream);
 
 // Close an opened stream.
 // (NOTE: Do not attempt to close the stream if the pointer is null.)
-// (PRO TIP: Avoid dangling pointers by setting the FILE pointer to NULL.)
+// (PRO TIP: Avoid dangling pointers by setting the FILE pointer to nullptr.)
 // Params:
 //	 stream = The file stream to be closed.
 void StreamClose(Stream * stream);

@@ -78,7 +78,7 @@ typedef struct Physics
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 Physics* PhysicsCreate(void);
 
 // Dynamically allocate a clone of an existing Physics component.
@@ -88,11 +88,11 @@ Physics* PhysicsCreate(void);
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Physics* PhysicsClone(const Physics* other);
 
 // Free the memory associated with a Physics component.
-// (NOTE: The Physics pointer must be set to NULL.)
+// (NOTE: The Physics pointer must be set to nullptr.)
 // Params:
 //	 physics = Pointer to the Physics component pointer.
 void PhysicsFree(Physics** physics);
@@ -110,7 +110,7 @@ void PhysicsRead(Physics* physics, Stream stream);
 // Returns:
 //	 If the physics pointer is valid,
 //		then return a pointer to the component's acceleration structure,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 const Vector2D * PhysicsGetAcceleration(const Physics* physics);
 
 // Get the velocity of a Physics component.
@@ -119,7 +119,7 @@ const Vector2D * PhysicsGetAcceleration(const Physics* physics);
 // Returns:
 //	 If the physics pointer is valid,
 //		then return a pointer to the component's velocity structure,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 const Vector2D * PhysicsGetVelocity(const Physics* physics);
 
 // Get the rotational velocity of a physics component.
@@ -137,7 +137,7 @@ float PhysicsGetRotationalVelocity(const Physics* physics);
 // Returns:
 //	 If the physics pointer is valid,
 //		then return a pointer to the component's oldTranslation structure,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 const Vector2D * PhysicsGetOldTranslation(Physics* physics);
 
 // Set the acceleration of a Physics component.

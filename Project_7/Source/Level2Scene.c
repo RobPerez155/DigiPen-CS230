@@ -114,13 +114,13 @@ static void Level2SceneInit()
 {
 	Entity* Spaceship = EntityFactoryBuild("SpaceshipHoming");
 
-	if (Spaceship != NULL)
+	if (Spaceship != nullptr)
 	{
 		DGL_Color black = { 0.0f, 0.0f, 0.0f, 0.0f };
 
 		Sprite* sprSpaceship = EntityGetSprite(Spaceship);
 		SpriteSetMesh(sprSpaceship, instance.ptrMesh);
-		SpriteSetSpriteSource(sprSpaceship, NULL);
+		SpriteSetSpriteSource(sprSpaceship, nullptr);
 		DGL_Graphics_SetBackgroundColor(&black);
 		DGL_Graphics_SetBlendMode(DGL_BM_BLEND);
 
@@ -134,7 +134,7 @@ static void Level2SceneMovementController(Entity* entity)
 	Transform* ptrTransform = EntityGetTransform(entity);
 
 	// Check if pointers are valid
-	if (ptrPhysics == NULL || ptrTransform == NULL)
+	if (ptrPhysics == nullptr || ptrTransform == nullptr)
 	{
 		return;
 	}

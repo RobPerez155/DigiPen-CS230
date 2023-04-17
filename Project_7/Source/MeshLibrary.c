@@ -85,7 +85,7 @@ extern "C" {
 	void MeshLibraryInit()
 	{
 		//init all to 0 -> MeshLibrary
-		meshes = (MeshLibrary) { 0 };
+		meshes = MeshLibrary();
 	}
 
 	const Mesh* MeshLibraryFind(const char* meshName)
@@ -100,7 +100,7 @@ extern "C" {
 				return tempMesh;
 			}
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	// Create a mesh and add it to the mesh manager.
@@ -118,10 +118,10 @@ extern "C" {
 // Returns:
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created mesh,
-//	   else return NULL.
+//	   else return nullptr.
 	const Mesh* MeshLibraryBuild(const char* meshName)
 	{
-		if (MeshLibraryFind(meshName) != NULL)
+		if (MeshLibraryFind(meshName) != nullptr)
 		{
 			return MeshLibraryFind(meshName);
 		}
@@ -135,7 +135,7 @@ extern "C" {
 		Stream fileStream = StreamOpen(pathName);
 		
 	// 3: If the stream was opened successfully,
-		if (fileStream != NULL)
+		if (fileStream != nullptr)
 		{
 			//a: Call MeshCreate() to create an empty Mesh object.
 
@@ -155,7 +155,7 @@ extern "C" {
 		}
 		else
 		{
-			return NULL;
+			return nullptr;
 		}
 	}
 
@@ -163,7 +163,7 @@ extern "C" {
 	{
 		for (int i = 0; i < meshListSize; i++)
 		{
-			if (meshes.meshList[i] == NULL)
+			if (meshes.meshList[i] == nullptr)
 			{
 				meshes.meshList[i] = mesh;
 				meshes.meshCount++;
@@ -174,15 +174,18 @@ extern "C" {
 
 	// Free all Mesh objects in the Mesh Manager.
 	// (NOTE: You must call MeshFree() to free each Mesh object.)
-	// (HINT: The list should contain nothing but NULL pointers once this function is done.)
+	// (HINT: The list should contain nothing but nullptr pointers once this function is done.)
 	void MeshLibraryFreeAll()
 	{
 		// Iterate through list
 		for (int i = 0; i < meshListSize; i++)
 		{
 			// for each item run entity render
-			MeshFree(&meshes.meshList[i]);
-			meshes.meshList[i] = NULL;
+			//MeshFree(&meshes.meshList[i]);
+			//MeshFree(static_cast<Mesh*>(meshes.meshList[i]));
+			//MeshFree(const_cast<Mesh*>(meshes.meshList[i]));
+			MeshFree(&const_cast<Mesh*>(meshes.meshList[i]));
+			meshes.meshList[i] = nullptr;
 		}
 	}
 

@@ -58,13 +58,13 @@ static const DGL_Vec2 scaleTextured = { 100.f, 100.f };
 
 // TODO: Declare Variables:
 // Variables used for referencing loaded assets.
-static DGL_Mesh* meshColor = NULL;
-static DGL_Mesh* meshTexture = NULL;
-static DGL_Mesh* meshSpaceship = NULL;
-static DGL_Mesh* meshLine = NULL;
+static DGL_Mesh* meshColor = nullptr;
+static DGL_Mesh* meshTexture = nullptr;
+static DGL_Mesh* meshSpaceship = nullptr;
+static DGL_Mesh* meshLine = nullptr;
 
-static DGL_Texture* textureBall = NULL;
-static DGL_Texture* textureSquare = NULL;
+static DGL_Texture* textureBall = nullptr;
+static DGL_Texture* textureSquare = nullptr;
 
 // Variables used for changing the scene.
 static DGL_Vec2 posCamera = { 0, 0 };
@@ -264,7 +264,7 @@ void DemoSceneRender(void)
 
 	// TODO: Display a simple, colored mesh.
 	DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
-	DGL_Graphics_SetTexture(NULL);
+	DGL_Graphics_SetTexture(nullptr);
 	DGL_Graphics_SetCB_Alpha(1.0f);
 	DGL_Graphics_SetCB_TintColor(&(DGL_Color) { 0.0f, 0.0f, 0.0f, 0.0f });
 	DGL_Graphics_SetCB_TransformData(&posColored, &scaleColored, 0.f);

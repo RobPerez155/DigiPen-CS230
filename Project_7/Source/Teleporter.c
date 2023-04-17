@@ -75,7 +75,7 @@ extern "C" {
 		//The top - right corner of the window is at + halfSize.
 		DGL_Vec2 topRight = halfWindowSize;
 
-		if (entity == NULL || transform == NULL || physics == NULL)
+		if (entity == nullptr || transform == nullptr || physics == nullptr)
 			return;
 
 		// get velocity

@@ -99,7 +99,7 @@ typedef struct Entity
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 Entity* EntityCreate(void);
 
 // Dynamically allocate a clone of an existing Entity.
@@ -112,12 +112,12 @@ Entity* EntityCreate(void);
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned Entity,
-//	   else return NULL.
+//	   else return nullptr.
 Entity* EntityClone(const Entity* other);
 
 // Free the memory associated with an Entity.
 // (NOTE: All attached components must be freed using the corresponding Free() functions.)
-// (NOTE: The Entity pointer must be set to NULL.)
+// (NOTE: The Entity pointer must be set to nullptr.)
 // Params:
 //	 entity = Pointer to the Entity pointer.
 void EntityFree(Entity** entity);
@@ -207,7 +207,7 @@ void EntitySetName(Entity* entity, const char * name);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the Entity's name,
-//		else return NULL.
+//		else return nullptr.
 const char * EntityGetName(const Entity* entity);
 
 // Compare the Entity's name with the specified name.
@@ -226,7 +226,7 @@ bool EntityIsNamed(const Entity* entity, const char* name);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Animation component,
-//		else return NULL.
+//		else return nullptr.
 Animation* EntityGetAnimation(const Entity* entity);
 
 // Get the Behavior component attached to an Entity.
@@ -235,7 +235,7 @@ Animation* EntityGetAnimation(const Entity* entity);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Behavior component,
-//		else return NULL.
+//		else return nullptr.
 Behavior* EntityGetBehavior(const Entity* entity);
 
 // Get the Collider component attached to an Entity.
@@ -244,7 +244,7 @@ Behavior* EntityGetBehavior(const Entity* entity);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Collider component,
-//		else return NULL.
+//		else return nullptr.
 Collider* EntityGetCollider(const Entity* entity);
 
 // Get the Physics component attached to an Entity.
@@ -253,7 +253,7 @@ Collider* EntityGetCollider(const Entity* entity);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Physics component,
-//		else return NULL.
+//		else return nullptr.
 Physics* EntityGetPhysics(const Entity* entity);
 
 // Get the Sprite component attached to a Entity.
@@ -262,7 +262,7 @@ Physics* EntityGetPhysics(const Entity* entity);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Sprite component,
-//		else return NULL.
+//		else return nullptr.
 Sprite* EntityGetSprite(const Entity* entity);
 
 // Get the Transform component attached to a Entity.
@@ -271,7 +271,7 @@ Sprite* EntityGetSprite(const Entity* entity);
 // Returns:
 //	 If the Entity pointer is valid,
 //		then return a pointer to the attached Transform component,
-//		else return NULL.
+//		else return nullptr.
 Transform* EntityGetTransform(const Entity* entity);
 
 // Update any components attached to the Entity.

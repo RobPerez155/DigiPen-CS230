@@ -52,7 +52,7 @@ typedef struct Sprite
 	// The alpha transparency to use when drawing the sprite.
 	float alpha;
 
-	// The sprite source used when drawing (NULL = simple colored mesh).
+	// The sprite source used when drawing (nullptr = simple colored mesh).
 	const SpriteSource* spriteSource;
 
 	// The mesh used to draw the sprite.
@@ -78,7 +78,7 @@ typedef struct Sprite
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 Sprite* SpriteCreate(void);
 
 // Dynamically allocate a clone of an existing Sprite.
@@ -88,11 +88,11 @@ Sprite* SpriteCreate(void);
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Sprite* SpriteClone(const Sprite* other);
 
 // Free the memory associated with a Sprite component.
-// (NOTE: The Sprite pointer must be set to NULL.)
+// (NOTE: The Sprite pointer must be set to nullptr.)
 // Params:
 //	 sprite = Pointer to the Sprite pointer.
 void SpriteFree(Sprite** sprite);
@@ -149,16 +149,16 @@ void SpriteSetFrame(Sprite* sprite, unsigned int frameIndex);
 void SpriteSetMesh(Sprite* sprite, const Mesh* mesh);
 
 // Set a new SpriteSource for the specified Sprite.
-// (NOTE: The spriteSource parameter may be NULL.  This will remove an existing
+// (NOTE: The spriteSource parameter may be nullptr.  This will remove an existing
 //	texture from a Sprite and cause the Sprite to be displayed as a colored mesh.)
 // Params:
 //	 sprite = Pointer to the Sprite component.
-//	 spriteSource = Pointer to a SpriteSource (this pointer may be NULL).
+//	 spriteSource = Pointer to a SpriteSource (this pointer may be nullptr).
 void SpriteSetSpriteSource(Sprite* sprite, const SpriteSource* spriteSource);
 
 // Assign a text string to a Sprite component.  This will allow a sequence of
 //	 characters to be displayed as text.
-// (NOTE: The text parameter may be NULL.  This will remove an existing text
+// (NOTE: The text parameter may be nullptr.  This will remove an existing text
 //	 string from a sprite and cause the sprite to be displayed normally.)
 // Params:
 //	 sprite = Pointer to the Sprite component.

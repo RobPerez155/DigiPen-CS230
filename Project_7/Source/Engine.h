@@ -29,8 +29,8 @@ extern "C" {	// Assume C declarations for C++.
 // Forward References:
 //------------------------------------------------------------------------------
 
-typedef struct BaseSystem *BaseSystemPtr;
-struct Engine;
+//typedef struct BaseSystem *BaseSystemPtr;
+//struct Engine;
 
 //------------------------------------------------------------------------------
 // Public Constants:

@@ -46,7 +46,7 @@
 //------------------------------------------------------------------------------
 // Private Variables:
 //------------------------------------------------------------------------------
-static EntityContainer* archetypes = NULL;
+static EntityContainer* archetypes = nullptr;
 
 // Build a single instance of the specified game object.
 // Params:
@@ -54,10 +54,10 @@ static EntityContainer* archetypes = NULL;
 // Returns:
 //	 If the filename is valid
 //	   then return a pointer to a new instance of the specified game object,
-//	   else NULL.
+//	   else nullptr.
 
 //	The EntityFactoryBuild() function should work as follows :
-//	If the filename pointer is not NULL,
+//	If the filename pointer is not nullptr,
 //	Open the file using StreamOpen()
 //	If the stream was opened successfully,
 //	Read the first token from the file using StreamReadToken()
@@ -70,23 +70,23 @@ static EntityContainer* archetypes = NULL;
 //	Close the file using StreamClose()
 //	Return the created entity
 //	Close the file using StreamClose()
-//	Return NULL
+//	Return nullptr
 //TraceMessage(" Error Function %s\n File: %s\n Line: %d.", __FUNCTION__, __FILE__, __LINE__);
 
 //Annotate ME
 Entity* EntityFactoryBuild(const char* entityName)
 {
 	//If there is no entity to build exit this function
-	if (entityName == NULL)
+	if (entityName == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	// Initialize an entity to store the archetype
 	//Entity* archetype;
 
-	// If the “archetypes” variable is NULL, then create a new archetype by calling EntityContainerCreate.
-	if (archetypes == NULL)
+	// If the “archetypes” variable is nullptr, then create a new archetype by calling EntityContainerCreate.
+	if (archetypes == nullptr)
 	{
 		archetypes = EntityContainerCreate();
 	}
@@ -106,7 +106,7 @@ Entity* EntityFactoryBuild(const char* entityName)
 		Stream fileStream = StreamOpen(pathName);
 
 		//If the file is opened successfully, 
-		if (fileStream != NULL) {
+		if (fileStream != nullptr) {
 
 			//Use streamReadToken to read file.
 			const char* token = StreamReadToken(fileStream);
@@ -129,11 +129,11 @@ Entity* EntityFactoryBuild(const char* entityName)
 				// If the archetype existed or was created successfully,
 				// Clone the archetype Entity.
 				// Return the cloned Entity.
-				if (archetypes != NULL)
+				if (archetypes != nullptr)
 				{
 					return EntityClone(archetype);
 				}
-				return NULL;
+				return nullptr;
 			}
 			
 		}
@@ -148,10 +148,10 @@ Entity* EntityFactoryBuild(const char* entityName)
 //    function must be called.)
 void EntityFactoryFreeAll()
 {
-	if (archetypes != NULL) 
+	if (archetypes != nullptr) 
 	{
 		EntityContainerFreeAll(archetypes);
-		archetypes = NULL;
+		archetypes = nullptr;
 	}
 }
 

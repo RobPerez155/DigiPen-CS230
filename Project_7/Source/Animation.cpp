@@ -74,7 +74,7 @@ void AnimationAdvanceFrame(Animation* animation, float dt)
 {
 	UNREFERENCED_PARAMETER(dt);
 
-	if (animation != NULL)
+	if (animation != nullptr)
 	{
 		Sprite* animSprite = EntityGetSprite(animation->parent);
 		animation->frameIndex++;
@@ -107,6 +107,42 @@ void AnimationAdvanceFrame(Animation* animation, float dt)
 		}
 	}
 }
+//void AnimationAdvanceFrame(Animation* animation, float dt)
+//{
+//	if (animation != nullptr)
+//	{
+//		Sprite* animSprite = EntityGetSprite(animation->parent);
+//		animation->frameIndex++;
+//
+//		if (animation->frameIndex >= animation->frameCount)
+//		{
+//			if (animation->isLooping)
+//			{
+//				animation->frameIndex = 0;
+//				animation->isDone = true;
+//			}
+//			else
+//			{
+//				animation->frameIndex--;
+//				//animation->frameIndex = -1;
+//				animation->isRunning = false;
+//				animation->isDone = true;
+//			}
+//		}
+//
+//		if (animation->isRunning)
+//		{
+//			SpriteSetFrame(animSprite, animation->frameIndex);
+//			animation->frameDelay += animation->frameDuration;
+//			return;
+//		}
+//		else {
+//			animation->frameDelay = 0;
+//			return;
+//		}
+//	}
+//}
+
 
 //------------------------------------------------------------------------------
 // Public Functions:
@@ -115,14 +151,18 @@ void AnimationAdvanceFrame(Animation* animation, float dt)
 // Dynamically allocate a new Animation component.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
 Animation* AnimationCreate(void)
+//Animation* Animation::Create(void)
 {
-	//Animation* ptrAnimation = calloc(1, sizeof(Animation));
 	Animation* ptrAnimation = new Animation();
+	//if (ptrAnimation != nullptr)
+	//	return ptrAnimation;
+	//else
+	//	return nullptr;
 
-	if (ptrAnimation != NULL)
+	if (ptrAnimation != nullptr)
 		return ptrAnimation;
 	else
-		return NULL;
+		return nullptr;
 }
 
 // Dynamically allocate a clone of an existing Animation component.
@@ -132,20 +172,20 @@ Animation* AnimationCreate(void)
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Animation* AnimationClone(const Animation* other)
+//Animation* Animation::Clone(const Animation* other)
 {
-	if (other == NULL)
+	if (other == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
-	//Animation* animationClone = calloc(1, sizeof(Animation));
 	Animation* animationClone = new Animation();
 
-	if (animationClone == NULL)
+	if (animationClone == nullptr)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	*animationClone = *other;
@@ -154,16 +194,18 @@ Animation* AnimationClone(const Animation* other)
 }
 
 // Free the memory associated with an Animation component.
-// (NOTE: The Animation pointer must be set to NULL.)
+// (NOTE: The Animation pointer must be set to nullptr.)
 // Params:
 //	 animation = Pointer to the Animation pointer.
 void AnimationFree(Animation** animation)
+//void Animation::Free(Animation** animation)
 {
 	if (*animation) 
-		free(*animation);
+		delete(*animation);
 
-	*animation = NULL;
+	*animation = nullptr;
 }
+
 
 // Read the properties of an Animation component from a file.
 // [NOTE: Read the integer values for frameIndex and frameCount.]
@@ -173,9 +215,9 @@ void AnimationFree(Animation** animation)
 //	 animation = Pointer to the Animation component.
 //	 stream = The data stream used for reading.
 void AnimationRead(Animation* animation, Stream stream)
+//void Animation::Read(Animation* animation, Stream stream)
 {
-	//Could be a problem here
-	if (animation != NULL && stream != NULL)
+	if (animation != nullptr && stream != nullptr)
 	{
 		animation->frameIndex = StreamReadInt(stream);
 		animation->frameCount = StreamReadInt(stream);
@@ -192,7 +234,7 @@ void AnimationRead(Animation* animation, Stream stream)
 //	 parent = Pointer to the parent Entity.
 void AnimationSetParent(Animation* animation, Entity* parent)
 {
-	if (animation != NULL)
+	if (animation != nullptr)
 		animation->parent = parent;
 }
 
@@ -205,8 +247,9 @@ void AnimationSetParent(Animation* animation, Entity* parent)
 //	 isLooping = True if the animation loops, false otherwise.
 //Don't forget to check if isDone is set at the end of a loop
 void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bool isLooping)
+//void Animation::Play(Animation* animation, int frameCount, float frameDuration, bool isLooping)
 {
-	if (animation != NULL)
+	if (animation != nullptr)
 	{
 		animation->frameIndex = 0;
 		animation->frameCount = frameCount;
@@ -216,7 +259,6 @@ void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bo
 		animation->isLooping = isLooping;
 	
 		Sprite* animSprite = EntityGetSprite(animation->parent);
-		// ANIMATION WONKED, ONLY PLAYING 1 FRAME
 		SpriteSetFrame(animSprite, animation->frameIndex);
 		animation->isDone = false;
 	}
@@ -229,8 +271,9 @@ void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bo
 //	 animation = Pointer to the Animation component.
 //	 dt = Change in time (in seconds) since the last game loop.
 void AnimationUpdate(Animation* animation, float dt)
+//void Animation::Update(Animation* animation, float dt)
 {
-	if (animation != NULL)
+	if (animation != nullptr)
 	{
 		animation->isDone = false;
 		if (animation->isRunning)
@@ -255,8 +298,9 @@ void AnimationUpdate(Animation* animation, float dt)
 //		then return the value in isDone,
 //		else return false.
 bool AnimationIsDone(const Animation* animation)
+//bool Animation::IsDone(const Animation* animation);
 {
-	if (animation != NULL)
+	if (animation != nullptr)
 		return animation->isDone;
 	else
 		return false;

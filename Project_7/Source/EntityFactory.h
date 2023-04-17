@@ -51,9 +51,9 @@ typedef struct Entity Entity;
 // Params:
 //	 entityName = The name of the Entity to be constructed.
 // Returns:
-//	 If the objectName is not NULL,
+//	 If the objectName is not nullptr,
 //	   then return a pointer to a new instance of the specified Entity,
-//	   else NULL.
+//	   else nullptr.
 Entity* EntityFactoryBuild(const char * entityName);
 
 // Free all archetype Entities.

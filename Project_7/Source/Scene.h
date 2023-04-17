@@ -62,7 +62,7 @@ typedef struct Scene
 // Public Functions:
 //------------------------------------------------------------------------------
 
-// Verify that a scene is valid (no NULL pointers).
+// Verify that a scene is valid (no nullptr pointers).
 // Params:
 //   scene	Pointer to the scene to be checked.
 bool SceneIsValid(const Scene* scene);
@@ -91,7 +91,7 @@ void SceneAddEntity(Entity* entity);
 // Returns:
 //	 If entityName is valid and the Entity was located successfully,
 //		then return a pointer to the Entity,
-//		else return NULL.
+//		else return nullptr.
 Entity* SceneFindEntityByName(const char* entityName);
 
 //------------------------------------------------------------------------------

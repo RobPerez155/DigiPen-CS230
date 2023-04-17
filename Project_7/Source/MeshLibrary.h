@@ -81,12 +81,12 @@ void MeshLibraryInit();
 // Returns:
 //	 If the mesh was created successfully,
 //	   then return a pointer to the created mesh,
-//	   else return NULL.
+//	   else return nullptr.
 const Mesh* MeshLibraryBuild(const char * meshName);
 
 // Free all Mesh objects in the Mesh Library.
 // (NOTE: You must call MeshFree() to free each Mesh object.)
-// (HINT: The list should contain nothing but NULL pointers once this function is done.)
+// (HINT: The list should contain nothing but nullptr pointers once this function is done.)
 void MeshLibraryFreeAll();
 
 //------------------------------------------------------------------------------

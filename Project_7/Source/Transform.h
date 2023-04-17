@@ -82,7 +82,7 @@ typedef struct Transform
 // Returns:
 //	 If the memory allocation was successful,
 //	   then return a pointer to the allocated memory,
-//	   else return NULL.
+//	   else return nullptr.
 Transform* TransformCreate(void);
 
 // Dynamically allocate a clone of an existing Transform.
@@ -92,11 +92,11 @@ Transform* TransformCreate(void);
 // Returns:
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
-//	   else return NULL.
+//	   else return nullptr.
 Transform* TransformClone(const Transform* other);
 
 // Free the memory associated with a Transform component.
-// (NOTE: The Transform pointer must be set to NULL.)
+// (NOTE: The Transform pointer must be set to nullptr.)
 // Params:
 //	 transform = Pointer to the Transform pointer.
 void TransformFree(Transform** transform);
@@ -117,7 +117,7 @@ void TransformRead(Transform* transform, Stream stream);
 // Returns:
 //	 If the Transform pointer is valid,
 //		then return a pointer to the component's matrix structure,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 const Matrix2D* TransformGetMatrix(Transform* transform);
 
 // Get the translation of a Transform component.
@@ -126,7 +126,7 @@ const Matrix2D* TransformGetMatrix(Transform* transform);
 // Returns:
 //	 If the Transform pointer is valid,
 //		then return a pointer to the component's translation,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 const Vector2D* TransformGetTranslation(const Transform* transform);
 
 // Get the rotation value of a Transform component.
@@ -144,7 +144,7 @@ float TransformGetRotation(const Transform* transform);
 // Returns:
 //	 If the Transform pointer is valid,
 //		then return a pointer to the component's scale,
-//		else return a NULL pointer.
+//		else return a nullptr pointer.
 const Vector2D* TransformGetScale(const Transform* transform);
 
 // Set the translation of a Transform component.
@@ -171,3 +171,48 @@ void TransformSetScale(Transform* transform, const Vector2D* scale);
 }                       /* End of extern "C" { */
 #endif
 
+//#ifndef TRANSFORM_H
+//#define TRANSFORM_H
+//
+//#include "Vector2D.h"
+//#include "Matrix2D.h"
+//#include "Stream.h"
+//
+//class Transform
+//{
+//public:
+//	Transform();
+//	~Transform();
+//
+//	Vector2D GetTranslation() const;
+//	float GetRotation() const;
+//	Vector2D GetScale() const;
+//	Matrix2D GetMatrix();
+//
+//	void SetTranslation(const Vector2D& translation);
+//	void SetRotation(float rotation);
+//	void SetScale(const Vector2D& scale);
+//
+//	Transform* Clone() const;
+//	void Free();
+//
+//private:
+//	Vector2D translation;
+//	float rotation;
+//	Vector2D scale;
+//	Matrix2D matrix;
+//	bool isDirty;
+//
+//	void Read(Stream& stream);
+//};
+//
+//Transform* TransformCreate();
+//void TransformRead(Transform& transform, Stream& stream);
+//void TransformWrite(const Transform& transform, Stream& stream);
+//const Vector2D* TransformGetTranslation(const Transform& transform);
+//float TransformGetRotation(const Transform& transform);
+//const Vector2D* TransformGetScale(const Transform& transform);
+//void TransformSetTranslation(Transform& transform, const Vector2D& translation);
+//void TransformSetRotation(Transform& transform, float rotation);
+//void TransformSetScale(Transform& transform, const Vector2D& scale);
+//const Matrix2D* TransformGetMatrix(Transform& transform);

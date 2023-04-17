@@ -76,14 +76,14 @@
 	// Returns:
 	//	 If the memory allocation was successful,
 	//	   then return a pointer to the allocated memory,
-	//	   else return NULL.
+	//	   else return nullptr.
 	SpriteSource* SpriteSourceCreate()
 	{
 		//SpriteSource* ptrSpriteSource = calloc(1, sizeof(SpriteSource));
 		SpriteSource* ptrSpriteSource = new SpriteSource();
 
 	
-		if (ptrSpriteSource != NULL)
+		if (ptrSpriteSource != nullptr)
 		{
 			ptrSpriteSource->numRows = 1;
 			ptrSpriteSource->numCols = 1;
@@ -91,12 +91,12 @@
 			return ptrSpriteSource;
 		}
 		else {
-			return NULL;
+			return nullptr;
 		}
 	}
 
 	// Free the memory associated with a SpriteSource object.
-	// (NOTE: The SpriteSource pointer must be set to NULL.)
+	// (NOTE: The SpriteSource pointer must be set to nullptr.)
 	// Params:
 	//	 spriteSource = Pointer to the SpriteSource pointer.
 	void SpriteSourceFree(SpriteSource** spriteSource)
@@ -106,7 +106,7 @@
 			free(*spriteSource);
 		}
 
-		*spriteSource = NULL;
+		*spriteSource = nullptr;
 	}
 
 	// Load a texture from a file (may be an Col x Row sprite sheet).
@@ -116,7 +116,7 @@
 	//	 textureName = The name of the texture to be loaded.
 	void SpriteSourceLoadTexture(SpriteSource* spriteSource, int numCols, int numRows, const char* textureName)
 	{
-		if (spriteSource != NULL)
+		if (spriteSource != nullptr)
 		{
 			spriteSource->texture = DGL_Graphics_LoadTexture(textureName);
 			spriteSource->numCols = numCols;
@@ -137,7 +137,7 @@
 	//		else return 0.
 	unsigned SpriteSourceGetFrameCount(const SpriteSource* spriteSource)
 	{
-		if (spriteSource != NULL)
+		if (spriteSource != nullptr)
 		{
 			int frameCount = spriteSource->numCols * spriteSource->numRows;
 			return frameCount;
@@ -191,7 +191,7 @@
 //	 stream = Pointer to the data stream used for reading.
 	void SpriteSourceRead(SpriteSource* spriteSource, Stream stream)
 	{
-		if (stream != NULL)
+		if (stream != nullptr)
 		{
 			const char* tokenName = StreamReadToken(stream);
 			if (strncmp(tokenName, "SpriteSource", _countof("SpriteSource")) != 0)
@@ -219,7 +219,7 @@
 //		else return false.
 	bool SpriteSourceIsNamed(const SpriteSource* spriteSource, const char* name)
 	{
-		if (spriteSource != NULL && strcmp(spriteSource->name, name) == 0)
+		if (spriteSource != nullptr && strcmp(spriteSource->name, name) == 0)
 		{
 			return true;
 		}
