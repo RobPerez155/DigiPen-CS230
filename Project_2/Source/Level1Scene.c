@@ -160,12 +160,12 @@ static void Level1SceneMovementController(Entity* entity)
 	// Movement Mechanic
 	if (DGL_Input_KeyDown(VK_LEFT))
 	{
-		currVelocity.x -= moveVelocity;
+		currVelocity.x = -moveVelocity;
 		printf("Move left - %f \n", currVelocity.x);
 	}
 	if (DGL_Input_KeyDown(VK_RIGHT))
 	{
-		currVelocity.x += moveVelocity;
+		currVelocity.x = moveVelocity;
 		printf("Move right - %f \n", currVelocity.x);
 	}
 	if (!DGL_Input_KeyDown(VK_RIGHT) && !DGL_Input_KeyDown(VK_LEFT))

@@ -26,10 +26,10 @@ extern "C" {
 // Forward References:
 //------------------------------------------------------------------------------
 
-typedef struct Physics Physics;
-typedef struct Transform Transform;
-typedef struct DGL_Vec2 Vector2D;
-typedef FILE* Stream;
+// typedef struct Physics Physics;
+// typedef struct Transform Transform;
+// typedef struct DGL_Vec2 Vector2D;
+// typedef FILE* Stream;
 
 //------------------------------------------------------------------------------
 // Public Constants:

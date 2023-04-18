@@ -93,7 +93,7 @@
 
 		*transform = NULL;
 	}
-
+	
 	// Read the properties of a Transform component from a file.
 	// [NOTE: Read the translation value using StreamReadVector2D.]
 	// [NOTE: Read the rotation value using StreamReadFloat.]
@@ -106,7 +106,7 @@
 		if (stream != NULL)
 		{
 			StreamReadVector2D(stream, &transform->translation);
-			StreamReadFloat(stream);
+			transform->rotation = StreamReadFloat(stream);
 			StreamReadVector2D(stream, &transform->scale);
 		}
 	}

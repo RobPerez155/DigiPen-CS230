@@ -363,7 +363,7 @@ static void Level1SceneMovementController(Entity* entity)
 		currVelocity.y = jumpVelocity;
 		PhysicsSetAcceleration(ptrPhysics, &gravityNormal);
 		printf("Move jump\n");
-		//circleTriangles(6);
+		circleTriangles(15);
 		Level1SceneSetMonkeyState(instance.Monkey, MonkeyJump);
 	}
 

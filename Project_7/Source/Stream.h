@@ -17,7 +17,7 @@
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
-
+#include <string>
 //------------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -32,6 +32,10 @@ extern "C" {
 typedef FILE* Stream;
 typedef struct DGL_Vec2 DGL_Vec2;
 typedef struct DGL_Color DGL_Color;
+#ifdef __cplusplus
+}                       /* End of extern "C" { */
+#endif
+
 
 //------------------------------------------------------------------------------
 // Public Constants:
@@ -126,7 +130,7 @@ void StreamReadColor(Stream stream, DGL_Color* color);
 //	 stream = The file stream from which to read.
 // Returns:
 //	 Pointer to tokenBuffer
-const char* StreamReadToken(Stream stream);
+	std::string StreamReadToken(Stream stream);
 
 // Close an opened stream.
 // (NOTE: Do not attempt to close the stream if the pointer is null.)
@@ -137,6 +141,3 @@ void StreamClose(Stream * stream);
 
 //------------------------------------------------------------------------------
 
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif

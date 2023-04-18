@@ -14,37 +14,97 @@
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "Component.h"
+#include "Vector2D.h"
+#include "Matrix2D.h"
+#include "Stream.h"
+#include "DGL.h"
+
 
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
-
-//------------------------------------------------------------------------------
-// Forward References:
-//------------------------------------------------------------------------------
-
-typedef struct DGL_Mat4 Matrix2D;
-typedef struct Transform Transform;
-typedef struct DGL_Vec2 Vector2D;
-typedef FILE* Stream;
-
-//------------------------------------------------------------------------------
-// Public Constants:
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// Public Structures:
-//------------------------------------------------------------------------------
-
-// An example of the structure to be defined in Transform.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct Transform
+class Transform : public Component
 {
+public:
+	//using explicit to specify that we want to see the "Transform" call on creations of transforms
+	explicit Transform(Entity& parent);
+	
+	// Dynamically allocate a clone of an existing Transform.
+	// (Hint: Perform a shallow copy of the member variables.)
+	// Params:
+	//	 other = Pointer to the component to be cloned.
+	// Returns:
+	//	 If 'other' is valid and the memory allocation was successful,
+	//	   then return a pointer to the cloned component,
+	//	   else return nullptr.
+	Component* Clone(Entity& newParent) const override;
+
+
+	// Read the properties of a Transform component from a file.
+	// [NOTE: Read the translation value using StreamReadVector2D.]
+	// [NOTE: Read the rotation value using StreamReadFloat.]
+	// [NOTE: Read the scale value using StreamReadVector2D.]
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	//	 stream = The data stream used for reading.
+	void Read(Stream stream) override;
+
+	// Get the transform matrix, based upon translation, rotation and scale settings.
+	// (HINT: If the isDirty flag is true, then recalculate the transform matrix.)
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	// Returns:
+	//	 If the Transform pointer is valid,
+	//		then return a pointer to the component's matrix structure,
+	//		else return a nullptr pointer.
+	const Matrix2D& GetMatrix();
+
+	// Get the translation of a Transform component.
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	// Returns:
+	//	 If the Transform pointer is valid,
+	//		then return a pointer to the component's translation,
+	//		else return a nullptr pointer.
+	const Vector2D& GetTranslation() const;
+
+	// Get the rotation value of a Transform component.
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	// Returns:
+	//	 If the Transform pointer is valid,
+	//		then return the component's rotation value (in radians),
+	//		else return 0.0f.
+	float GetRotation() const;
+
+	// Get the scale of a Transform component.
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	// Returns:
+	//	 If the Transform pointer is valid,
+	//		then return a pointer to the component's scale,
+	//		else return a nullptr pointer.
+	const Vector2D& GetScale() const;
+
+	// Set the translation of a Transform component.
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	//	 translation = Pointer to the new translation.
+	void SetTranslation(const Vector2D& translation);
+
+	// Set the rotation of a Transform component.
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	//	 rotation = The rotation value (in radians).
+	void SetRotation(float rotation);
+
+	// Set the scale of a Transform component.
+	// Params:
+	//	 transform = Pointer to the Transform component.
+	//	 translation = Pointer to the new scale.
+	void SetScale(const Vector2D& scale);
+
+
+private:
 	// The translation (or world position) of an entity.
 	Vector2D	translation;
 
@@ -55,117 +115,159 @@ typedef struct Transform
 	// (Hint: This should be initialized to (1, 1).)
 	Vector2D	scale;
 
-	// True if the transformation matrix needs to be recalculated.
-	// (Hint: This should be initialized to true.)
-	// (Hint: This should be set to true when the Transform data changes.)
-	bool	isDirty;
+	Matrix2D matrix;
 
-	// The transformation matrix resulting from concatenating the matrices
-	//   representing the translation, rotation, and scale transformations.
-	//	 (e.g. matrix = Translation*Rotation*Scale matrices)
-	Matrix2D	matrix;
+	bool isDirty;
 
-} Transform;
+};
+
+
+#ifdef __cplusplus
+extern "C" {
+	/* Assume C declarations for C++ */
 #endif
 
 //------------------------------------------------------------------------------
-// Public Variables:
+// Forward References:
 //------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-// Public Functions:
-//------------------------------------------------------------------------------
 
-// Dynamically allocate a new Transform component.
-// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-// (Hint: You must initialize the scale values to non-zero values.)
-// Returns:
-//	 If the memory allocation was successful,
-//	   then return a pointer to the allocated memory,
-//	   else return nullptr.
-Transform* TransformCreate(void);
 
-// Dynamically allocate a clone of an existing Transform.
-// (Hint: Perform a shallow copy of the member variables.)
-// Params:
-//	 other = Pointer to the component to be cloned.
-// Returns:
-//	 If 'other' is valid and the memory allocation was successful,
-//	   then return a pointer to the cloned component,
-//	   else return nullptr.
-Transform* TransformClone(const Transform* other);
+	//------------------------------------------------------------------------------
+	// Public Constants:
+	//------------------------------------------------------------------------------
 
-// Free the memory associated with a Transform component.
-// (NOTE: The Transform pointer must be set to nullptr.)
-// Params:
-//	 transform = Pointer to the Transform pointer.
-void TransformFree(Transform** transform);
+	//------------------------------------------------------------------------------
+	// Public Structures:
+	//------------------------------------------------------------------------------
 
-// Read the properties of a Transform component from a file.
-// [NOTE: Read the translation value using StreamReadVector2D.]
-// [NOTE: Read the rotation value using StreamReadFloat.]
-// [NOTE: Read the scale value using StreamReadVector2D.]
-// Params:
-//	 transform = Pointer to the Transform component.
-//	 stream = The data stream used for reading.
-void TransformRead(Transform* transform, Stream stream);
+	// An example of the structure to be defined in Transform.c.
+#if 0
+// You are free to change the contents of this structure as long as you do not
+//   change the public interface declared in the header.
+	typedef struct Transform
+	{
+		// The translation (or world position) of an entity.
+		Vector2D	translation;
 
-// Get the transform matrix, based upon translation, rotation and scale settings.
-// (HINT: If the isDirty flag is true, then recalculate the transform matrix.)
-// Params:
-//	 transform = Pointer to the Transform component.
-// Returns:
-//	 If the Transform pointer is valid,
-//		then return a pointer to the component's matrix structure,
-//		else return a nullptr pointer.
-const Matrix2D* TransformGetMatrix(Transform* transform);
+		// The rotation (or orientation) of an entity (in radians).
+		float	rotation;
 
-// Get the translation of a Transform component.
-// Params:
-//	 transform = Pointer to the Transform component.
-// Returns:
-//	 If the Transform pointer is valid,
-//		then return a pointer to the component's translation,
-//		else return a nullptr pointer.
-const Vector2D* TransformGetTranslation(const Transform* transform);
+		// The scale (or size) of an entity.
+		// (Hint: This should be initialized to (1, 1).)
+		Vector2D	scale;
 
-// Get the rotation value of a Transform component.
-// Params:
-//	 transform = Pointer to the Transform component.
-// Returns:
-//	 If the Transform pointer is valid,
-//		then return the component's rotation value (in radians),
-//		else return 0.0f.
-float TransformGetRotation(const Transform* transform);
+		// True if the transformation matrix needs to be recalculated.
+		// (Hint: This should be initialized to true.)
+		// (Hint: This should be set to true when the Transform data changes.)
+		bool	isDirty;
 
-// Get the scale of a Transform component.
-// Params:
-//	 transform = Pointer to the Transform component.
-// Returns:
-//	 If the Transform pointer is valid,
-//		then return a pointer to the component's scale,
-//		else return a nullptr pointer.
-const Vector2D* TransformGetScale(const Transform* transform);
+		// The transformation matrix resulting from concatenating the matrices
+		//   representing the translation, rotation, and scale transformations.
+		//	 (e.g. matrix = Translation*Rotation*Scale matrices)
+		Matrix2D	matrix;
 
-// Set the translation of a Transform component.
-// Params:
-//	 transform = Pointer to the Transform component.
-//	 translation = Pointer to the new translation.
-void TransformSetTranslation(Transform* transform, const Vector2D* translation);
+	} Transform;
+#endif
 
-// Set the rotation of a Transform component.
-// Params:
-//	 transform = Pointer to the Transform component.
-//	 rotation = The rotation value (in radians).
-void TransformSetRotation(Transform* transform, float rotation);
+	//------------------------------------------------------------------------------
+	// Public Variables:
+	//------------------------------------------------------------------------------
 
-// Set the scale of a Transform component.
-// Params:
-//	 transform = Pointer to the Transform component.
-//	 translation = Pointer to the new scale.
-void TransformSetScale(Transform* transform, const Vector2D* scale);
+	//------------------------------------------------------------------------------
+	// Public Functions:
+	//------------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
+	//// Dynamically allocate a new Transform component.
+	//// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
+	//// (Hint: You must initialize the scale values to non-zero values.)
+	//// Returns:
+	////	 If the memory allocation was successful,
+	////	   then return a pointer to the allocated memory,
+	////	   else return nullptr.
+	//Transform* TransformCreate(void);
+	//
+	//// Dynamically allocate a clone of an existing Transform.
+	//// (Hint: Perform a shallow copy of the member variables.)
+	//// Params:
+	////	 other = Pointer to the component to be cloned.
+	//// Returns:
+	////	 If 'other' is valid and the memory allocation was successful,
+	////	   then return a pointer to the cloned component,
+	////	   else return nullptr.
+	//Transform* TransformClone(const Transform* other);
+	//
+	//// Free the memory associated with a Transform component.
+	//// (NOTE: The Transform pointer must be set to nullptr.)
+	//// Params:
+	////	 transform = Pointer to the Transform pointer.
+	//void TransformFree(Transform** transform);
+	//
+	//// Read the properties of a Transform component from a file.
+	//// [NOTE: Read the translation value using StreamReadVector2D.]
+	//// [NOTE: Read the rotation value using StreamReadFloat.]
+	//// [NOTE: Read the scale value using StreamReadVector2D.]
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	////	 stream = The data stream used for reading.
+	//void TransformRead(Transform* transform, Stream stream);
+	//
+	//// Get the transform matrix, based upon translation, rotation and scale settings.
+	//// (HINT: If the isDirty flag is true, then recalculate the transform matrix.)
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	//// Returns:
+	////	 If the Transform pointer is valid,
+	////		then return a pointer to the component's matrix structure,
+	////		else return a nullptr pointer.
+	//const Matrix2D* GetMatrix(Transform* transform);
+	//
+	//// Get the translation of a Transform component.
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	//// Returns:
+	////	 If the Transform pointer is valid,
+	////		then return a pointer to the component's translation,
+	////		else return a nullptr pointer.
+	//const Vector2D* GetTranslation(const Transform* transform);
+	//
+	//// Get the rotation value of a Transform component.
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	//// Returns:
+	////	 If the Transform pointer is valid,
+	////		then return the component's rotation value (in radians),
+	////		else return 0.0f.
+	//float GetRotation(const Transform* transform);
+	//
+	//// Get the scale of a Transform component.
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	//// Returns:
+	////	 If the Transform pointer is valid,
+	////		then return a pointer to the component's scale,
+	////		else return a nullptr pointer.
+	//const Vector2D* GetScale(const Transform* transform);
+	//
+	//// Set the translation of a Transform component.
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	////	 translation = Pointer to the new translation.
+	//void SetTranslation(Transform* transform, const Vector2D* translation);
+	//
+	//// Set the rotation of a Transform component.
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	////	 rotation = The rotation value (in radians).
+	//void SetRotation(Transform* transform, float rotation);
+	//
+	//// Set the scale of a Transform component.
+	//// Params:
+	////	 transform = Pointer to the Transform component.
+	////	 translation = Pointer to the new scale.
+	//void SetScale(Transform* transform, const Vector2D* scale);
+
+	//------------------------------------------------------------------------------
 
 #ifdef __cplusplus
 }                       /* End of extern "C" { */
@@ -209,10 +311,10 @@ void TransformSetScale(Transform* transform, const Vector2D* scale);
 //Transform* TransformCreate();
 //void TransformRead(Transform& transform, Stream& stream);
 //void TransformWrite(const Transform& transform, Stream& stream);
-//const Vector2D* TransformGetTranslation(const Transform& transform);
-//float TransformGetRotation(const Transform& transform);
-//const Vector2D* TransformGetScale(const Transform& transform);
-//void TransformSetTranslation(Transform& transform, const Vector2D& translation);
-//void TransformSetRotation(Transform& transform, float rotation);
-//void TransformSetScale(Transform& transform, const Vector2D& scale);
-//const Matrix2D* TransformGetMatrix(Transform& transform);
+//const Vector2D* GetTranslation(const Transform& transform);
+//float GetRotation(const Transform& transform);
+//const Vector2D* GetScale(const Transform& transform);
+//void SetTranslation(Transform& transform, const Vector2D& translation);
+//void SetRotation(Transform& transform, float rotation);
+//void SetScale(Transform& transform, const Vector2D& scale);
+//const Matrix2D* GetMatrix(Transform& transform);

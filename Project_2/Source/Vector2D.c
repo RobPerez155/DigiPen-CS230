@@ -118,6 +118,9 @@ void Vector2DScaleAdd(Vector2D* pResult, const Vector2D* pVec0, const Vector2D* 
 {
 	pResult->x = pVec0->x * scale + pVec1->x;
 	pResult->y = pVec0->y * scale + pVec1->y;
+
+	//vel += accel * dt
+	//	trans = vel * dt + transl
 }
 
 // In this function, pResult will be the vector pVec0 scaled by 'scale' and pVec1 will be subtracted from it

@@ -184,25 +184,19 @@ typedef struct Physics
 		{
 			// Find translation after velocity and acceleration are applied with dt
 			Vector2D result;
-			Vector2D dtAccel;
-			Vector2D dtVelocity;
 
-			//REVIEW
 			// Update previous translation
 			physics->oldTranslation = *TransformGetTranslation(transform);
 
-			// Update acceleration after dt is applied
-			Vector2DScale(&dtAccel, &physics->acceleration, dt);
-			//Subtract acceleration from current velocity
-			Vector2DAdd(&physics->velocity, &physics->velocity, &dtAccel);
+			//Update acceleration after dt is applied add acceleration from current velocity
+			Vector2DScaleAdd(&physics->velocity, &physics->acceleration, &physics->velocity, dt);
 
-			// Update velocity after dt is applied
-			Vector2DScale(&dtVelocity, &physics->velocity, dt);
-			//Add velocity to current translation
-			Vector2DAdd(&result, &dtVelocity, &physics->oldTranslation);
+			// Update velocity after dt is applied and add velocity to current translation
+			Vector2DScaleAdd(&result, &physics->velocity, &physics->oldTranslation, dt);
 
 			//Set new translation
 			TransformSetTranslation(transform, &result);
+
 		}
 	
 	}

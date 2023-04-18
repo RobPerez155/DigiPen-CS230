@@ -1,4 +1,3 @@
-﻿  SandboxScene.c
-C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\SandboxScene.c(83,13): error C2220: the following warning is treated as an error
-C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\SandboxScene.c(83,13): warning C4505: 'SandboxSceneTraceFloat': unreferenced function with internal linkage has been removed
-C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\Source\SandboxScene.c(88,13): warning C4505: 'SandboxSceneTraceVector': unreferenced function with internal linkage has been removed
+﻿  Level2Scene.c
+  Project1.vcxproj -> C:\Users\rober\OneDrive\Desktop\DigiPen Freshmen Year\Spring 2023\CS_230\Project_1\x64\Debug\Project1.exe
+  1 File(s) copied
