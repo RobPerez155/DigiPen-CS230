@@ -14,37 +14,34 @@
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
+#include "stdafx.h"
+#include "Animation.h"
+#include "Entity.h"
+#include "Sprite.h"
+#include "Stream.h"
 
 //------------------------------------------------------------------------------
 
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
-
-//------------------------------------------------------------------------------
-// Forward References:
-//------------------------------------------------------------------------------
-
-typedef struct Entity Entity;
-typedef struct Animation Animation;
-typedef struct Sprite Sprite;
-typedef FILE* Stream;
-
-//------------------------------------------------------------------------------
-// Public Consts:
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// Public Structures:
-//------------------------------------------------------------------------------
-
-// An example of the structure to be defined in Animation.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct Animation
+class Animation : public Component
 {
+public:
+	explicit Animation(Entity& parent);
+	
+	Component* Clone(Entity& newParent) const override;
+		
+	void Read(Stream stream) override;
+		
+	//void SetParent(Animation* animation, Entity* parent);
+		
+	//void Play(Animation* animation, int frameCount, float frameDuration, bool isLooping);
+	void Play();
+	
+	void Update(float dt);
+		
+	bool IsDone() const;
+
+	
+private:
 	// Pointer to the parent Entity associated with the Animation component.
 	Entity* parent;
 
@@ -70,8 +67,31 @@ typedef struct Animation
 	// (Hint: This should be true for only one game loop.)
 	bool isDone;
 
-} Animation;
+	void AdvanceFrame(float dt);
+
+}
+
+#ifdef __cplusplus
+extern "C" {
+	/* Assume C declarations for C++ */
 #endif
+
+//------------------------------------------------------------------------------
+// Forward References:
+//------------------------------------------------------------------------------
+
+/*typedef struct Entity Entity;
+typedef struct Animation Animation;
+typedef struct Sprite Sprite;
+typedef FILE* Stream;*/
+
+//------------------------------------------------------------------------------
+// Public Consts:
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Public Structures:
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -80,65 +100,6 @@ typedef struct Animation
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
-
-// Dynamically allocate a new Animation component.
-// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-Animation* AnimationCreate(void);
-
-// Dynamically allocate a clone of an existing Animation component.
-// (Hint: Perform a shallow copy of the member variables.)
-// Params:
-//	 other = Pointer to the component to be cloned.
-// Returns:
-//	 If 'other' is valid and the memory allocation was successful,
-//	   then return a pointer to the cloned component,
-//	   else return nullptr.
-Animation* AnimationClone(const Animation* other);
-
-// Free the memory associated with an Animation component.
-// (NOTE: The Animation pointer must be set to nullptr.)
-// Params:
-//	 animation = Pointer to the Animation pointer.
-void AnimationFree(Animation** animation);
-
-// Read the properties of an Animation component from a file.
-// [NOTE: Read the integer values for frameIndex and frameCount.]
-// [NOTE: Read the float values for frameDelay and frameDuration.]
-// [NOTE: Read the boolean values for isRunning and isLooping.]
-// Params:
-//	 animation = Pointer to the Animation component.
-//	 stream = The data stream used for reading.
-void AnimationRead(Animation* animation, Stream stream);
-
-// Set the parent Entity for an Animation component.
-// Params:
-//	 animation = Pointer to the Animation component.
-//	 parent = Pointer to the parent Entity.
-void AnimationSetParent(Animation* animation, Entity* parent);
-
-// Play a simple animation sequence [0 .. frameCount - 1].
-// (Hint: This function must initialize all variables, except for "parent".)
-// Params:
-//	 animation = Pointer to the Animation component.
-//	 frameCount = The number of frames in the sequence.
-//	 frameDuration = The amount of time to display each frame (in seconds).
-//	 isLooping = True if the animation loops, false otherwise.
-void AnimationPlay(Animation* animation, int frameCount, float frameDuration, bool isLooping);
-
-// Update the animation.
-// Params:
-//	 animation = Pointer to the Animation component.
-//	 dt = Change in time (in seconds) since the last game loop.
-void AnimationUpdate(Animation* animation, float dt);
-
-// Determine if the animation has reached the end of its sequence.
-// Params:
-//	 animation = Pointer to the Animation component.
-// Returns:
-//	 If the Animation pointer is valid,
-//		then return the value in isDone,
-//		else return false.
-bool AnimationIsDone(const Animation * animation);
 
 /*----------------------------------------------------------------------------*/
 

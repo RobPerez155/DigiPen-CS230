@@ -39,6 +39,8 @@ public:
 	float GetRotation() const;
 	
 	const Vector2D& GetScale() const;
+
+	void Update( float dt);
 	
 	void SetTranslation(const Vector2D& translation);
 	

@@ -56,12 +56,6 @@
 // Public Functions:
 //------------------------------------------------------------------------------
 
-// Dynamically allocate a new Entity.
-// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-// Returns:
-//	 If the memory allocation was successful,
-//	   then return a pointer to the allocated memory,
-//	   else return nullptr.
 Entity* EntityCreate(void)
 {
     //Entity* ptrEntity = calloc(1, sizeof(Entity));
@@ -176,21 +170,14 @@ std::string Entity::GetName()
     return name;
 }
 
-// Params:
-//	 entity = Pointer to the Entity.
-//	 dt = Change in time (in seconds) since the last game loop.
 void Entity::Update(float dt)
 {
     for (auto it = components.begin(); it != components.end(); ++it)
     {
         it->second->Update(dt);
     }
-
 }
 
-// Render any visible components attached to the Entity.
-// Params:
-//	 entity = Pointer to the Entity.
 void Entity::Render()
 {
     for (auto it = components.begin(); it != components.end(); ++it)
@@ -199,14 +186,6 @@ void Entity::Render()
     }
 }
 
-// Compare the Entity's name with the specified name.
-// Params:
-//	 entity = Pointer to the Entity.
-//   name = Pointer to the name to be checked.
-// Returns:
-//	 If the Entity pointer is valid and the two names match,
-//		then return true,
-//		else return false.
 bool Entity::IsNamed(const char* name)
 {
     if (entity != nullptr && strcmp(entity->name, name) == 0)
@@ -219,13 +198,6 @@ bool Entity::IsNamed(const char* name)
     }
 }
 
-// Check whether an Entity has been flagged for destruction.
-// Params:
-//	 entity = Pointer to the Entity.
-// Returns:
-//	 If the Entity pointer is valid,
-//		then return the value in the "isDestroyed" flag,
-//		else return false.
 bool EntityIsDestroyed(const Entity* entity)
 {
     if (entity != nullptr)
@@ -238,30 +210,11 @@ bool EntityIsDestroyed(const Entity* entity)
     }
 }
 
-// Flag an Entity for destruction.
-// (Note: This is to avoid Entities being destroyed while they are being processed.)
-// Params:
-//	 entity = Pointer to the Entity to be flagged for destruction.
-// Returns:
-//	 If 'entity' is valid,
-//	   then set the 'isDestroyed' flag,
-//	   else do nothing.
 void Entity::Destroy()
 {
     isDestroyed = true;
 }
 
-// Dynamically allocate a clone of an existing Entity.
-// (Hint: Make sure to perform a shallow copy or deep copy, as appropriate.)
-// (WARNING: You should use the EntityAdd* functions when attaching cloned
-//    components to the cloned Entity.  This will ensure that the 'parent'
-//    variable is set properly.)
-// Params:
-//	 other = Pointer to the Entity to be cloned.
-// Returns:
-//	 If 'other' is valid and the memory allocation was successful,
-//	   then return a pointer to the cloned Entity,
-//	   else return nullptr.
 Entity* Entity::Clone()
 {
     Entity* newEntity = new Entity;
