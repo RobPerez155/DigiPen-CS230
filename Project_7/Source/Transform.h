@@ -28,79 +28,22 @@ public:
 	//using explicit to specify that we want to see the "Transform" call on creations of transforms
 	explicit Transform(Entity& parent);
 	
-	// Dynamically allocate a clone of an existing Transform.
-	// (Hint: Perform a shallow copy of the member variables.)
-	// Params:
-	//	 other = Pointer to the component to be cloned.
-	// Returns:
-	//	 If 'other' is valid and the memory allocation was successful,
-	//	   then return a pointer to the cloned component,
-	//	   else return nullptr.
 	Component* Clone(Entity& newParent) const override;
-
-
-	// Read the properties of a Transform component from a file.
-	// [NOTE: Read the translation value using StreamReadVector2D.]
-	// [NOTE: Read the rotation value using StreamReadFloat.]
-	// [NOTE: Read the scale value using StreamReadVector2D.]
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	//	 stream = The data stream used for reading.
+	
 	void Read(Stream stream) override;
-
-	// Get the transform matrix, based upon translation, rotation and scale settings.
-	// (HINT: If the isDirty flag is true, then recalculate the transform matrix.)
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	// Returns:
-	//	 If the Transform pointer is valid,
-	//		then return a pointer to the component's matrix structure,
-	//		else return a nullptr pointer.
+	
 	const Matrix2D& GetMatrix();
-
-	// Get the translation of a Transform component.
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	// Returns:
-	//	 If the Transform pointer is valid,
-	//		then return a pointer to the component's translation,
-	//		else return a nullptr pointer.
+	
 	const Vector2D& GetTranslation() const;
-
-	// Get the rotation value of a Transform component.
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	// Returns:
-	//	 If the Transform pointer is valid,
-	//		then return the component's rotation value (in radians),
-	//		else return 0.0f.
+	
 	float GetRotation() const;
-
-	// Get the scale of a Transform component.
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	// Returns:
-	//	 If the Transform pointer is valid,
-	//		then return a pointer to the component's scale,
-	//		else return a nullptr pointer.
+	
 	const Vector2D& GetScale() const;
-
-	// Set the translation of a Transform component.
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	//	 translation = Pointer to the new translation.
+	
 	void SetTranslation(const Vector2D& translation);
-
-	// Set the rotation of a Transform component.
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	//	 rotation = The rotation value (in radians).
+	
 	void SetRotation(float rotation);
-
-	// Set the scale of a Transform component.
-	// Params:
-	//	 transform = Pointer to the Transform component.
-	//	 translation = Pointer to the new scale.
+	
 	void SetScale(const Vector2D& scale);
 
 
@@ -111,8 +54,6 @@ private:
 	// The rotation (or orientation) of an entity (in radians).
 	float	rotation;
 
-	// The scale (or size) of an entity.
-	// (Hint: This should be initialized to (1, 1).)
 	Vector2D	scale;
 
 	Matrix2D matrix;
