@@ -49,6 +49,7 @@ void Animation::AdvanceFrame(float dt)
   UNREFERENCED_PARAMETER(dt);
 
   //Sprite* animSprite = EntityGetSprite(this->parent);
+  //auto* animSprite = this->parent;
   Sprite* animSprite = this->parent;
   this->frameIndex++;
 
@@ -70,7 +71,7 @@ void Animation::AdvanceFrame(float dt)
 
   if (this->isRunning)
   {
-    SpriteSetFrame(animSprite, this->frameIndex);
+    Sprite::SetFrame(animSprite, this->frameIndex);
     this->frameDelay += this->frameDuration;
   }
   else
@@ -140,7 +141,7 @@ void Animation::Play()
     this->isRunning = true;
     /*this->isLooping = this->isLooping;*/
 
-    Sprite* animSprite = EntityGetSprite(this->parent);
+    Sprite* animSprite = Entity::GetSprite(this->parent);
     SpriteSetFrame(animSprite, this->frameIndex);
     this->isDone = false;
 }

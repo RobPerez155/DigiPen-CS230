@@ -10,12 +10,57 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include "Component.h"
+#include "Entity.h"
 
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
+
+typedef void(*CollisionEventHandler)(Entity* entity1, Entity* entity2);
+
+typedef enum ColliderType
+{
+	None,
+	Circle,
+	Line,
+} ColliderType;
+
+// This structure must now be declared publicly so that it may be included in
+//   the private ColliderCircle and ColliderLine structures.
+class Collider : public Component
+{
+	public:
+	
+	Component* Clone(Entity& newParent) const override;
+
+	
+	void SetParent(Entity* parent);
+
+	void Check(const Collider* other) const;
+
+	void SetCollisionHandler(CollisionEventHandler newHandler);
+	
+	private:
+
+	bool IsColliding(const Collider* collider1, const Collider* collider2);
+	// Pointer to the collider's parent Entity.
+	//Entity* parent;
+	explicit Collider(Entity& parent);
+	
+	// The type of collider used by this component.
+	// (Currently, Circle or Line).
+	ColliderType type;
+
+	// Pointer to a function that handles collisions between entities.
+	CollisionEventHandler	handler;
+
+	// The amount of memory to be allocated when cloning a component of this type.
+	unsigned int	memorySize;
+
+}
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,6 +71,7 @@ extern "C" {
 // Forward References:
 //------------------------------------------------------------------------------
 
+/*
 typedef struct Collider Collider;
 typedef struct Entity Entity;
 typedef FILE* Stream;
@@ -40,12 +86,13 @@ typedef enum ColliderType
 	ColliderTypeCircle,
 	ColliderTypeLine,
 } ColliderType;
+*/
 
 //------------------------------------------------------------------------------
 // Public Structures:
 //------------------------------------------------------------------------------
 
-typedef void(*CollisionEventHandler)(Entity* entity1, Entity* entity2);
+/*typedef void(*CollisionEventHandler)(Entity* entity1, Entity* entity2);
 
 // This structure must now be declared publicly so that it may be included in
 //   the private ColliderCircle and ColliderLine structures.
@@ -64,7 +111,7 @@ typedef struct Collider
 	// The amount of memory to be allocated when cloning a component of this type.
 	unsigned int	memorySize;
 
-} Collider;
+} Collider;*/
 
 //------------------------------------------------------------------------------
 // Public Variables:
@@ -82,7 +129,7 @@ typedef struct Collider
 //	 If 'other' is valid and the memory allocation was successful,
 //	   then return a pointer to the cloned component,
 //	   else return nullptr.
-Collider* ColliderClone(const Collider* other);
+/*Collider* ColliderClone(const Collider* other);
 
 // Free the memory associated with a Collider component.
 // (NOTE: The Collider pointer must be set to nullptr.)
@@ -111,7 +158,7 @@ void ColliderCheck(const Collider* collider, const Collider* other);
 // Params:
 //	 collider = Pointer to the Collider component.
 //	 handler = Pointer to the collision event handler (may be nullptr).
-void ColliderSetCollisionHandler(Collider* collider, CollisionEventHandler handler);
+void ColliderSetCollisionHandler(Collider* collider, CollisionEventHandler handler);*/
 
 //------------------------------------------------------------------------------
 

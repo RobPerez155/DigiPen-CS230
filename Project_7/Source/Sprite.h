@@ -24,6 +24,7 @@
 #include "Matrix2D.h"
 #include "Trace.h"
 #include "Transform.h"
+#include <string>
 #include "DGL.h"
 //------------------------------------------------------------------------------
 
@@ -33,24 +34,36 @@ public:
 	explicit Sprite(Entity& parent);
 
 	Component* Clone(Entity& newParent) const override;
-
-	Sprite* Clone(const Sprite* other);
-
+	
 	void Read(Stream stream);
 
-	void Render(const Transform* transform);
+	void Render(Transform* transform) const; 
 
-	float GetAlpha(const Sprite* sprite);
+	float GetAlpha() const;
 
-	void SetAlpha(float alpha);
+	void SetAlpha(float newAlpha);
 
-	void SetFrame(unsigned int frameIndex);
+	void SetFrame(unsigned int newFrameIndex);
 
-	void SetMesh(const Mesh* mesh);
+	void SetMesh(const Mesh* newMesh);
 
-	void SetSpriteSource(const SpriteSource* spriteSource);
+	void SetSpriteSource(const SpriteSource* newSpriteSource);
 
-	void SetText(const char* text);
+	void SetText(const char* newText);
+
+private:
+	void Draw(Transform* transform) const;
+	
+	unsigned int frameIndex;
+	
+	float alpha;
+
+	const SpriteSource* spriteSource;
+
+	const Mesh* mesh;
+
+	std::string text;
+	
 };
 #ifdef __cplusplus
 extern "C" {

@@ -93,21 +93,21 @@ const Vector2D& Transform::GetScale() const
   return scale;
 }
 
-void Transform::SetTranslation(const Vector2D& translation)
+void Transform::SetTranslation(const Vector2D& newTranslation)
 {
-  this->translation = translation;
+  this->translation = newTranslation;
   isDirty = true;
 }
 
-void Transform::SetRotation(float rotation)
+void Transform::SetRotation(float newRotation)
 {
-  this->rotation = rotation;
+  this->rotation = newRotation;
   isDirty = true;
 }
 
-void Transform::SetScale(const Vector2D& scale)
+void Transform::SetScale(const Vector2D& newScale)
 {
-  this->scale = scale;
+  this->scale = newScale;
   isDirty = true;
 }
 
@@ -119,7 +119,7 @@ const Matrix2D& Transform::GetMatrix()
     
     Matrix2D scale, rotate, translate;
 
-    Matrix2DScale(&scale, scale.x, scale.y);
+    Matrix2DScale(&scale, this->scale.x, this->scale.y);
 
     Matrix2DRotRad(&rotate, rotation);
 

@@ -11,11 +11,43 @@
 
 #pragma once
 
+#include "stdafx.h"
+#include "Stream.h"
+#include "Entity.h"
+#include "Behavior.h"
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
+class Behavior : public Component
+{
+public:
+	typedef void(*BehaviorFunctionPtr)(Behavior* behavior);
+	typedef void(*BehaviorFunctionPtrDt)(Behavior* behavior, float dt);
+	
+	Entity* parent;
+
+	unsigned int memorySize;
+
+	int stateCurr;
+	int stateNext;
+	
+	BehaviorFunctionPtr		onInit;
+	BehaviorFunctionPtrDt	onUpdate;
+	BehaviorFunctionPtr		onExit;
+	
+	float	timer;
+
+	Component* Clone(Entity& newParent) const override;
+
+	void Read(Stream stream);
+	
+	void SetParent(Entity* newParent);
+
+	void Update(float dt);
+}
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -26,9 +58,11 @@ extern "C" {
 // Forward References:
 //------------------------------------------------------------------------------
 
+/*
 typedef struct Entity Entity;
 typedef struct Behavior Behavior;
 typedef FILE* Stream;
+*/
 
 //------------------------------------------------------------------------------
 // Public Consts:
@@ -38,7 +72,7 @@ typedef FILE* Stream;
 // Public Structures:
 //------------------------------------------------------------------------------
 
-typedef void(*BehaviorFunctionPtr)(Behavior* behavior);
+/*typedef void(*BehaviorFunctionPtr)(Behavior* behavior);
 typedef void(*BehaviorFunctionPtrDt)(Behavior* behavior, float dt);
 
 // This structure is being declared publicly, as it will be used to implement
@@ -116,7 +150,7 @@ void BehaviorSetParent(Behavior* behavior, Entity* parent);
 // Params:
 //	 behavior = Pointer to the Behavior component.
 //	 dt = Change in time (in seconds) since the last game loop.
-void BehaviorUpdate(Behavior* behavior, float dt);
+void BehaviorUpdate(Behavior* behavior, float dt);*/
 
 //------------------------------------------------------------------------------
 

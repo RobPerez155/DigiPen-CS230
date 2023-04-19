@@ -35,6 +35,7 @@ public:
 	const Matrix2D& GetMatrix();
 	
 	const Vector2D& GetTranslation() const;
+	//const Vector2D* GetTranslation(const Transform* transform);
 	
 	float GetRotation() const;
 	
@@ -42,11 +43,11 @@ public:
 
 	void Update( float dt);
 	
-	void SetTranslation(const Vector2D& translation);
+	void SetTranslation(const Vector2D& newTranslation);
 	
-	void SetRotation(float rotation);
+	void SetRotation(float newRotation);
 	
-	void SetScale(const Vector2D& scale);
+	void SetScale(const Vector2D& newScale);
 
 
 private:

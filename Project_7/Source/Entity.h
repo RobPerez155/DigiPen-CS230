@@ -32,7 +32,9 @@ public:
 	
     void Destroy();
 	
-    bool IsDestroyed();
+    bool IsDestroyed() const;
+
+	  bool IsNamed(const char* name);
 	
     void SetName(std::string name);
 	
