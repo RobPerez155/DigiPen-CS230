@@ -89,48 +89,6 @@ extern "C" {
 //------------------------------------------------------------------------------
 
 // An example of the structure to be defined in Entity.c.
-#if 0
-// You are free to change the contents of this structure as long as you do not
-//   change the public interface declared in the header.
-typedef struct Entity
-{
-	// The name of the entity.
-	// A buffer is used to allow each entity to have a unique name.
-	// The buffer is hardcoded to an arbitrary length that will be sufficient
-	//	 for all CS230 assignments.  You may, instead, use dynamically-allocated
-	//	 arrays for this purpose but the additional complexity is unnecessary
-	//	 and it is your responsibility to ensure that the memory is successfully
-	//	 allocated and deallocated in all possible situations.
-	// [NOTE: When setting the name, use strcpy_s() to reduce the risk of
-	//	 buffer overruns. Additionally, do NOT hardcode the number "32" when
-	//	 calling this function!  Instead, use the _countof() macro to get the
-	//	 size of the "name" array.]
-	char name[32];
-
-	// Flag to indicate that the Entity should be destroyed after it has been updated.
-	bool isDestroyed;
-
-	// Pointer to an attached Animation component.
-	Animation* animation;
-
-	// Pointer to an attached Behavior component.
-	Behavior* behavior;
-
-	// Pointer to an attached Collider component.
-	Collider* collider;
-
-	// Pointer to an attached Physics component.
-	Physics* physics;
-
-	// Pointer to an attached Sprite component.
-	Sprite* sprite;
-
-	// Pointer to an attached Transform component.
-	Transform* transform;
-
-} Entity;
-#endif
-
 //------------------------------------------------------------------------------
 // Public Variables:
 //------------------------------------------------------------------------------

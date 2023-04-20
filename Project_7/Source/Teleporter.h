@@ -26,7 +26,7 @@ extern "C" {
 // Forward References:
 //------------------------------------------------------------------------------
 
-typedef struct Entity Entity;
+//typedef struct Entity Entity;
 
 //------------------------------------------------------------------------------
 // Public Consts:

@@ -119,15 +119,15 @@ const Matrix2D& Transform::GetMatrix()
   {
     Matrix2D output;
     
-    Matrix2D scale, rotate, translate;
+    Matrix2D newScale, rotate, translate;
 
-    Matrix2DScale(&scale, this->scale.x, this->scale.y);
+    Matrix2DScale(&newScale, this->scale.x, this->scale.y);
 
     Matrix2DRotRad(&rotate, rotation);
 
     Matrix2DTranslate(&translate, translation.x, translation.y);
 
-    Matrix2DConcat(&output, &rotate, &scale);
+    Matrix2DConcat(&output, &rotate, &newScale);
 
     Matrix2DConcat(&output, &translate, &output);
 

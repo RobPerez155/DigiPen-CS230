@@ -99,19 +99,19 @@ const Vector2D& Physics::GetOldTranslation()
   return oldTranslation;
 }
 
-void Physics::SetRotationalVelocity(float rotationalVelocity)
+void Physics::SetRotationalVelocity(float newRotationalVelocity)
 {
-  this->rotationalVelocity = rotationalVelocity;
+  this->rotationalVelocity = newRotationalVelocity;
 }
 
-void Physics::SetAcceleration(const Vector2D& acceleration)
+void Physics::SetAcceleration(const Vector2D& newAcceleration)
 {
-  this->acceleration = acceleration;
+  this->acceleration = newAcceleration;
 }
 
-void Physics::SetVelocity(const Vector2D& velocity)
+void Physics::SetVelocity(const Vector2D& newVelocity)
 {
-  this->velocity = velocity;
+  this->velocity = newVelocity;
 }
 
 void Physics::Update(float dt)

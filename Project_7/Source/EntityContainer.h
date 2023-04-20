@@ -10,6 +10,8 @@
 //------------------------------------------------------------------------------
 
 #pragma once
+#include "Entity.h"
+
 
 //------------------------------------------------------------------------------
 // Include Files:
@@ -110,7 +112,7 @@ bool EntityContainerAddEntity(EntityContainer* entities, Entity* entity);
 //	 If the EntityContainer pointer is valid and the Entity was located successfully,
 //		then return a pointer to the Entity,
 //		else return nullptr.
-Entity* EntityContainerFindByName(EntityContainer* entities, const char* entityName);
+Entity* EntityContainerFindByName(EntityContainer* entities, const char* entity_name);
 
 // Determines if the EntityContainer is empty (no Entities exist).
 // Params:

@@ -37,7 +37,7 @@ public:
 	//void SetParent(Animation* animation, Entity* parent);
 		
 	//void Play(Animation* animation, int frameCount, float frameDuration, bool isLooping);
-	void Play(int frameCount, float frameDuration, bool isLooping);
+	void Play(int animFrameCount, float animFrameDuration, bool animIsLooping);
 	
 	void Update(float dt) override;
 		

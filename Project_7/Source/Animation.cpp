@@ -132,19 +132,19 @@ void Animation::Read(Stream stream)
     animation->parent = parent;
 }*/
 
-void Animation::Play(int frameCount, float frameDuration, bool isLooping)
+void Animation::Play(int animFrameCount, float animFrameDuration, bool animIsLooping)
 //void Animation::Play(Animation* animation, int frameCount, float frameDuration, bool isLooping)
 {
-    this->frameIndex = frameCount;
+    this->frameIndex = animFrameCount;
     /*this->frameCount = this->frameCount;*/
-    this->frameDelay = frameDuration;
+    this->frameDelay = animFrameDuration;
     /*this->frameDuration = this->frameDuration;*/
-    this->isRunning = isLooping;
+    this->isRunning = animIsLooping;
     /*this->isLooping = this->isLooping;*/
 
   //Fixed
     // Sprite* animSprite = Entity::GetSprite(this->parent);
-  Sprite* animSprite = (this->GetParent().GetComponent<Sprite>());
+  Sprite* animSprite = this->GetParent().GetComponent<Sprite>();
   //Fixed
     animSprite->SetFrame(this->frameIndex);
     this->isDone = false;

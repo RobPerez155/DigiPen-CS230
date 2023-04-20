@@ -66,7 +66,7 @@ public:
 private:
   const float spaceshipAcceleration = 150.0f;
   const float spaceshipSpeedMax = 500.0f;
-  const float spaceshipTurnRateMax = (3.14159265358979323846 / 1.5f);
+  const float spaceshipTurnRateMax = (3.14159265358979323846f / 1.5f);
   const float spaceshipWeaponCooldownTime = 0.25f;
   const float spaceshipWeaponBulletSpeed = 750.0f;
   const float spaceshipDeathDuration = 5.0f;

@@ -43,11 +43,11 @@ public:
 
 	float GetRotationalVelocity() const;
 
-	void SetAcceleration(const Vector2D& acceleration);
+	void SetAcceleration(const Vector2D& newAcceleration);
 	
-	void SetVelocity(const Vector2D& velocity);
+	void SetVelocity(const Vector2D& newVelocity);
 	
-	void SetRotationalVelocity(float rotationalVelocity);
+	void SetRotationalVelocity(float newRotationalVelocity);
 	
 	void SetDrag(float drag);
 	

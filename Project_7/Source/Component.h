@@ -3,7 +3,6 @@
 
 class Entity;
 
-
 class Component
 {
 public:
