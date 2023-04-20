@@ -61,7 +61,7 @@ public:
   // Params:
   //	 behavior = Pointer to the behavior component.
   //	 dt = Change in time (in seconds) since the last game loop.
-  void Exit();
+  void Exit() override;
 
 private:
   const float spaceshipAcceleration = 150.0f;

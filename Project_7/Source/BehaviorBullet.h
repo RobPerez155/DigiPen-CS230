@@ -17,17 +17,6 @@
 
 //------------------------------------------------------------------------------
 
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
-
-//------------------------------------------------------------------------------
-// Forward References:
-//------------------------------------------------------------------------------
-
-typedef struct Behavior Behavior;
-
 //------------------------------------------------------------------------------
 // Public Consts:
 //------------------------------------------------------------------------------
@@ -43,34 +32,29 @@ typedef struct Behavior Behavior;
 //------------------------------------------------------------------------------
 // Public Functions:
 //------------------------------------------------------------------------------
+enum BulletState {
+  cBulletInvalid = -1,
+  cBulletIdle,
+  cBulletThrust
+};
 
-// Dynamically allocate a new (Bullet) behavior component.
-// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-Behavior* BehaviorBulletCreate(void);
+class BehaviorBullet : public Behavior
+{
+public:
+  explicit BehaviorBullet(Entity& parent);
 
-// Initialize the current state of the behavior component.
-// (Hint: Refer to the lecture notes on finite state machines (FSM).)
-// Params:
-//	 behavior = Pointer to the behavior component.
-void BehaviorBulletInit(Behavior* behavior);
+  void Init() override;
+  
+  void Update(float dt) override;
 
-// Update the current state of the behavior component.
-// (Hint: Refer to the lecture notes on finite state machines (FSM).)
-// Params:
-//	 behavior = Pointer to the behavior component.
-//	 dt = Change in time (in seconds) since the last game loop.
-void BehaviorBulletUpdate(Behavior* behavior, float dt);
+  void Exit() override;
 
-// Exit the current state of the behavior component.
-// (Hint: Refer to the lecture notes on finite state machines (FSM).)
-// Params:
-//	 behavior = Pointer to the behavior component.
-//	 dt = Change in time (in seconds) since the last game loop.
-void BehaviorBulletExit(Behavior* behavior);
+private:
+  const float spaceshipSpeedMax = 500.0f;
+    
+  void UpdateLifeTimer(float dt);
+  void CollisionHandler(Entity* entity1, Entity* entity2);
+};
 
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
 
