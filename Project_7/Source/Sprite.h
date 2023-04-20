@@ -15,27 +15,32 @@
 // Include Files:
 //------------------------------------------------------------------------------
 #include "stdafx.h"
+
+#include <string>
+
+// #include "DGL.h"
+// #include "Matrix2D.h"
+#include "Mesh.h"
+// #include "MeshLibrary.h"
 #include "Sprite.h"
 #include "SpriteSource.h"
-#include "SpriteSourceLibrary.h"
+/*#include "SpriteSourceLibrary.h"
 #include "Stream.h"
-#include "Mesh.h"
-#include "MeshLibrary.h"
-#include "Matrix2D.h"
-#include "Trace.h"
+#include "Trace.h"*/
 #include "Transform.h"
-#include <string>
-#include "DGL.h"
 //------------------------------------------------------------------------------
 
 class Sprite : public Component
 {
 public:
+
+	__inline static Type type() { return Type::Sprite; }
+
 	explicit Sprite(Entity& parent);
 
 	Component* Clone(Entity& newParent) const override;
 	
-	void Read(Stream stream);
+	void Read(Stream stream) override;
 
 	void Render(Transform* transform) const; 
 

@@ -25,6 +25,9 @@
 class Physics : public Component
 {
 public:
+	
+	__inline static Type type() { return Type::Physics; }
+
 	//Using explicit to specify that we want to see the "Physics" call on creations of physics 
 	explicit Physics(Entity& parent);
 

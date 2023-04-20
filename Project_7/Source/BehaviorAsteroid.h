@@ -26,7 +26,7 @@ extern "C" {
 // Forward References:
 //------------------------------------------------------------------------------
 
-typedef struct Behavior Behavior;
+
 
 //------------------------------------------------------------------------------
 // Public Consts:
@@ -72,7 +72,7 @@ typedef struct BehaviorAsteroid
 
 // Dynamically allocate a new (Asteroid) behavior component.
 // (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-Behavior* BehaviorAsteroidCreate(void);
+// Behavior* BehaviorAsteroidCreate(void);
 
 //------------------------------------------------------------------------------
 

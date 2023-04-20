@@ -50,7 +50,7 @@ void Animation::AdvanceFrame(float dt)
 
   //Sprite* animSprite = EntityGetSprite(this->parent);
   //auto* animSprite = this->parent;
-  Sprite* animSprite = this->parent;
+  Sprite* animSprite = this->parent->GetComponent<Sprite>();
   this->frameIndex++;
 
   if (this->frameIndex >= this->frameCount)
@@ -71,7 +71,8 @@ void Animation::AdvanceFrame(float dt)
 
   if (this->isRunning)
   {
-    Sprite::SetFrame(animSprite, this->frameIndex);
+    // Sprite::SetFrame(animSprite, this->frameIndex);
+    animSprite->SetFrame(this->frameIndex);
     this->frameDelay += this->frameDuration;
   }
   else
@@ -87,7 +88,7 @@ void Animation::AdvanceFrame(float dt)
 Component* Animation::Clone(Entity& newParent) const
 //Animation* Animation::Clone(const Animation* other)
 {
-  Animation* animationClone = new Animation([&]newParent);
+  Animation* animationClone = new Animation(newParent);
 
   if (animationClone == nullptr)
   {
@@ -131,18 +132,21 @@ void Animation::Read(Stream stream)
     animation->parent = parent;
 }*/
 
-void Animation::Play()
+void Animation::Play(int frameCount, float frameDuration, bool isLooping)
 //void Animation::Play(Animation* animation, int frameCount, float frameDuration, bool isLooping)
 {
-    this->frameIndex = 0;
+    this->frameIndex = frameCount;
     /*this->frameCount = this->frameCount;*/
-    this->frameDelay = 0.0;
+    this->frameDelay = frameDuration;
     /*this->frameDuration = this->frameDuration;*/
-    this->isRunning = true;
+    this->isRunning = isLooping;
     /*this->isLooping = this->isLooping;*/
 
-    Sprite* animSprite = Entity::GetSprite(this->parent);
-    SpriteSetFrame(animSprite, this->frameIndex);
+  //Fixed
+    // Sprite* animSprite = Entity::GetSprite(this->parent);
+  Sprite* animSprite = (this->GetParent().GetComponent<Sprite>());
+  //Fixed
+    animSprite->SetFrame(this->frameIndex);
     this->isDone = false;
 }
 
@@ -175,5 +179,5 @@ void Animation::Update(float dt)
 bool Animation::IsDone() const
 //bool Animation::IsDone(const Animation* animation);
 {
-  this->isDone;
+  return this->isDone;
 }

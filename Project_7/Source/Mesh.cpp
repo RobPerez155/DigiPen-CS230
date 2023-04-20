@@ -140,10 +140,11 @@
 		// (NOTE: First, read a token from the file and verify that it is "Mesh".)
 		if (stream != nullptr) 
 		{
-			const char* token = StreamReadToken(stream);
+			std::string token = StreamReadToken(stream);
 
 			// (NOTE: Second, read a token and store it in the Mesh's name variable.)
-			if (strncmp(token, "Quad", _countof("Quad")) == 0)
+			if (token == "Quad")
+			// (strncmp(token, "Quad", _countof("Quad")) == 0)
 			{
 				//Vector2D* position = calloc(1, sizeof(Vector2D));
 				Vector2D* position = new Vector2D();
@@ -158,19 +159,24 @@
 				
 				int cols = StreamReadInt(stream);
 				int rows = StreamReadInt(stream);
-				const char* meshName = StreamReadToken(stream);
+				std::string meshName = StreamReadToken(stream);
+
+				float invCols = 1.0f / static_cast<float>(cols);
+				float invRows = 1.0f / static_cast<float>(rows);
 				
-				MeshBuildQuad(mesh,halfSized.x, halfSized.y, (float)1/cols, (float)1/rows, meshName);
+				// MeshBuildQuad(mesh,halfSized.x, halfSized.y, (float)1/cols, (float)1/rows, meshName.c_str());
+				MeshBuildQuad(mesh,halfSized.x, halfSized.y, invCols, invRows, meshName.c_str());
 			}
 
-			if (strncmp(token, "Mesh", _countof("Mesh")) != 0)
+			if (token == "Mesh")
+			// (strncmp(token, "Mesh", _countof("Mesh")) != 0)
 			{
 				TraceMessage("Expected token 'Mesh' not found");
 				return;
 			}
 
 			token = StreamReadToken(stream);
-			strcpy_s(mesh->name, _countof(mesh->name), token);
+			strcpy_s(mesh->name, _countof(mesh->name), token.c_str());
 		
 			DGL_Graphics_StartMesh();
 			// (NOTE: Third, read an integer indicating the number of vertices to be read.)

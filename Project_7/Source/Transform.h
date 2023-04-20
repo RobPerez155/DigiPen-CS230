@@ -25,6 +25,7 @@
 class Transform : public Component
 {
 public:
+	__inline static Type type() { return Type::Transform; }
 	//using explicit to specify that we want to see the "Transform" call on creations of transforms
 	explicit Transform(Entity& parent);
 	

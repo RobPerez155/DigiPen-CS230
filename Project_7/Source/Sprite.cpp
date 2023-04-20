@@ -202,7 +202,7 @@ void Sprite::Draw(Transform* transform) const
   {
     //	Call TransformGetMatrix().
     //	Call DGL_Graphics_SetCB_TransformMatrix(), passing the Transform’s matrix.
-    DGL_Graphics_SetCB_TransformMatrix(Transform::GetMatrix(transform));
+    DGL_Graphics_SetCB_TransformMatrix(&transform->GetMatrix());
 
     //	Call MeshRender(), passing the Sprite’s mesh.
     MeshRender(this->mesh);
@@ -211,12 +211,12 @@ void Sprite::Draw(Transform* transform) const
   {
     //Call TransformGetMatrix() to get a local copy of the Transform component’s transformation matrix(“matrix”)
     //Call Matrix2DTranslate() to create an translation matrix(“offset”) with an X value equal to the Transform component’s X scale
-    Matrix2D matrix = *Transform::GetMatrix(transform);
+    Matrix2D matrix = transform->GetMatrix();
     Matrix2D translateMatrix;
-    Matrix2DTranslate(&translateMatrix, Transform::GetScale(transform).x, 0);
+    Matrix2DTranslate(&translateMatrix, transform->GetScale().x, 0);
 //    Matrix2DTranslate(&translateMatrix, Transform::GetScale(transform).x, 0);
     //Assign a local “const char* ” variable equal to the Sprite’s text pointer.This variable will be used to “walk” through the string without modifying the sprite’s text pointer
-    const char* buffer = this->text;
+    const char* buffer = this->text.c_str();
 
 
     //While the local text pointer points at a non - zero character,

@@ -53,7 +53,7 @@ Physics::Physics(Entity& parent) : Component(parent)
 
 Component* Physics::Clone(Entity& newParent) const
 {
-  Physics* physicsClone = new Physics([&]newParent);
+  Physics* physicsClone = new Physics(newParent);
 
   if (physicsClone == nullptr)
   {

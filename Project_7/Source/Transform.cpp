@@ -48,10 +48,12 @@ Transform::Transform(Entity& parent) : Component(parent)
   translation = {0.0f, 0.0f};
   isDirty = false;
   Matrix2DIdentity(&matrix);
+  ;
 }
 
 Component* Transform::Clone(Entity& newParent) const
 {
+  
   Transform* transformClone = new Transform(newParent);
 
   if (transformClone == nullptr)

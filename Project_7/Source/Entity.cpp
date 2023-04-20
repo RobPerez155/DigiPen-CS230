@@ -16,15 +16,10 @@
 #include "stdafx.h"
 
 #include "Animation.h"
-#include "Behavior.h"
-#include "BehaviorAsteroid.h"
-#include "BehaviorBullet.h"
-#include "BehaviorHudText.h"
-#include "BehaviorSpaceship.h"
 #include "Collider.h"
-#include "ColliderCircle.h"
-#include "ColliderLine.h"
 #include "Entity.h"
+
+#include "BehaviorHudText.h"
 #include "Physics.h"
 #include "Sprite.h"
 #include "Stream.h"
@@ -126,13 +121,11 @@ void Entity::Read(Stream stream)
         BehaviorRead(asteroid, stream);
         EntityAddBehavior(entity, asteroid);
     }
-    else if ((strncmp(token, "BehaviorHudText", _countof("BehaviorHudText")) == 0))
+   */ else if (token == "BehaviorHudText")
     {
-        Behavior* hudText = BehaviorHudTextCreate();
-        BehaviorHudTextRead(hudText, stream);
-        EntityAddBehavior(entity, hudText);
+      new_component = AddComponent<BehaviorHudText>();
     }
-    else if ((strncmp(token, "ColliderCircle", _countof("ColliderCircle")) == 0))
+   /* else if ((strncmp(token, "ColliderCircle", _countof("ColliderCircle")) == 0))
     {
         Collider* circleCollider = ColliderCircleCreate();
         ColliderCircleRead(circleCollider, stream);
@@ -155,9 +148,9 @@ void Entity::Read(Stream stream)
   }
 }
 
-void Entity::SetName(std::string name)
+void Entity::SetName(std::string newName)
 {
-  this->name = name;
+  this->name = newName;
 }
 
 std::string Entity::GetName()
@@ -169,7 +162,7 @@ void Entity::Update(float dt)
 {
   for (auto it = components.begin(); it != components.end(); ++it)
   {
-    it->second->Update(dt);
+   (*it)->Update(dt);
   }
 }
 
@@ -177,18 +170,22 @@ void Entity::Render()
 {
   for (auto it = components.begin(); it != components.end(); ++it)
   {
-    it->second->Render();
+    (*it)->Render();
   }
 }
 
-bool Entity::IsNamed(const char* name)
+void Entity::OnCollision(Entity* other)
+{
+  // Go through all the components in the list and if that component has an OnCollision handler then call it.
+  for(auto component : components)
+    if(component)
+      component->OnCollision(other);
+}
+
+bool Entity::IsNamed(const char* newName) const
 {
   //if (this != nullptr && strcmp(this->name, name) == 0)
-  if (this->name == name)
-  {
-    return true;
-  }
-  return false;
+  return newName == name;
 }
 
 bool Entity::IsDestroyed() const
@@ -209,6 +206,22 @@ void Entity::Destroy()
   isDestroyed = true;
 }
 
+// Constructor - sets defaults to all member variables
+Entity::Entity(): isDestroyed(false), components()
+{
+  // Runs through all the elements in Components and sets them all to a Nullptr
+  std::fill(components.begin(), components.end(), nullptr);
+}
+
+Entity::~Entity()
+{
+  for(Component*& component : components)
+  {
+    delete component;
+    component = nullptr;
+  }
+}
+
 Entity* Entity::Clone()
 {
   Entity* newEntity = new Entity;
@@ -217,9 +230,10 @@ Entity* Entity::Clone()
 
   //for(auto [key, value] : components)
   //for each loop (first = key, second = value)
-  for (auto it = components.begin(); it != components.end(); ++it)
+  for (int i = 0; i < (int)Component::Type::Count; ++i)
   {
-    newEntity->components[it->first] = it->second->Clone(*newEntity);
+    if(components[i])
+      newEntity->components[i] = components[i]->Clone(*newEntity);
   }
 
   return newEntity;

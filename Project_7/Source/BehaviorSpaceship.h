@@ -14,63 +14,68 @@
 //------------------------------------------------------------------------------
 // Include Files:
 //------------------------------------------------------------------------------
-
+#include "stdafx.h"
+#include <math.h>
+#include "DGL.h"
+#include "Behavior.h"
+#include "BehaviorSpaceship.h"
+#include "Collider.h"
+#include "Entity.h"
+#include "EntityFactory.h"
+#include "Physics.h"
+#include "Teleporter.h"
+#include "Transform.h"
+#include "Vector2D.h"
+#include "Scene.h"
 //------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
 
 //------------------------------------------------------------------------------
 // Forward References:
 //------------------------------------------------------------------------------
 
-typedef struct Behavior Behavior;
+/*typedef struct Behavior Behavior;*/
 
-//------------------------------------------------------------------------------
-// Public Consts:
-//------------------------------------------------------------------------------
+enum SpaceshipState {
+  cSpaceshipInvalid = -1,
+  cSpaceshipIdle,
+  cSpaceshipThrust,
+  cSpaceshipDead
+};
 
-//------------------------------------------------------------------------------
-// Public Structures:
-//------------------------------------------------------------------------------
+class BehaviorSpaceship : public Behavior
+{
+public:
+  explicit BehaviorSpaceship(Entity& parent);
+  
+  void Init() override;
 
-//------------------------------------------------------------------------------
-// Public Variables:
-//------------------------------------------------------------------------------
+  // Update the current state of the behavior component.
+  // (Hint: Refer to the lecture notes on finite state machines (FSM).)
+  // Params:
+  //	 behavior = Pointer to the behavior component.
+  //	 dt = Change in time (in seconds) since the last game loop.
+  void Update(float dt) override;
 
-//------------------------------------------------------------------------------
-// Public Functions:
-//------------------------------------------------------------------------------
+  // Exit the current state of the behavior component.
+  // (Hint: Refer to the lecture notes on finite state machines (FSM).)
+  // Params:
+  //	 behavior = Pointer to the behavior component.
+  //	 dt = Change in time (in seconds) since the last game loop.
+  void Exit();
 
-// Dynamically allocate a new (Spaceship) behavior component.
-// (Hint: Use calloc() to ensure that all member variables are initialized to 0.)
-Behavior* BehaviorSpaceshipCreate(void);
+private:
+  const float spaceshipAcceleration = 150.0f;
+  const float spaceshipSpeedMax = 500.0f;
+  const float spaceshipTurnRateMax = (3.14159265358979323846 / 1.5f);
+  const float spaceshipWeaponCooldownTime = 0.25f;
+  const float spaceshipWeaponBulletSpeed = 750.0f;
+  const float spaceshipDeathDuration = 5.0f;
 
-// Initialize the current state of the behavior component.
-// (Hint: Refer to the lecture notes on finite state machines (FSM).)
-// Params:
-//	 behavior = Pointer to the behavior component.
-void BehaviorSpaceshipInit(Behavior* behavior);
+  void UpdateRotation(float dt);
+  void UpdateVelocity(float dt);
+  void UpdateWeapon(float dt);
+  void SpawnBullet();
+  void CollisionHandler(Entity* entity1, Entity* entity2);
+  void DeadAnimation();
 
-// Update the current state of the behavior component.
-// (Hint: Refer to the lecture notes on finite state machines (FSM).)
-// Params:
-//	 behavior = Pointer to the behavior component.
-//	 dt = Change in time (in seconds) since the last game loop.
-void BehaviorSpaceshipUpdate(Behavior* behavior, float dt);
-
-// Exit the current state of the behavior component.
-// (Hint: Refer to the lecture notes on finite state machines (FSM).)
-// Params:
-//	 behavior = Pointer to the behavior component.
-//	 dt = Change in time (in seconds) since the last game loop.
-void BehaviorSpaceshipExit(Behavior* behavior);
-
-//------------------------------------------------------------------------------
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
-
+};

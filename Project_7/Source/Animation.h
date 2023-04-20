@@ -25,6 +25,9 @@
 class Animation : public Component
 {
 public:
+
+	__inline static Type type() { return Type::Animation; }
+	
 	explicit Animation(Entity& parent);
 	
 	Component* Clone(Entity& newParent) const override;
@@ -34,9 +37,9 @@ public:
 	//void SetParent(Animation* animation, Entity* parent);
 		
 	//void Play(Animation* animation, int frameCount, float frameDuration, bool isLooping);
-	void Play();
+	void Play(int frameCount, float frameDuration, bool isLooping);
 	
-	void Update(float dt);
+	void Update(float dt) override;
 		
 	bool IsDone() const;
 
@@ -68,42 +71,4 @@ private:
 	bool isDone;
 
 	void AdvanceFrame(float dt);
-
-}
-
-#ifdef __cplusplus
-extern "C" {
-	/* Assume C declarations for C++ */
-#endif
-
-//------------------------------------------------------------------------------
-// Forward References:
-//------------------------------------------------------------------------------
-
-/*typedef struct Entity Entity;
-typedef struct Animation Animation;
-typedef struct Sprite Sprite;
-typedef FILE* Stream;*/
-
-//------------------------------------------------------------------------------
-// Public Consts:
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// Public Structures:
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// Public Variables:
-//------------------------------------------------------------------------------
-
-//------------------------------------------------------------------------------
-// Public Functions:
-//------------------------------------------------------------------------------
-
-/*----------------------------------------------------------------------------*/
-
-#ifdef __cplusplus
-}                       /* End of extern "C" { */
-#endif
-
+};

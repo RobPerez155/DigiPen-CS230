@@ -11,7 +11,7 @@
 
 #pragma once
 #include <string>
-
+#include <array>
 #include "Component.h"
 #include <unordered_map>
 
@@ -25,7 +25,8 @@
 class Entity
 {
 public:
-
+		Entity();
+	~Entity();
     Entity* Clone();
 
     void Read( Stream stream);
@@ -34,41 +35,40 @@ public:
 	
     bool IsDestroyed() const;
 
-	  bool IsNamed(const char* name);
+	  bool IsNamed(const char* newName) const;
 	
-    void SetName(std::string name);
+    void SetName(std::string newName);
 	
     std::string GetName();
 
     void Update( float dt);
 	
     void Render();
+	
 
-	template<typename T>
-	Component* GetComponent() const
+	template<typename ComponentType>
+	ComponentType* GetComponent() const
 	{
-		auto it = components.find(typeid(T));
-
-		if(it != components.end())
-			return it->second;
-
-		return nullptr;
+		// Returns the enum of the component we are looking for, which inturns gives us the component in question
+		return components[ComponentType::type()];
 	}
 
-	template<typename T>
+	template<typename ComponentType>
 	Component* AddComponent()
 	{
-		components[typeid(T)]  = new T(*this);
-		return components[typeid(T)];
+		components[ComponentType::type()]  = new ComponentType(*this);
+		return components[ComponentType::type()];
 	}
-
+protected:
+	void OnCollision(Entity* other);
+	
 private:
     std::string name;
 
     // Flag to indicate that the Entity should be destroyed after it has been updated.
     bool isDestroyed;
 
-	std::unordered_map<type_info, Component*> components;
+		std::array<Component*, static_cast<std::size_t>(Component::Type::Count)> components;
 };
 
 #ifdef __cplusplus

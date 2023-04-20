@@ -25,7 +25,7 @@ extern "C" {	// Assume C declarations for C++.
 // Forward References:
 //------------------------------------------------------------------------------
 
-typedef struct Entity Entity;
+// typedef struct Entity Entity;
 typedef struct EntityContainer EntityContainer;
 
 //------------------------------------------------------------------------------
