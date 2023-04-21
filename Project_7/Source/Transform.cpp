@@ -95,6 +95,7 @@ const Vector2D& Transform::GetScale() const
   return scale;
 }
 
+
 void Transform::SetTranslation(const Vector2D& newTranslation)
 {
   this->translation = newTranslation;

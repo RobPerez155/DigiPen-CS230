@@ -42,7 +42,7 @@ public:
 	
 	void Read(Stream stream) override;
 
-	void Render(Transform* transform) const; 
+	void Render() override;
 
 	float GetAlpha() const;
 

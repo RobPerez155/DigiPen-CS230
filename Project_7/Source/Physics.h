@@ -51,7 +51,7 @@ public:
 	
 	void SetDrag(float drag);
 	
-	void Update(Transform* transform, float dt);
+	void Update( float dt);
 
 private:
 	Vector2D	oldTranslation;

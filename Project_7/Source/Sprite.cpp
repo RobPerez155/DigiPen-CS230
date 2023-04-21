@@ -23,6 +23,7 @@
 #include "Trace.h"
 #include "Transform.h"
 #include "DGL.h"
+#include "Entity.h"
 
 //------------------------------------------------------------------------------
 
@@ -57,8 +58,7 @@ Sprite::Sprite(Entity& parent) : Component(parent)
   spriteSource = nullptr;
 
   mesh = nullptr;
-
-  text = nullptr;
+  
 }
 
 Component* Sprite::Clone(Entity& newParent) const
@@ -102,9 +102,9 @@ void Sprite::Read(Stream stream)
   }
 }
 
-
-void Sprite::Render(Transform* transform) const
+void Sprite::Render()
 {
+  Transform* transform = GetParent().GetComponent<Transform>();
   if (this->spriteSource != nullptr)
   {
     DGL_Graphics_SetShaderMode(DGL_SM_TEXTURE);
@@ -116,9 +116,9 @@ void Sprite::Render(Transform* transform) const
     DGL_Graphics_SetShaderMode(DGL_SM_COLOR);
     DGL_Graphics_SetTexture(nullptr);
   }
-//issue
-//  DGL_Graphics_SetCB_TransformMatrix(Transform::GetMatrix(transform));
-  DGL_Graphics_SetCB_TransformMatrix(Transform().GetMatrix());
+  //issue
+  //  DGL_Graphics_SetCB_TransformMatrix(Transform::GetMatrix(transform));
+  DGL_Graphics_SetCB_TransformMatrix(&transform->GetMatrix());
   DGL_Graphics_SetCB_Alpha(this->alpha);
   DGL_Graphics_SetCB_TintColor(&tintColor);
   MeshRender(this->mesh);
@@ -126,6 +126,8 @@ void Sprite::Render(Transform* transform) const
   //Sprite::Draw(this, transform);
   Draw(transform);
 }
+
+
 
 float Sprite::GetAlpha() const
 {

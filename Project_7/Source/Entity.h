@@ -50,14 +50,14 @@ public:
 	ComponentType* GetComponent() const
 	{
 		// Returns the enum of the component we are looking for, which inturns gives us the component in question
-		return components[ComponentType::type()];
+		return static_cast<ComponentType*>(components[static_cast<std::size_t>(ComponentType::type())]);
 	}
 
 	template<typename ComponentType>
 	Component* AddComponent()
 	{
-		components[ComponentType::type()]  = new ComponentType(*this);
-		return components[ComponentType::type()];
+		components[static_cast<std::size_t>(ComponentType::type())]  = new ComponentType(*this);
+		return static_cast<ComponentType*>(components[static_cast<std::size_t>(ComponentType::type())]);
 	}
 protected:
 	void OnCollision(Entity* other);

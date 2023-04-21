@@ -25,7 +25,6 @@
 class Animation : public Component
 {
 public:
-
 	__inline static Type type() { return Type::Animation; }
 	
 	explicit Animation(Entity& parent);

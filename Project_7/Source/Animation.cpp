@@ -50,7 +50,7 @@ void Animation::AdvanceFrame(float dt)
 
   //Sprite* animSprite = EntityGetSprite(this->parent);
   //auto* animSprite = this->parent;
-  Sprite* animSprite = this->parent->GetComponent<Sprite>();
+  Sprite* animSprite = GetParent().GetComponent<Sprite>();
   this->frameIndex++;
 
   if (this->frameIndex >= this->frameCount)
@@ -81,6 +81,11 @@ void Animation::AdvanceFrame(float dt)
   }
 }
 
+
+Animation::Animation(Entity& parent): Component(parent), frameCount(0), frameDelay(.0f), frameDuration(0), frameIndex (0)
+{
+
+}
 
 //------------------------------------------------------------------------------
 // Public Functions:
@@ -117,63 +122,55 @@ void Animation::Read(Stream stream)
     StreamReadFloat(stream);
     StreamReadBoolean(stream);
     StreamReadBoolean(stream);
-    /*animation->frameIndex = StreamReadInt(stream);
-    animation->frameCount = StreamReadInt(stream);
-    animation->frameDelay = StreamReadFloat(stream);
-    animation->frameDuration = StreamReadFloat(stream);
-    animation->isRunning = StreamReadBoolean(stream);
-    animation->isLooping = StreamReadBoolean(stream);*/
+    /*frameIndex = StreamReadInt(stream);
+    frameCount = StreamReadInt(stream);
+    frameDelay = StreamReadFloat(stream);
+    frameDuration = StreamReadFloat(stream);
+    isRunning = StreamReadBoolean(stream);
+    isLooping = StreamReadBoolean(stream);*/
   }
 }
 
 /*void Animation::SetParent(Animation* animation, Entity* parent)
 {
   if (animation != nullptr)
-    animation->parent = parent;
+    parent = parent;
 }*/
 
 void Animation::Play(int animFrameCount, float animFrameDuration, bool animIsLooping)
 //void Animation::Play(Animation* animation, int frameCount, float frameDuration, bool isLooping)
 {
-    this->frameIndex = animFrameCount;
-    /*this->frameCount = this->frameCount;*/
-    this->frameDelay = animFrameDuration;
-    /*this->frameDuration = this->frameDuration;*/
-    this->isRunning = animIsLooping;
-    /*this->isLooping = this->isLooping;*/
+  this->frameIndex = 0;
+  this->frameCount = animFrameCount;
+  this->frameDelay = 0.0f;
+  this->frameDuration = animFrameDuration;
+  this->isRunning = true;
+  this->isLooping = animIsLooping;
 
   //Fixed
-    // Sprite* animSprite = Entity::GetSprite(this->parent);
+  // Sprite* animSprite = Entity::GetSprite(this->parent);
   Sprite* animSprite = this->GetParent().GetComponent<Sprite>();
-  //Fixed
+  if(animSprite)
+  {
+    //Fixed
     animSprite->SetFrame(this->frameIndex);
-    this->isDone = false;
+  }
+  this->isDone = false;
 }
 
 void Animation::Update(float dt)
 //void Animation::Update(Animation* animation, float dt)
 {
+  isDone = false;
+  if (isRunning)
   {
-    for (auto it = components.begin(); it != components.end(); ++it)
-    {
-      it->second->Update(dt);
-    }
-  }
-  /*if (animation != nullptr)
-  {
-    animation->isDone = false;
-    if (animation->isRunning)
-    {
-      animation->frameDelay -= dt;
+    frameDelay -= dt;
 
-      if (animation->frameDelay <= 0)
-      {
-        AnimationAdvanceFrame(animation, dt);
-      }
+    if (frameDelay <= 0)
+    {
+      AdvanceFrame(dt);
     }
-    return;
   }
-  return;*/
 }
 
 bool Animation::IsDone() const

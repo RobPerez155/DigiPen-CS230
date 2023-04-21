@@ -19,6 +19,8 @@
 #include "DGL.h"
 #include "Stream.h"
 #include "Vector2D.h"
+#include "Transform.h"
+#include "Entity.h"
 
 //------------------------------------------------------------------------------
 
@@ -116,10 +118,27 @@ void Physics::SetVelocity(const Vector2D& newVelocity)
 
 void Physics::Update(float dt)
 {
-  for (auto it = components.begin(); it != components.end(); ++it)
-  {
-    it->second->Update(dt);
-  }
+  Transform* transform = GetParent().GetComponent<Transform>();
+  if (!transform)
+    return;
+  // Update previous translation
+ oldTranslation = transform->GetTranslation();
+
+  // Find translation after velocity and acceleration are applied with dt
+  Vector2D result;
+
+  //Update acceleration after dt is applied add acceleration from current velocity
+  Vector2DScaleAdd(&velocity, &acceleration, &velocity, dt);
+
+  // Update velocity after dt is applied and add velocity to current translation
+  Vector2DScaleAdd(&result, &velocity, &oldTranslation, dt);
+
+  //Set new translation
+  transform->SetTranslation( result);
+
+  float rotation = transform->GetRotation() + rotationalVelocity * dt;
+
+  transform->SetRotation(rotation);
 }
 
 /*void PhysicsUpdate(Physics* physics, Transform* transform, float dt)

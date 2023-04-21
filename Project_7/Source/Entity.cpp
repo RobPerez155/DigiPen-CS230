@@ -162,7 +162,8 @@ void Entity::Update(float dt)
 {
   for (auto it = components.begin(); it != components.end(); ++it)
   {
-   (*it)->Update(dt);
+    if(*it)
+      (*it)->Update(dt);
   }
 }
 
@@ -170,7 +171,8 @@ void Entity::Render()
 {
   for (auto it = components.begin(); it != components.end(); ++it)
   {
-    (*it)->Render();
+    if(*it)
+      (*it)->Render();
   }
 }
 

@@ -35,6 +35,7 @@ public:
   void Update(float dt) override;
   void Read(Stream stream) override;
   void UpdateText();
+  Component* Clone(Entity& newParent) const override;
 
 private:
   // Add HUD Text-specific behavior variables.
