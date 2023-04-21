@@ -2,7 +2,7 @@
 //
 // File Name:	Mesh.c
 // Author(s):	Rob Perez (rob.perez)
-// Project:		Project 2
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -168,7 +168,7 @@
 				MeshBuildQuad(mesh,halfSized.x, halfSized.y, invCols, invRows, meshName.c_str());
 			}
 
-			if (token == "Mesh")
+			if (token != "Mesh")
 			// (strncmp(token, "Mesh", _countof("Mesh")) != 0)
 			{
 				TraceMessage("Expected token 'Mesh' not found");
@@ -219,16 +219,6 @@
 		return ptrMesh;
 	}
 
-	// Create a "spaceship" mesh.
-	// (NOTE: This mxust be a "unit"-sized triangular mesh as described in the Project 2 instructions.)
-	// (NOTE: The Mesh object must first be made using calloc().)
-	// (NOTE: The Mesh name can be stored using strcpy_s().)
-	// (NOTE: The DGL_Mesh object must be created using DGL_Graphics_StartMesh,
-	//    DGL_Graphics_AddTriangle, and DGL_Graphics_EndMesh.)
-	// Returns:
-	//	 If the mesh was created successfully,
-	//	   then return a pointer to the created Mesh,
-	//	   else return nullptr.
 	Mesh* MeshCreateSpaceship(void)
 	{
 		//Mesh* spaceship = calloc(1, sizeof(Mesh));

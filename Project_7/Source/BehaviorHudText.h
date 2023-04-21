@@ -2,7 +2,7 @@
 //
 // File Name:	BehaviorHudText.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 5
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

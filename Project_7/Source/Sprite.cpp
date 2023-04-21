@@ -2,7 +2,7 @@
 //
 // File Name:	Sprite.c
 // Author(s):	Rob Perez	(rob.perez)
-// Project:		Project 2
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -124,7 +124,7 @@ void Sprite::Render()
   MeshRender(this->mesh);
   DGL_Graphics_SetTexture(nullptr);
   //Sprite::Draw(this, transform);
-  Draw(transform);
+  this->Draw(transform);
 }
 
 
@@ -190,17 +190,17 @@ void Sprite::Draw(Transform* transform) const
     DGL_Graphics_SetTexture(nullptr);
   }
 
-  //if (this != nullptr)
- // {
+  if (this != nullptr)
+  {
     //	Set the alpha transparency for the Sprite.
     DGL_Graphics_SetCB_Alpha(this->alpha);
-  //}
+  }
 
   //	Set the tint color for the Sprite to(0, 0, 0, 0).
   DGL_Graphics_SetCB_TintColor(&tintColor);
 
   //	If the sprite’s text pointer is nullptr,
-  if (!this->text.empty())
+  if (this->text.empty())
   {
     //	Call TransformGetMatrix().
     //	Call DGL_Graphics_SetCB_TransformMatrix(), passing the Transform’s matrix.

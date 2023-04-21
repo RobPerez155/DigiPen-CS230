@@ -2,7 +2,7 @@
 //
 // File Name:	Transform.cpp
 // Author(s):	Rob Perez (rob.perez)
-// Project:		Project 2
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -46,7 +46,7 @@ Transform::Transform(Entity& parent) : Component(parent)
   scale = {1, 1};
   rotation = 0;
   translation = {0.0f, 0.0f};
-  isDirty = false;
+  isDirty = true;
   Matrix2DIdentity(&matrix);
   ;
 }
@@ -77,6 +77,8 @@ void Transform::Read(Stream stream)
     StreamReadVector2D(stream, &translation);
     rotation = StreamReadFloat(stream);
     StreamReadVector2D(stream, &scale);
+    isDirty = true;
+
   }
 }
 

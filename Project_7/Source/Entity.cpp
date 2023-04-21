@@ -2,7 +2,7 @@
 //
 // File Name:	Entity.c
 // Author(s):	Rob Perez (rob.perez)
-// Project:		Project 2
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -20,6 +20,8 @@
 #include "Entity.h"
 
 #include "BehaviorHudText.h"
+#include "BehaviorBullet.h"
+#include "BehaviorSpaceship.h"
 #include "Physics.h"
 #include "Sprite.h"
 #include "Stream.h"
@@ -103,25 +105,27 @@ void Entity::Read(Stream stream)
       Animation::Read(tempAnim, stream);
       EntityAddAnimation(entity, tempAnim);*/
     }
-    /*else if ((strncmp(token, "BehaviorSpaceship", _countof("BehaviorSpaceship")) == 0))
+    else if (token == "BehaviorSpaceship")
     {
-        Behavior* spaceship = BehaviorSpaceshipCreate();
-        BehaviorRead(spaceship, stream);
-        EntityAddBehavior(entity, spaceship);
+      new_component = AddComponent<BehaviorSpaceship>();
+        //Behavior* spaceship = BehaviorSpaceshipCreate();
+        //BehaviorRead(spaceship, stream);
+        //EntityAddBehavior(entity, spaceship);
     }
-    else if ((strncmp(token, "BehaviorBullet", _countof("BehaviorBullet")) == 0))
+    else if (token == "BehaviorBullet")
     {
-        Behavior* bullet = BehaviorBulletCreate();
-        BehaviorRead(bullet, stream);
-        EntityAddBehavior(entity, bullet);
+      new_component = AddComponent<BehaviorBullet>();
+        //Behavior* bullet = BehaviorBulletCreate();
+        //BehaviorRead(bullet, stream);
+        //EntityAddBehavior(entity, bullet);
     }
-    else if ((strncmp(token, "BehaviorAsteroid", _countof("BehaviorAsteroid")) == 0))
+    /*else if ((strncmp(token, "BehaviorAsteroid", _countof("BehaviorAsteroid")) == 0))
     {
         Behavior* asteroid = BehaviorAsteroidCreate();
         BehaviorRead(asteroid, stream);
         EntityAddBehavior(entity, asteroid);
-    }
-   */ else if (token == "BehaviorHudText")
+    }*/
+    else if (token == "BehaviorHudText")
     {
       new_component = AddComponent<BehaviorHudText>();
     }
@@ -142,7 +146,8 @@ void Entity::Read(Stream stream)
       break;
     }
 
-    new_component->Read(stream);
+    if(new_component)
+      new_component->Read(stream);
     //Steps through the stream each 
     token = StreamReadToken(stream);
   }
@@ -193,14 +198,14 @@ bool Entity::IsNamed(const char* newName) const
 bool Entity::IsDestroyed() const
 {
   //issue
-  /*if (this != nullptr)
-  {*/
+  if (this != nullptr)
+  {
     return this->isDestroyed;
-  /*}
+  }
   else
   {
     return false;
-  }*/
+  }
 }
 
 void Entity::Destroy()

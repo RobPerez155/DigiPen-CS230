@@ -2,7 +2,7 @@
 //
 // File Name:	BehaviorSpaceship.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -62,6 +62,8 @@ public:
   //	 behavior = Pointer to the behavior component.
   //	 dt = Change in time (in seconds) since the last game loop.
   void Exit() override;
+  
+  
 
 private:
   const float spaceshipAcceleration = 150.0f;
@@ -77,5 +79,5 @@ private:
   void SpawnBullet();
   void CollisionHandler(Entity* entity1, Entity* entity2);
   void DeadAnimation();
-
+  virtual Component* Clone(Entity& newParent) const override;
 };

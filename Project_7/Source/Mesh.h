@@ -2,7 +2,7 @@
 //
 // File Name:	Mesh.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -89,7 +89,7 @@ Mesh* MeshCreate();
 Mesh* MeshCreateQuad(float xHalfSize, float yHalfSize, float uSize, float vSize, const char * name);
 
 // Create a "spaceship" mesh.
-// (NOTE: This must be a "unit"-sized triangular mesh as described in the Project 2 instructions.)
+// (NOTE: This must be a "unit"-sized triangular mesh as described in the Project 7 instructions.)
 // (NOTE: The Mesh object must first be made using calloc().)
 // (NOTE: The Mesh name can be stored using strcpy_s().)
 // (NOTE: The DGL_Mesh object must be created using DGL_Graphics_StartMesh,

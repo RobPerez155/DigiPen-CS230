@@ -2,7 +2,7 @@
 //
 // File Name:	Matrix2D.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 3
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

@@ -2,7 +2,7 @@
 //
 // File Name:	Physics.c
 // Author(s): Rob Perez (rob.perez)
-// Project:		Project 2
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.

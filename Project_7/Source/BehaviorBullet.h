@@ -2,7 +2,7 @@
 //
 // File Name:	BehaviorBullet.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -54,6 +54,9 @@ private:
     
   void UpdateLifeTimer(float dt);
   void CollisionHandler(Entity* entity1, Entity* entity2);
+
+  // Inherited via Behavior
+  virtual Component* Clone(Entity& newParent) const override;
 };
 
 //------------------------------------------------------------------------------

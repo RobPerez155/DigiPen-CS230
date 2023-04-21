@@ -2,7 +2,7 @@
 //
 // File Name:	Behavior.h
 // Author(s):	Doug Schilling (dschilling)
-// Project:		Project 4
+// Project:		Project 7
 // Course:		CS230S23
 //
 // Copyright © 2023 DigiPen (USA) Corporation.
@@ -40,8 +40,4 @@ protected:
 	int stateCurr;
 	int stateNext;
 	float	timer;
-	
-	
-
-
 };

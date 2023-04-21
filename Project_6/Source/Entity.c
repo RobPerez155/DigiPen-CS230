@@ -387,7 +387,7 @@
 			BehaviorUpdate(entity->behavior, dt);
 			PhysicsUpdate(entity->physics, entity->transform, dt);
 			AnimationUpdate(entity->animation, dt);
-		}
+		}	
 	}
 
 	// Render any visible components attached to the Entity.
